@@ -1351,10 +1351,15 @@ $(window)
 // CHECK TO SEE IF URL EXISTS
 function checkURL() {
 
-    //get the url by removing the hash
+    // get the url by removing the hash
     url = location.hash.replace(/^#/, '');
-
+    // console.log(url);
+    // url = window.location.href;
+    // temp = url.split('/');
+    // #TODO MTR
+    // url = temp[5];
     container = $('#content');
+    
     // Do this if url exists (for page refresh, etc...)
     if (url) {
         // remove all active class
@@ -1364,8 +1369,7 @@ function checkURL() {
         $('nav li:has(a[href="' + url + '"])')
             .addClass("active");
         title = ($('nav a[href="' + url + '"]')
-            .attr('title'))
-
+            .attr('title'));
         // change page title from global var
         document.title = (title || document.title);
         //console.log("page title: " + document.title);
@@ -1373,13 +1377,21 @@ function checkURL() {
         // parse url to jquery
         loadURL(url, container);
     } else {
-
-        // grab the first URL from nav
-        $this = $('nav > ul > li:first-child > a[href!="#"]');
-
-        //update hash
-        window.location.hash = $this.attr('href');
-
+        $('nav li.active')
+            .removeClass("active");
+        // match the url and add the active class
+        $('nav li:has(a[href="ajax/dashboard.html"])')
+            .addClass("active");
+        title = ($('nav a[href="ajax/dashboard.html"]')
+            .attr('title'));
+        // // grab the first URL from nav
+        // document.title = (title || document.title);
+        // $this = $('nav > ul > li:first-child > a[href!="#"]');
+        // console.log($this)
+        // //update hash
+        // window.location.hash = $this.attr('href');
+        document.title = (title || document.title);
+        loadURL("dashboard", container);
     }
 
 }
@@ -1387,7 +1399,7 @@ function checkURL() {
 // LOAD AJAX PAGES
 
 function loadURL(url, container) {
-    //console.log(container)
+    // console.log(container)
 
     $.ajax({
         type: "GET",

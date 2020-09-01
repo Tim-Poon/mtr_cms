@@ -27,7 +27,7 @@
 </div>
 <!-- widget grid -->
 <section id="widget-grid" class="">
-
+	
 	<!-- row -->
 	<div class="row">
 		<article class="col-sm-12">
@@ -48,43 +48,54 @@
 				-->
 				<header>
 					<span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
-					<h2>Live Feeds </h2>
+					<h2>Monitor</h2>
 
 					<ul class="nav nav-tabs pull-right in" id="myTab">
 						<li class="active">
-							<a data-toggle="tab" href="#s1"><i class="fa fa-clock-o"></i> <span class="hidden-mobile hidden-tablet">Live Stats</span></a>
+							<a data-toggle="tab" href="#s4"> <span class="hidden-mobile hidden-tablet">KLB</span></a>
 						</li>
 
 						<li>
-							<a data-toggle="tab" href="#s2"><i class="fa fa-facebook"></i> <span class="hidden-mobile hidden-tablet">Social Network</span></a>
+							<a data-toggle="tab" href="#s2"> <span class="hidden-mobile hidden-tablet">YMT</span></a>
 						</li>
 
 						<li>
-							<a data-toggle="tab" href="#s3"><i class="fa fa-dollar"></i> <span class="hidden-mobile hidden-tablet">Revenue</span></a>
+							<a data-toggle="tab" href="#s3"> <span class="hidden-mobile hidden-tablet">CTL</span></a>
+						</li>
+
+						<li>
+							<a data-toggle="tab" href="#s1"> <span class="hidden-mobile hidden-tablet">test</span></a>
 						</li>
 					</ul>
 
 				</header>
+				
 
 				<!-- widget div-->
 				<div class="no-padding">
 					<!-- widget edit box -->
 					<div class="jarviswidget-editbox">
 
-						test
+						test123123123
 					</div>
 					<!-- end widget edit box -->
 
 					<div class="widget-body">
 						<!-- content -->
 						<div id="myTabContent" class="tab-content">
+							
 							<div class="tab-pane fade active in padding-10 no-padding-bottom" id="s1">
 								<div class="row no-space">
 									<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
-										<span class="demo-liveupdate-1"> <span class="onoffswitch-title">Live switch</span> <span class="onoffswitch">
+										<!-- <span class="demo-liveupdate-1"> <span class="onoffswitch-title">Monitor</span> <span class="onoffswitch">
 												<input type="checkbox" name="start_interval" class="onoffswitch-checkbox" id="start_interval">
-												<label class="onoffswitch-label" for="start_interval"> <div class="onoffswitch-inner" data-swchon-text="ON" data-swchoff-text="OFF"></div> <div class="onoffswitch-switch"></div> </label> </span> </span>
-										<div id="updating-chart" class="chart-large txt-color-blue"></div>
+												<label class="onoffswitch-label" for="start_interval"> <div class="onoffswitch-inner" data-swchon-text="ON" data-swchoff-text="OFF"></div> <div class="onoffswitch-switch"></div> </label> </span> </span> -->
+										<!-- <div id="updating-chart" class="chart-large txt-color-blue"></div> -->
+										<!-- <div class="widget-body no-padding"> -->
+						
+											<div id="sin-chart" class="chart-large txt-color-blue"></div>
+											
+										<!-- </div> -->
 
 									</div>
 									<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 show-stats">
@@ -115,75 +126,32 @@
 								</div>
 
 								<div class="show-stat-microcharts">
-									<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+									<?php for ($i=1; $i < 7; $i++) { ?>
+									
+									<div class="col-xs-12 col-sm-3 col-md-3 col-lg-2">
 
-										<div class="easy-pie-chart txt-color-orangeDark" data-percent="33" data-pie-size="50">
+										<!-- <div class="easy-pie-chart txt-color-orangeDark" data-percent="100" data-pie-size="50">
 											<span class="percent percent-sign">35</span>
+										</div> -->
+										<div class="col-lg-4">
+											<p>
+												00:00 H
+											</p>
+											<div class="progress progress-sm progress-striped active">
+												<div class="progress-bar bg-color-greenLight"  role="progressbar" style="width: 100%"></div>
+											</div>
 										</div>
-										<span class="easy-pie-title"> Server Load <i class="fa fa-caret-up icon-color-bad"></i> </span>
-										<ul class="smaller-stat hidden-sm pull-right">
-											<li>
-												<span class="label bg-color-greenLight"><i class="fa fa-caret-up"></i> 97%</span>
-											</li>
-											<li>
-												<span class="label bg-color-blueLight"><i class="fa fa-caret-down"></i> 44%</span>
-											</li>
-										</ul>
-										<div class="sparkline txt-color-greenLight hidden-sm hidden-md pull-right" data-sparkline-type="line" data-sparkline-height="33px" data-sparkline-width="70px" data-fill-color="transparent">
-											130, 187, 250, 257, 200, 210, 300, 270, 363, 247, 270, 363, 247
+										<div class="col-lg-3">
+											<span class="label bg-color-blueDark"> S-100<?php echo $i; ?> </span>
 										</div>
-									</div>
-									<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-										<div class="easy-pie-chart txt-color-greenLight" data-percent="78.9" data-pie-size="50">
-											<span class="percent percent-sign">78.9 </span>
-										</div>
-										<span class="easy-pie-title"> Disk Space <i class="fa fa-caret-down icon-color-good"></i></span>
-										<ul class="smaller-stat hidden-sm pull-right">
-											<li>
-												<span class="label bg-color-blueDark"><i class="fa fa-caret-up"></i> 76%</span>
-											</li>
-											<li>
-												<span class="label bg-color-blue"><i class="fa fa-caret-down"></i> 3%</span>
-											</li>
-										</ul>
-										<div class="sparkline txt-color-blue hidden-sm hidden-md pull-right" data-sparkline-type="line" data-sparkline-height="33px" data-sparkline-width="70px" data-fill-color="transparent">
-											257, 200, 210, 300, 270, 363, 130, 187, 250, 247, 270, 363, 247
+										<div class="col-lg-5">
+											<div class="sparkline txt-color-greenLight hidden-sm hidden-md pull-right" data-sparkline-type="line" data-sparkline-height="33px" data-sparkline-width="80px" data-fill-color="transparent">
+												0.2, 0.1, 0.3, 0.3, 0.2, 0.2, 0.3, 0.2, 0.3, 0.2, 0.2, 0.3, 0.2
+											</div>	
 										</div>
 									</div>
-									<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-										<div class="easy-pie-chart txt-color-blue" data-percent="23" data-pie-size="50">
-											<span class="percent percent-sign">23 </span>
-										</div>
-										<span class="easy-pie-title"> Transfered <i class="fa fa-caret-up icon-color-good"></i></span>
-										<ul class="smaller-stat hidden-sm pull-right">
-											<li>
-												<span class="label bg-color-darken">10GB</span>
-											</li>
-											<li>
-												<span class="label bg-color-blueDark"><i class="fa fa-caret-up"></i> 10%</span>
-											</li>
-										</ul>
-										<div class="sparkline txt-color-darken hidden-sm hidden-md pull-right" data-sparkline-type="line" data-sparkline-height="33px" data-sparkline-width="70px" data-fill-color="transparent">
-											200, 210, 363, 247, 300, 270, 130, 187, 250, 257, 363, 247, 270
-										</div>
-									</div>
-									<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-										<div class="easy-pie-chart txt-color-darken" data-percent="36" data-pie-size="50">
-											<span class="percent degree-sign">36 <i class="fa fa-caret-up"></i></span>
-										</div>
-										<span class="easy-pie-title"> Temperature <i class="fa fa-caret-down icon-color-good"></i></span>
-										<ul class="smaller-stat hidden-sm pull-right">
-											<li>
-												<span class="label bg-color-red"><i class="fa fa-caret-up"></i> 124</span>
-											</li>
-											<li>
-												<span class="label bg-color-blue"><i class="fa fa-caret-down"></i> 40 F</span>
-											</li>
-										</ul>
-										<div class="sparkline txt-color-red hidden-sm hidden-md pull-right" data-sparkline-type="line" data-sparkline-height="33px" data-sparkline-width="70px" data-fill-color="transparent">
-											2700, 3631, 2471, 2700, 3631, 2471, 1300, 1877, 2500, 2577, 2000, 2100, 3000
-										</div>
-									</div>
+
+									<?php } ?>
 								</div>
 
 							</div>
@@ -279,528 +247,10 @@
 
 	<div class="row">
 
-		<article class="col-sm-12 col-md-12 col-lg-6">
-
-			<!-- new widget -->
-			<div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-1" data-widget-editbutton="false" data-widget-fullscreenbutton="false">
-
-				<!-- widget options:
-				usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
-
-				data-widget-colorbutton="false"
-				data-widget-editbutton="false"
-				data-widget-togglebutton="false"
-				data-widget-deletebutton="false"
-				data-widget-fullscreenbutton="false"
-				data-widget-custombutton="false"
-				data-widget-collapsed="true"
-				data-widget-sortable="false"
-
-				-->
-
-				<header>
-					<span class="widget-icon"> <i class="fa fa-comments txt-color-white"></i> </span>
-					<h2> SmartChat </h2>
-					<div class="widget-toolbar">
-						<!-- add: non-hidden - to disable auto hide -->
-
-						<div class="btn-group">
-							<button class="btn dropdown-toggle btn-xs btn-success" data-toggle="dropdown">
-								Status <i class="fa fa-caret-down"></i>
-							</button>
-							<ul class="dropdown-menu pull-right js-status-update">
-								<li>
-									<a href="javascript:void(0);"><i class="fa fa-circle txt-color-green"></i> Online</a>
-								</li>
-								<li>
-									<a href="javascript:void(0);"><i class="fa fa-circle txt-color-red"></i> Busy</a>
-								</li>
-								<li>
-									<a href="javascript:void(0);"><i class="fa fa-circle txt-color-orange"></i> Away</a>
-								</li>
-								<li class="divider"></li>
-								<li>
-									<a href="javascript:void(0);"><i class="fa fa-power-off"></i> Log Off</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</header>
-
-				<!-- widget div-->
-				<div>
-					<!-- widget edit box -->
-					<div class="jarviswidget-editbox">
-						<div>
-							<label>Title:</label>
-							<input type="text" />
-						</div>
-					</div>
-					<!-- end widget edit box -->
-
-					<div class="widget-body widget-hide-overflow no-padding">
-						<!-- content goes here -->
-
-						<!-- CHAT CONTAINER -->
-						<div id="chat-container">
-							<span class="chat-list-open-close"><i class="fa fa-user"></i><b>!</b></span>
-
-							<div class="chat-list-body custom-scroll">
-								<ul id="chat-users">
-									<li>
-										<a href="javascript:void(0);"><img src="img/avatars/5.png">Robin Berry <span class="badge badge-inverse">23</span><span class="state"><i class="fa fa-circle txt-color-green pull-right"></i></span></a>
-									</li>
-									<li>
-										<a href="javascript:void(0);"><img src="img/avatars/male.png">Mark Zeukartech <span class="state"><i class="last-online pull-right">2hrs</i></span></a>
-									</li>
-									<li>
-										<a href="javascript:void(0);"><img src="img/avatars/male.png">Belmain Dolson <span class="state"><i class="last-online pull-right">45m</i></span></a>
-									</li>
-									<li>
-										<a href="javascript:void(0);"><img src="img/avatars/male.png">Galvitch Drewbery <span class="state"><i class="fa fa-circle txt-color-green pull-right"></i></span></a>
-									</li>
-									<li>
-										<a href="javascript:void(0);"><img src="img/avatars/male.png">Sadi Orlaf <span class="state"><i class="fa fa-circle txt-color-green pull-right"></i></span></a>
-									</li>
-									<li>
-										<a href="javascript:void(0);"><img src="img/avatars/male.png">Markus <span class="state"><i class="last-online pull-right">2m</i></span> </a>
-									</li>
-									<li>
-										<a href="javascript:void(0);"><img src="img/avatars/sunny.png">Sunny <span class="state"><i class="last-online pull-right">2m</i></span> </a>
-									</li>
-									<li>
-										<a href="javascript:void(0);"><img src="img/avatars/male.png">Denmark <span class="state"><i class="last-online pull-right">2m</i></span> </a>
-									</li>
-								</ul>
-							</div>
-							<div class="chat-list-footer">
-
-								<div class="control-group">
-
-									<form class="smart-form">
-
-										<section>
-											<label class="input">
-												<input type="text" id="filter-chat-list" placeholder="Filter">
-											</label>
-										</section>
-
-									</form>
-
-								</div>
-
-							</div>
-
-						</div>
-
-						<!-- CHAT BODY -->
-						<div id="chat-body" class="chat-body custom-scroll">
-							<ul>
-								<li class="message">
-									<img src="img/avatars/5.png" class="online">
-									<span class="message-text">
-										<time>
-											12:23pm
-										</time> <a href="javascript:void(0);" class="username">Sadi Orlaf</a> Hey did you meet the new board of director? He's a bit of an arse if you ask me...anyway here is the report you requested. I am off to launch with Lisa and Andrew, you wanna join?
-										<p class="chat-file row">
-											<b class="pull-left col-sm-6"> <!--<i class="fa fa-spinner fa-spin"></i>--> <i class="fa fa-file"></i> report-2013-demographic-report-annual-earnings.xls </b>
-											<span class="col-sm-6 pull-right"> <a href="javascript:void(0);" class="btn btn-xs btn-default">cancel</a> <a href="javascript:void(0);" class="btn btn-xs btn-success">save</a> </span>
-										</p>
-										<p class="chat-file row">
-											<b class="pull-left col-sm-6"> <i class="fa fa-ok txt-color-green"></i> tobacco-report-2012.doc </b>
-											<span class="col-sm-6 pull-right"> <a href="javascript:void(0);" class="btn btn-xs btn-primary">open</a> </span>
-										</p> </span>
-								</li>
-								<li class="message">
-									<img src="img/avatars/sunny.png" class="online">
-									<span class="message-text">
-										<time>
-											12:23pm
-										</time> <a href="javascript:void(0);" class="username">John Doe</a> Haha! Yeah I know what you mean. Thanks for the file Sadi! <i class="fa fa-smile-o txt-color-orange"></i> </span>
-								</li>
-							</ul>
-
-						</div>
-
-						<!-- CHAT FOOTER -->
-						<div class="chat-footer">
-
-							<!-- CHAT TEXTAREA -->
-							<div class="textarea-div">
-
-								<div class="typearea">
-									<textarea placeholder="Write a reply..." id="textarea-expand" class="custom-scroll"></textarea>
-								</div>
-
-							</div>
-
-							<!-- CHAT REPLY/SEND -->
-							<span class="textarea-controls">
-								<button class="btn btn-sm btn-primary pull-right">
-									Reply
-								</button> <span class="pull-right smart-form" style="margin-top: 3px; margin-right: 10px;"> <label class="checkbox pull-right">
-										<input type="checkbox" name="subscription" id="subscription">
-										<i></i>Press <strong> ENTER </strong> to send </label> </span> <a href="javascript:void(0);" class="pull-left"><i class="fa fa-camera fa-fw fa-lg"></i></a> </span>
-
-						</div>
-
-						<!-- end content -->
-					</div>
-
-				</div>
-				<!-- end widget div -->
-			</div>
-			<!-- end widget -->
-
-			<!-- new widget -->
-			<div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-3" data-widget-colorbutton="false">
-
-				<!-- widget options:
-				usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
-
-				data-widget-colorbutton="false"
-				data-widget-editbutton="false"
-				data-widget-togglebutton="false"
-				data-widget-deletebutton="false"
-				data-widget-fullscreenbutton="false"
-				data-widget-custombutton="false"
-				data-widget-collapsed="true"
-				data-widget-sortable="false"
-
-				-->
-				<header>
-					<span class="widget-icon"> <i class="fa fa-calendar"></i> </span>
-					<h2> My Events </h2>
-					<div class="widget-toolbar">
-						<!-- add: non-hidden - to disable auto hide -->
-						<div class="btn-group">
-							<button class="btn dropdown-toggle btn-xs btn-default" data-toggle="dropdown">
-								Showing <i class="fa fa-caret-down"></i>
-							</button>
-							<ul class="dropdown-menu js-status-update pull-right">
-								<li>
-									<a href="javascript:void(0);" id="mt">Month</a>
-								</li>
-								<li>
-									<a href="javascript:void(0);" id="ag">Agenda</a>
-								</li>
-								<li>
-									<a href="javascript:void(0);" id="td">Today</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</header>
-
-				<!-- widget div-->
-				<div>
-					<!-- widget edit box -->
-					<div class="jarviswidget-editbox">
-
-						<input class="form-control" type="text">
-
-					</div>
-					<!-- end widget edit box -->
-
-					<div class="widget-body no-padding">
-						<!-- content goes here -->
-						<div class="widget-body-toolbar">
-
-							<div id="calendar-buttons">
-
-								<div class="btn-group">
-									<a href="javascript:void(0)" class="btn btn-default btn-xs" id="btn-prev"><i class="fa fa-chevron-left"></i></a>
-									<a href="javascript:void(0)" class="btn btn-default btn-xs" id="btn-next"><i class="fa fa-chevron-right"></i></a>
-								</div>
-							</div>
-						</div>
-						<div id="calendar"></div>
-
-						<!-- end content -->
-					</div>
-
-				</div>
-				<!-- end widget div -->
-			</div>
-			<!-- end widget -->
-
-		</article>
 
 		<article class="col-sm-12 col-md-12 col-lg-6">
 
-			<!-- new widget -->
-			<div class="jarviswidget" id="wid-id-2" data-widget-colorbutton="false" data-widget-editbutton="false">
-
-				<!-- widget options:
-				usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
-
-				data-widget-colorbutton="false"
-				data-widget-editbutton="false"
-				data-widget-togglebutton="false"
-				data-widget-deletebutton="false"
-				data-widget-fullscreenbutton="false"
-				data-widget-custombutton="false"
-				data-widget-collapsed="true"
-				data-widget-sortable="false"
-
-				-->
-
-				<header>
-					<span class="widget-icon"> <i class="fa fa-map-marker"></i> </span>
-					<h2>Birds Eye</h2>
-					<div class="widget-toolbar hidden-mobile">
-						<span class="onoffswitch-title"><i class="fa fa-location-arrow"></i> Realtime</span>
-						<span class="onoffswitch">
-							<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" checked="checked" id="myonoffswitch">
-							<label class="onoffswitch-label" for="myonoffswitch"> <div class="onoffswitch-inner" data-swchon-text="YES" data-swchoff-text="NO"></div> <div class="onoffswitch-switch"></div> </label> </span>
-					</div>
-				</header>
-
-				<!-- widget div-->
-				<div>
-					<!-- widget edit box -->
-					<div class="jarviswidget-editbox">
-						<div>
-							<label>Title:</label>
-							<input type="text" />
-						</div>
-					</div>
-					<!-- end widget edit box -->
-
-					<div class="widget-body no-padding">
-						<!-- content goes here -->
-
-						<div id="vector-map" class="vector-map"></div>
-						<div id="heat-fill">
-							<span class="fill-a">0</span>
-
-							<span class="fill-b">5,000</span>
-						</div>
-
-						<table class="table table-striped table-hover table-condensed">
-							<thead>
-								<tr>
-									<th>Country</th>
-									<th>Visits</th>
-									<th class="text-align-center">User Activity</th>
-									<th class="text-align-center">Online</th>
-									<th class="text-align-center">Demographic</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td><a href="javascript:void(0);">USA</a></td>
-									<td>4,977</td>
-									<td class="text-align-center">
-									<div class="sparkline txt-color-blue text-align-center" data-sparkline-height="22px" data-sparkline-width="90px" data-sparkline-barwidth="2">
-										2700, 3631, 2471, 1300, 1877, 2500, 2577, 2700, 3631, 2471, 2000, 2100, 3000
-									</div></td>
-									<td class="text-align-center">143</td>
-									<td class="text-align-center">
-									<div class="sparkline display-inline" data-sparkline-type='pie' data-sparkline-piecolor='["#E979BB", "#57889C"]' data-sparkline-offset="90" data-sparkline-piesize="23px">
-										17,83
-									</div>
-									<div class="btn-group display-inline pull-right text-align-left hidden-tablet">
-										<button class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown">
-											<i class="fa fa-cog fa-lg"></i>
-										</button>
-										<ul class="dropdown-menu dropdown-menu-xs pull-right">
-											<li>
-												<a href="javascript:void(0);"><i class="fa fa-file fa-lg fa-fw txt-color-greenLight"></i> <u>P</u>DF</a>
-											</li>
-											<li>
-												<a href="javascript:void(0);"><i class="fa fa-times fa-lg fa-fw txt-color-red"></i> <u>D</u>elete</a>
-											</li>
-											<li class="divider"></li>
-											<li class="text-align-center">
-												<a href="javascript:void(0);">Cancel</a>
-											</li>
-										</ul>
-									</div></td>
-								</tr>
-								<tr>
-									<td><a href="javascript:void(0);">Australia</a></td>
-									<td>4,873</td>
-									<td class="text-align-center">
-									<div class="sparkline txt-color-blue text-align-center" data-sparkline-height="22px" data-sparkline-width="90px" data-sparkline-barwidth="2">
-										1000, 1100, 3030, 1300, -1877, -2500, -2577, -2700, 3631, 2471, 4700, 1631, 2471
-									</div></td>
-									<td class="text-align-center">247</td>
-									<td class="text-align-center">
-									<div class="sparkline display-inline" data-sparkline-type='pie' data-sparkline-piecolor='["#E979BB", "#57889C"]' data-sparkline-offset="90" data-sparkline-piesize="23px">
-										22,88
-									</div>
-									<div class="btn-group display-inline pull-right text-align-left hidden-tablet">
-										<button class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown">
-											<i class="fa fa-cog fa-lg"></i>
-										</button>
-										<ul class="dropdown-menu dropdown-menu-xs pull-right">
-											<li>
-												<a href="javascript:void(0);"><i class="fa fa-file fa-lg fa-fw txt-color-greenLight"></i> <u>P</u>DF</a>
-											</li>
-											<li>
-												<a href="javascript:void(0);"><i class="fa fa-times fa-lg fa-fw txt-color-red"></i> <u>D</u>elete</a>
-											</li>
-											<li class="divider"></li>
-											<li class="text-align-center">
-												<a href="javascript:void(0);">Cancel</a>
-											</li>
-										</ul>
-									</div></td>
-								</tr>
-								<tr>
-									<td><a href="javascript:void(0);">India</a></td>
-									<td>3,671</td>
-									<td class="text-align-center">
-									<div class="sparkline txt-color-blue text-align-center" data-sparkline-height="22px" data-sparkline-width="90px" data-sparkline-barwidth="2">
-										3631, 1471, 2400, 3631, 471, 1300, 1177, 2500, 2577, 3000, 4100, 3000, 7700
-									</div></td>
-									<td class="text-align-center">373</td>
-									<td class="text-align-center">
-									<div class="sparkline display-inline" data-sparkline-type='pie' data-sparkline-piecolor='["#E979BB", "#57889C"]' data-sparkline-offset="90" data-sparkline-piesize="23px">
-										10,90
-									</div>
-									<div class="btn-group display-inline pull-right text-align-left hidden-tablet">
-										<button class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown">
-											<i class="fa fa-cog fa-lg"></i>
-										</button>
-										<ul class="dropdown-menu dropdown-menu-xs pull-right">
-											<li>
-												<a href="javascript:void(0);"><i class="fa fa-file fa-lg fa-fw txt-color-greenLight"></i> <u>P</u>DF</a>
-											</li>
-											<li>
-												<a href="javascript:void(0);"><i class="fa fa-times fa-lg fa-fw txt-color-red"></i> <u>D</u>elete</a>
-											</li>
-											<li class="divider"></li>
-											<li class="text-align-center">
-												<a href="javascript:void(0);">Cancel</a>
-											</li>
-										</ul>
-									</div></td>
-								</tr>
-								<tr>
-									<td><a href="javascript:void(0);">Brazil</a></td>
-									<td>2,476</td>
-									<td class="text-align-center">
-									<div class="sparkline txt-color-blue text-align-center" data-sparkline-height="22px" data-sparkline-width="90px" data-sparkline-barwidth="2">
-										2700, 1877, 2500, 2577, 2000, 3631, 2471, -2700, -3631, 2471, 1300, 2100, 3000,
-									</div></td>
-									<td class="text-align-center">741</td>
-									<td class="text-align-center">
-									<div class="sparkline display-inline" data-sparkline-type='pie' data-sparkline-piecolor='["#E979BB", "#57889C"]' data-sparkline-offset="90" data-sparkline-piesize="23px">
-										34,66
-									</div>
-									<div class="btn-group display-inline pull-right text-align-left hidden-tablet">
-										<button class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown">
-											<i class="fa fa-cog fa-lg"></i>
-										</button>
-										<ul class="dropdown-menu dropdown-menu-xs pull-right">
-											<li>
-												<a href="javascript:void(0);"><i class="fa fa-file fa-lg fa-fw txt-color-greenLight"></i> <u>P</u>DF</a>
-											</li>
-											<li>
-												<a href="javascript:void(0);"><i class="fa fa-times fa-lg fa-fw txt-color-red"></i> <u>D</u>elete</a>
-											</li>
-											<li class="divider"></li>
-											<li class="text-align-center">
-												<a href="javascript:void(0);">Cancel</a>
-											</li>
-										</ul>
-									</div></td>
-								</tr>
-								<tr>
-									<td><a href="javascript:void(0);">Turkey</a></td>
-									<td>1,476</td>
-									<td class="text-align-center">
-									<div class="sparkline txt-color-blue text-align-center" data-sparkline-height="22px" data-sparkline-width="90px" data-sparkline-barwidth="2">
-										1300, 1877, 2500, 2577, 2000, 2100, 3000, -2471, -2700, -3631, -2471, 2700, 3631
-									</div></td>
-									<td class="text-align-center">123</td>
-									<td class="text-align-center">
-									<div class="sparkline display-inline" data-sparkline-type='pie' data-sparkline-piecolor='["#E979BB", "#57889C"]' data-sparkline-offset="90" data-sparkline-piesize="23px">
-										75,25
-									</div>
-									<div class="btn-group display-inline pull-right text-align-left hidden-tablet">
-										<button class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown">
-											<i class="fa fa-cog fa-lg"></i>
-										</button>
-										<ul class="dropdown-menu dropdown-menu-xs pull-right">
-											<li>
-												<a href="javascript:void(0);"><i class="fa fa-file fa-lg fa-fw txt-color-greenLight"></i> <u>P</u>DF</a>
-											</li>
-											<li>
-												<a href="javascript:void(0);"><i class="fa fa-times fa-lg fa-fw txt-color-red"></i> <u>D</u>elete</a>
-											</li>
-											<li class="divider"></li>
-											<li class="text-align-center">
-												<a href="javascript:void(0);">Cancel</a>
-											</li>
-										</ul>
-									</div></td>
-								</tr>
-								<tr>
-									<td><a href="javascript:void(0);">Canada</a></td>
-									<td>146</td>
-									<td class="text-align-center">
-									<div class="sparkline txt-color-orange text-align-center" data-sparkline-height="22px" data-sparkline-width="90px" data-sparkline-barwidth="2">
-										5, 34, 10, 1, 4, 6, -9, -1, 0, 0, 5, 6, 7
-									</div></td>
-									<td class="text-align-center">23</td>
-									<td class="text-align-center">
-									<div class="sparkline display-inline" data-sparkline-type='pie' data-sparkline-piecolor='["#E979BB", "#57889C"]' data-sparkline-offset="90" data-sparkline-piesize="23px">
-										50,50
-									</div>
-									<div class="btn-group display-inline pull-right text-align-left hidden-tablet">
-										<button class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown">
-											<i class="fa fa-cog fa-lg"></i>
-										</button>
-										<ul class="dropdown-menu dropdown-menu-xs pull-right">
-											<li>
-												<a href="javascript:void(0);"><i class="fa fa-file fa-lg fa-fw txt-color-greenLight"></i> <u>P</u>DF</a>
-											</li>
-											<li>
-												<a href="javascript:void(0);"><i class="fa fa-times fa-lg fa-fw txt-color-red"></i> <u>D</u>elete</a>
-											</li>
-											<li class="divider"></li>
-											<li class="text-align-center">
-												<a href="javascript:void(0);">Cancel</a>
-											</li>
-										</ul>
-									</div></td>
-								</tr>
-							</tbody>
-							<tfoot>
-								<tr>
-									<td colspan=5>
-									<ul class="pagination pagination-xs no-margin">
-										<li class="prev disabled">
-											<a href="javascript:void(0);">Previous</a>
-										</li>
-										<li class="active">
-											<a href="javascript:void(0);">1</a>
-										</li>
-										<li>
-											<a href="javascript:void(0);">2</a>
-										</li>
-										<li>
-											<a href="javascript:void(0);">3</a>
-										</li>
-										<li class="next">
-											<a href="javascript:void(0);">Next</a>
-										</li>
-									</ul></td>
-								</tr>
-							</tfoot>
-						</table>
-
-						<!-- end content -->
-
-					</div>
-
-				</div>
-				<!-- end widget div -->
-			</div>
-			<!-- end widget -->
+			
 
 			<!-- new widget -->
 			<div class="jarviswidget jarviswidget-color-blue" id="wid-id-4" data-widget-editbutton="false" data-widget-colorbutton="false">
@@ -990,101 +440,212 @@
 	}
 	
 	function generatePageGraphs() {
+		/* chart colors default */
+		var $chrt_border_color = "#efefef";
+		var $chrt_grid_color = "#DDD"
+		var $chrt_main = "#E24913";			/* red       */
+		var $chrt_second = "#6595b4";		/* blue      */
+		var $chrt_third = "#FF9F01";		/* orange    */
+		var $chrt_fourth = "#7e9d3a";		/* green     */
+		var $chrt_fifth = "#BD362F";		/* dark red  */
+		var $chrt_mono = "#000";
 	
 	    /* TAB 1: UPDATING CHART */
 	    // For the demo we use generated data, but normally it would be coming from the server
 	
-	    var data = [],
-	        totalPoints = 200,
-	        $UpdatingChartColors = $("#updating-chart").css('color');
+	    // var data = [],
+	    //     totalPoints = 10,
+	    //     $UpdatingChartColors = $("#updating-chart").css('color');
 	
-	    function getRandomData() {
-	        if (data.length > 0)
-	            data = data.slice(1);
+	    // function getRandomData() {
+	    //     if (data.length > 0)
+	    //         data = data.slice(1);
 	
-	        // do a random walk
-	        while (data.length < totalPoints) {
-	            var prev = data.length > 0 ? data[data.length - 1] : 50;
-	            var y = prev + Math.random() * 10 - 5;
-	            if (y < 0)
-	                y = 0;
-	            if (y > 100)
-	                y = 100;
-	            data.push(y);
-	        }
+	    //     // do a random walk
+	    //     while (data.length < totalPoints) {
+	    //         var prev = data.length > 0 ? data[data.length - 1] : 50;
+	    //         var y = prev + Math.random() * 10 - 5;
+	    //         if (y < 0)
+	    //             y = 0;
+	    //         if (y > 100)
+	    //             y = 100;
+	    //         data.push(y);
+	    //     }
 	
-	        // zip the generated y values with the x values
-	        var res = [];
-	        for (var i = 0; i < data.length; ++i)
-	            res.push([i, data[i]])
-	        return res;
-	    }
+	    //     // zip the generated y values with the x values
+	    //     var res = [];
+	    //     for (var i = 0; i < data.length; ++i)
+		// 		res.push([i, data[i]])
+		// 	console.log(res)
+	    //     return res;
+	    // }
 	
-	    // setup control widget
-	    var updateInterval = 1500;
-	    $("#updating-chart").val(updateInterval).change(function () {
+	    // // setup control widget
+	    // var updateInterval = 1500;
+	    // $("#updating-chart").val(updateInterval).change(function () {
 	
-	        var v = $(this).val();
-	        if (v && !isNaN(+v)) {
-	            updateInterval = +v;
-	            $(this).val("" + updateInterval);
-	        }
+	    //     var v = $(this).val();
+	    //     if (v && !isNaN(+v)) {
+	    //         updateInterval = +v;
+	    //         $(this).val("" + updateInterval);
+	    //     }
 	
-	    });
+	    // });
 	
-	    // setup plot
-	    var options = {
-	        yaxis: {
-	            min: 0,
-	            max: 100
-	        },
-	        xaxis: {
-	            min: 0,
-	            max: 100
-	        },
-	        colors: [$UpdatingChartColors],
-	        series: {
-	            lines: {
-	                lineWidth: 1,
-	                fill: true,
-	                fillColor: {
-	                    colors: [{
-	                        opacity: 0.4
-	                    }, {
-	                        opacity: 0
-	                    }]
-	                },
-	                steps: false
+	    // // setup plot
+	    // var options = {
+	    //     yaxis: {
+	    //         min: 0,
+	    //         max: 100
+	    //     },
+	    //     xaxis: {
+	    //         min: 0,
+	    //         max: 100
+	    //     },
+	    //     colors: [$UpdatingChartColors],
+	    //     series: {
+	    //         lines: {
+	    //             lineWidth: 2,
+	    //             fill: true,
+	    //             fillColor: {
+	    //                 colors: [{
+	    //                     opacity: 0.4
+	    //                 }, {
+	    //                     opacity: 0
+	    //                 }]
+	    //             },
+	    //             steps: false
 	
-	            }
-	        }
+	    //         }
+	    //     }
+	    // };
+	
+		// var plot = $.plot($("#updating-chart"), [getRandomData()], options);
+		
+		/* Sin chart */
+		
+		// if ($("#sin-chart").length) {
+			// setInterval("test()",2000);
+		function drawPlot()
+		{
+			var s3 = [], s4 = [];
+			// add data
+			$.ajax({
+				type: "GET",
+				url: 'Api/get_sensor_status',
+				dataType: 'json',
+				cache: true, // (warning: this will cause a timestamp and will call the request twice)
+				beforeSend: function () {
+					// container.html('<h1><i class="fa fa-cog fa-spin"></i> Loading...</h1>');
+				},
+				success: function (data) {
+					// console.log(data);
+					for(var i = 0; i < data['loc'].length; i++){
+						// console.log(data['loc'][i]);
+						// if (data['heart'][i]['device'] == '1003'){
+							s3.push([i, data['loc'][i]['val_x']]);
+						// }
+					}
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					container.html(
+						'<h4 style="margin-top:10px; display:block; text-align:left"><i class="fa fa-warning txt-color-orangeDark"></i> Error 404! Page not found.</h4>'
+					);
+					drawBreadCrumb();
+				},
+				async: false
+			});
+			// old function
+			// for (var i = 0; i < 16; i += 0.5) {
+			// 	sin.push([i, Math.sin(i)]);
+			// 	cos.push([i, Math.cos(i)]);
+			// }
+	
+			var plot = $.plot($("#sin-chart"), [{
+				data : s3,
+				// label : "sin(x)"
+			}, {
+				data : s4,
+				// label : "cos(x)"
+			}], {
+				series : {
+					lines : {
+						show : true
+					},
+					points : {
+						show : true
+					}
+				},
+				grid : {
+					hoverable : true,
+					clickable : true,
+					tickColor : $chrt_border_color,
+					borderWidth : 0,
+					borderColor : $chrt_border_color,
+				},
+				tooltip : true,
+				tooltipOpts : {
+					//content : "Value <b>$x</b> Value <span>$y</span>",
+					defaultTheme : false
+				},
+				colors : [$chrt_second, $chrt_fourth],
+				yaxis : {
+					min : 0,
+					max : 3
+				},
+				xaxis : {
+					min : 0,
+					max : 10
+				}
+			});
+	   
+			$("#sin-chart").bind("plotclick", function(event, pos, item) {
+				if (item) {
+					$("#clickdata").text("You clicked point " + item.dataIndex + " in " + item.series.label + ".");
+					plot.highlight(item.series, item.datapoint);
+				}
+			});
 	    };
-	
-	    var plot = $.plot($("#updating-chart"), [getRandomData()], options);
-	
-	    /* live switch */
-	    $('input[type="checkbox"]#start_interval').click(function () {
-	        if ($(this).prop('checked')) {
-	            $on = true;
-	            updateInterval = 1500;
-	            update();
-	        } else {
-	            clearInterval(updateInterval);
-	            $on = false;
-	        }
-	    });
-	
-	    function update() {
-	        if ($on == true) {
-	            plot.setData([getRandomData()]);
-	            plot.draw();
+		updateInterval = 1500;
+		update();
+		function update() {
+	        if (true) {
+				// console.log('draw');
+	            // plot.setData([getRandomData()]);
+				// plot.draw();
+				drawPlot();
 	            setTimeout(update, updateInterval);
 	
 	        } else {
 	            clearInterval(updateInterval)
 	        }
+		}
+		
+		/* end sin chart */
+			
+	    /* live switch */
+	    // $('input[type="checkbox"]#start_interval').click(function () {
+	    //     if ($(this).prop('checked')) {
+	    //         $on = true;
+	    //         updateInterval = 1500;
+	    //         update();
+	    //     } else {
+	    //         clearInterval(updateInterval);
+	    //         $on = false;
+	    //     }
+	    // });
 	
-	    }
+	    // function update() {
+	    //     if ($on == true) {
+	    //         plot.setData([getRandomData()]);
+	    //         plot.draw();
+	    //         setTimeout(update, updateInterval);
+	
+	    //     } else {
+	    //         clearInterval(updateInterval)
+	    //     }
+	
+	    // }
 	
 	    var $on = false;
 	
@@ -1531,56 +1092,5 @@
 	    $('#calendar').fullCalendar('changeView', 'agendaDay');
 	});
 	
-	/*
-	 * CHAT
-	 */
-	
-	$.filter_input = $('#filter-chat-list');
-	$.chat_users_container = $('#chat-container > .chat-list-body')
-	$.chat_users = $('#chat-users')
-	$.chat_list_btn = $('#chat-container > .chat-list-open-close');
-	$.chat_body = $('#chat-body');
-	
-	/*
-	 * LIST FILTER (CHAT)
-	 */
-	
-	// custom css expression for a case-insensitive contains()
-	jQuery.expr[':'].Contains = function (a, i, m) {
-	    return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
-	};
-	
-	function listFilter(list) { // header is any element, list is an unordered list
-	    // create and add the filter form to the header
-	
-	    $.filter_input.change(function () {
-	        var filter = $(this).val();
-	        if (filter) {
-	            // this finds all links in a list that contain the input,
-	            // and hide the ones not containing the input while showing the ones that do
-	            $.chat_users.find("a:not(:Contains(" + filter + "))").parent().slideUp();
-	            $.chat_users.find("a:Contains(" + filter + ")").parent().slideDown();
-	        } else {
-	            $.chat_users.find("li").slideDown();
-	        }
-	        return false;
-	    }).keyup(function () {
-	        // fire the above change event after every letter
-	        $(this).change();
-	
-	    });
-	
-	}
-	
-	// on dom ready
-	listFilter($.chat_users);
-	
-	// open chat list
-	$.chat_list_btn.click(function () {
-	    $(this).parent('#chat-container').toggleClass('open');
-	})
-	
-	$.chat_body.animate({
-	    scrollTop: $.chat_body[0].scrollHeight
-	}, 500);
+
 </script>

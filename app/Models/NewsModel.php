@@ -6,15 +6,18 @@ class NewsModel extends Model
 {	
 	function __construct()
     {
-        // parent::__construct();
-        //创建数据库连接
-        // $this->Db = \Config\Database::connect();
+        parent::__construct();
     }
-    protected $table = 'heartbeat';
 
     public function getNews()
 	{
-        return $this->asArray()
-                     ->first();
-	}
+        return $this->asArray()->first();
+    }
+    
+    public function getNews2()
+    {
+        $builder = $this->db->table('heartbeat');
+        $query   = $builder->get(10);
+        return $query;
+    }
 }

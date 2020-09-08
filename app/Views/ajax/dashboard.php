@@ -541,7 +541,7 @@
 				success: function (data) {
 					// console.log(data);
 					for(var i = 0; i < data['loc'].length; i++){
-						// console.log(data['loc'][i]);
+						console.log(data['loc'][i]);
 						// if (data['heart'][i]['device'] == '1003'){
 							s3.push([i, data['loc'][i]['val_x']]);
 						// }
@@ -610,10 +610,10 @@
 		update();
 		function update() {
 	        if (true) {
-				// console.log('draw');
+				console.log('draw');
 	            // plot.setData([getRandomData()]);
 				// plot.draw();
-				drawPlot();
+				drawPlot()
 	            setTimeout(update, updateInterval);
 	
 	        } else {

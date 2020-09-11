@@ -35,7 +35,7 @@ class Database extends \CodeIgniter\Database\Config
 		'username' => 'postgres',
 		'password' => 'mtrec2020',
 		'database' => 'mtr_cms',
-		'DBDriver' => 'postgre',
+		'DBDriver' => 'Postgre',
 		'DBPrefix' => '',
 		'pConnect' => TRUE,
 		'DBDebug'  => TRUE,

@@ -9,15 +9,52 @@ class MainDashboardModel extends Model
         parent::__construct();
     }
 
-    public function get_loc_online_data($minutes)
+    public function get_raw_loc_data($minutes)
     {
         if($minutes <= 10)
         {
             // get lastest $minutes data
-            $builder = $this->db->table('loc_online_data');
+            $builder = $this->db->table('raw_loc_data');
             $builder->orderBy('id', 'DESC');
             $query = $builder->get(10);
             return $query;
         }
     }
+
+    public function get_raw_beacon_data($minutes)
+    {
+        if($minutes <= 10)
+        {
+            // get lastest $minutes data
+            $builder = $this->db->table('raw_beacon_data');
+            $builder->orderBy('id', 'DESC');
+            $query = $builder->get(10);
+            return $query;
+        }
+    }
+
+    public function get_logs($minutes)
+    {
+        if($minutes <= 10)
+        {
+            // get lastest $minutes data
+            $builder = $this->db->table('daily_log');
+            $builder->orderBy('ts', 'DESC');
+            $query = $builder->get(10);
+            return $query;
+        }
+    }
+
+    public function get_todos($minutes)
+    {
+        if($minutes <= 10)
+        {
+            // get lastest $minutes data
+            $builder = $this->db->table('daily_log');
+            $builder->orderBy('ts', 'DESC');
+            $query = $builder->get(10);
+            return $query;
+        }
+    }
+
 }

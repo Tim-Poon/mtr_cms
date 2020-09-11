@@ -319,7 +319,7 @@
 			
 			<!-- MAIN CONTENT -->
 			<div id="content">
-				<!-- <?php echo $page_content; ?> -->
+				<!-- <?php //echo $page_content; ?> -->
 			</div>
 			<!-- END MAIN CONTENT -->				
 					

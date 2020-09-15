@@ -1,14 +1,14 @@
 <?php namespace App\Controllers;
 
-use App\Models\MainDashboardModel;
+use App\Models\DashboardModel;
 use CodeIgniter\Controller;
 
-class MainDashboard extends Controller
+class Dashboard extends Controller
 {
 	public function __construct()
     {
 		// parent::__construct();
-		$this->$model = new MainDashboardModel();
+		$this->$model = new DashboardModel();
 		$this->valid_log_level = array('info', 'warning', 'error');
 		$this->valid_src_type = array('sensor', 'server', 'report');
 	}
@@ -30,21 +30,19 @@ class MainDashboard extends Controller
 
 	public function index()
 	{
-		$page_content = 'dashboard.html';
 		$data = [
-			'page_content'   => 'dashboard.html',
+			'page_content'   => 'dashboard/page',
 			'heading' => 'My Heading',
 			'message' => 'My Message'
 		];
-		
-		
-		print_r($this->real_time_sensor_status());
-		#foreach ($res->getResult() as $row)
-		#{
-		#	echo $row->id.'</br>';
-		#}
-		#echo view('index', $data);
+		echo view('index', $data);
 	}
+
+	public function page()
+	{
+		echo view('ajax/dashboard');
+	}
+
 
 	//--------------------------------------------------------------------
 	public function real_time_sensor_status()

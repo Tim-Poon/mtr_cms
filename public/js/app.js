@@ -1289,34 +1289,33 @@ function loadScript(scriptName, callback) {
  */
 
 // fire this on page load if nav exists
-if ($('nav')
-    .length) {
+if ($('nav').length) {
     checkURL();
 };
 
-$('nav a[href!="#"]')
-    .click(function (e) {
-        e.preventDefault();
-        $this = $(this);
+// $('nav a[href!="#"]')
+//     .click(function (e) {
+//         e.preventDefault();
+//         $this = $(this);
 
-        // if parent is not active then get hash, or else page is assumed to be loaded
-        if (!$this.parent()
-            .hasClass("active") && !$this.attr('target')) {
+//         // if parent is not active then get hash, or else page is assumed to be loaded
+//         if (!$this.parent()
+//             .hasClass("active") && !$this.attr('target')) {
 
-            // update window with hash
+//             // update window with hash
 
-            if ($.root_.hasClass('mobile-view-activated')) {
-                $.root_.removeClass('hidden-menu');
-                window.setTimeout(function () {
-                    window.location.hash = $this.attr('href')
-                }, 250);
-                // it may not need this delay...
-            } else {
-                window.location.hash = $this.attr('href');
-            }
-        }
+//             if ($.root_.hasClass('mobile-view-activated')) {
+//                 $.root_.removeClass('hidden-menu');
+//                 window.setTimeout(function () {
+//                     window.location.hash = $this.attr('href')
+//                 }, 250);
+//                 // it may not need this delay...
+//             } else {
+//                 window.location.hash = $this.attr('href');
+//             }
+//         }
 
-    });
+//     });
 
 // fire links with targets on different window
 $('nav a[target="_blank"]')
@@ -1343,21 +1342,20 @@ $('nav a[href="#"]')
     });
 
 // DO on hash change
-$(window)
-    .on('hashchange', function () {
-        checkURL();
-    });
+// $(window)
+//     .on('hashchange', function () {
+//         checkURL();
+//     });
 
 // CHECK TO SEE IF URL EXISTS
 function checkURL() {
 
     // get the url by removing the hash
-    url = location.hash.replace(/^#/, '');
+    // url = location.hash.replace(/^#/, '');
     // console.log(url);
-    // url = window.location.href;
-    // temp = url.split('/');
-    // #TODO MTR
-    // url = temp[5];
+    url = window.location.href;
+    temp = url.split('/');
+    url = temp[5];
     container = $('#content');
     
     // Do this if url exists (for page refresh, etc...)
@@ -1375,23 +1373,22 @@ function checkURL() {
         //console.log("page title: " + document.title);
 
         // parse url to jquery
-        loadURL(url, container);
+        loadURL(url + '/page', container);
     } else {
         $('nav li.active')
             .removeClass("active");
         // match the url and add the active class
-        $('nav li:has(a[href="ajax/dashboard.html"])')
+        $('nav li:has(a[href="dashboard"])')
             .addClass("active");
-        title = ($('nav a[href="ajax/dashboard.html"]')
+        title = ($('nav a[href="dashboard"]')
             .attr('title'));
-        // // grab the first URL from nav
+        // grab the first URL from nav
         // document.title = (title || document.title);
         // $this = $('nav > ul > li:first-child > a[href!="#"]');
-        // console.log($this)
         // //update hash
         // window.location.hash = $this.attr('href');
         document.title = (title || document.title);
-        loadURL("dashboard", container);
+        loadURL("dashboard/page", container);
     }
 
 }
@@ -1399,7 +1396,7 @@ function checkURL() {
 // LOAD AJAX PAGES
 
 function loadURL(url, container) {
-    // console.log(container)
+    console.log(url)
 
     $.ajax({
         type: "GET",

@@ -2,7 +2,7 @@
 
 use CodeIgniter\Model;
 
-class MainDashboardModel extends Model
+class DashboardModel extends Model
 {	
     function __construct()
     {

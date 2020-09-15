@@ -178,9 +178,13 @@
 					-->
 				
 				<ul>
-					<li class=""><a href="ajax/dashboard.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i>  <span class="menu-item-parent">Dashboard</span></a></li>
-					<li><a href="ajax/inbox.html"><i class="fa fa-lg fa-fw fa-inbox"></i>  <span class="menu-item-parent">Inbox</span><span class="badge pull-right inbox-badge">14</span></a></li>
-					<li><a href="#"><i class="fa fa-lg fa-fw fa-bar-chart-o"></i>  <span class="menu-item-parent">Graphs</span></a>
+					<li class=""><a href="dashboard" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i>  <span class="menu-item-parent">Dashboard</span></a></li>
+					<li><a href="reporting">
+						<i class="fa fa-lg fa-fw fa-bar-chart-o"></i>  
+						<span class="menu-item-parent">Reporting</span>
+						<span class="badge pull-right inbox-badge">14</span></a>
+					</li>
+					<!-- <li><a href="#"><i class="fa fa-lg fa-fw fa-bar-chart-o"></i>  <span class="menu-item-parent">Graphs</span></a>
 						<ul>
 							<li><a href="ajax/flot.html">Flot Chart</a></li>
 							<li><a href="ajax/morris.html">Morris Charts</a></li>
@@ -276,7 +280,7 @@
 							 <li><a href="ajax/search.html">Search Page</a></li>
 							 <li><a href="ajax/ckeditor.html">CK Editor</a></li>
 						</ul>
-					</li>						
+					</li>						 -->
 				</ul>
 			</nav>
 			<span class="minifyme">
@@ -319,7 +323,6 @@
 			
 			<!-- MAIN CONTENT -->
 			<div id="content">
-				<!-- <?php //echo $page_content; ?> -->
 			</div>
 			<!-- END MAIN CONTENT -->				
 					

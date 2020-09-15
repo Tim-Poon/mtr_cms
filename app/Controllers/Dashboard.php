@@ -2,15 +2,21 @@
 
 use App\Models\DashboardModel;
 use CodeIgniter\Controller;
+use CodeIgniter\I18n\Time;
 
 class Dashboard extends Controller
 {
 	public function __construct()
     {
 		// parent::__construct();
-		$this->$model = new DashboardModel();
-		$this->valid_log_level = array('info', 'warning', 'error');
-		$this->valid_src_type = array('sensor', 'server', 'report');
+		$this->$valid_log_level = array('info', 'warning', 'error', 'debug');
+		$this->log_level_mapping = array("info" => "danger",
+										 "debug" => "default",
+										 "warning" => "warning",
+										 "error" => "danger");
+
+		$this->$valid_src_type = array('sensor', 'server', 'report');
+		$this->$request = \Config\Services::request();
 	}
 
 	private function check_valid_log_level($log_level){
@@ -40,31 +46,69 @@ class Dashboard extends Controller
 
 	public function page()
 	{
+		$data = [
+			// 'real_time_sensor_status'   => $this->real_time_sensor_status(),
+			// 'logs' => $this->logs(),
+			'message' => 'My Message'
+		];
+		// echo view('ajax/dashboard', $data);
 		echo view('ajax/dashboard');
 	}
 
 
 	//--------------------------------------------------------------------
+
 	public function real_time_sensor_status()
 	{
 		$sensors = $this->get_sensor_status_dev();
 
-		#print_r($sensors);
 		$cur_ts = time();
 		$res = array();
 		foreach($sensors as $sensor){
 			$sensor_status = array();
 			# todo: get val for var 
-			$sensor_status['site_id'] = $senor->sensor_site;
+			$sensor_status['site_id'] = $sensor->sensor_site;
 			$sensor_status['sensor_id'] = $sensor->sensor_id;
-			$sensor_status['last_seen_time'] = $sensor->l_conn;
-			$sensor_status['lasting_time'] = $senor->l_conn - $senor->s_conn;  # if lasting_time is Null, 
-			$sensor_status['recent_raw_flag'] = $cur_ts - $sensor->ts_beacon;
-			$sensor_status['recent_loc_flag'] = $cur_ts - $seensor->ts_loc;
+			// $sensor_status['last_seen_time'] = $sensor->l_conn;
+			$sensor_status['last_seen_time'] = Time::createFromTimestamp($sensor->l_conn / 1000, 'Asia/Shanghai', 'en_US');
+			$sensor_status['lasting_time'] = intval(($sensor->l_conn - $sensor->s_conn) / (1000 * 60));  # if lasting_time is Null, 
+			$sensor_status['recent_raw_flag'] = 'default';
+			$sensor_status['recent_raw_flag'] = 'default';
+			if($cur_ts - $sensor->ts_beacon / 1000 < 60)
+			{
+				$sensor_status['recent_raw_flag'] = 'success';
+			}
+			if($cur_ts - $sensor->ts_loc / 1000 < 60)
+			{
+				$sensor_status['recent_loc_flag'] = 'success';
+			}
 			$sensor_status['vm'] = $sensor->vm;
 			array_push($res, $sensor_status);
 
 		}
+		foreach ($res as $sensor)
+		{
+			$site_id = $sensor['site_id'];
+			$sensor_id = $sensor['sensor_id'];
+			$sensor_val = $sensor['val'];
+			$sensor_last_seen_time = $sensor['last_seen_time'];
+			$sensor_lasting_time = $sensor['lasting_time'];
+			$sensor_recent_raw_flag = $sensor['recent_raw_flag'];
+			$sensor_recent_loc_flag = $sensor['recent_loc_flag'];
+			$sensor_vm = $sensor['vm'];
+
+			echo "<tr>
+					<td class=\"text-align-center\">$site_id-$sensor_id</td>
+					<td class=\"text-align-center\">$sensor_val</td>
+					<td class=\"text-align-center\">$sensor_last_seen_time</td>
+					<td class=\"text-align-center\">$sensor_lasting_time</td>
+					<td class=\"text-align-center\"><span class=\"label label-$sensor_recent_raw_flag\">$sensor_recent_raw_flag</span></td>
+					<td class=\"text-align-center\"><span class=\"label label-$sensor_recent_loc_flag\">$sensor_recent_loc_flag</span></td>
+					<td class=\"text-align-center\">$sensor_vm</td>
+				 </tr>";
+
+		}
+		// print_r($res);
 		return $res;
 	}
 
@@ -76,22 +120,40 @@ class Dashboard extends Controller
         return json_decode($a);
 	}
 
-	public function logs($src_type='all', $log_level='all')
+	public function logs()
 	{
-		# note: sort by date in descend order
-		$src_type = strtolower($src_type);
-		$log_level = strtolower($log_level);
 		$res = array();
-		if (check_valid_log_src_type($src_type) and check_valid_log_level($log_level)){
-			foreach($model->get_logs($src_type, $log_level)->getResult() as $row){
-				$res['src_type'] = $row->src_type;
-				$res['level'] = $row->level;
-				$res['date'] = $this->ts2date($row->ts);
-				$res['content'] = $row->content;
-			}
-		} else {
-			echo "error";			
+		$m = new DashboardModel();
+		$logs = $m->get_logs(30);
+
+
+		foreach($logs->getResult() as $log){
+			$log_status['ts'] = Time::createFromTimestamp($log->ts / 1000, 'Asia/Shanghai', 'en_US');
+			$log_status['src_type'] = $log->src_type;
+			$log_status['content'] = $log->content;
+			$log_status['level'] = $log->level;
+			array_push($res, $log_status);
 		}
+
+		foreach ($res as $log)
+		{
+			$ts = $log['ts'];
+			$src_type = $log['src_type'];
+			$content = $log['content'];
+			$level = $this->log_level_mapping[$log['level']];
+			
+			// print_r($this->log_level_mapping);
+			// echo $this->log_level_mapping[$level].'</br>';
+			echo "<tr class= \"$level\">
+				  <td> $ts </td>
+				  <td> $src_type </td>
+				  <td> $content </td>
+			  	  </tr>";
+				// <tr class="danger">
+				// <tr class="warning">
+				// <tr class="info">
+		}
+
 		return $res;
 	}
 
@@ -115,6 +177,7 @@ class Dashboard extends Controller
 
 	public function unhandled_reports()
 	{
+		// print_r($this->$request->getGet());
 		# note: the returned value will show which date is left to be done.
 		# code...
 	}

@@ -1396,7 +1396,7 @@ function checkURL() {
 // LOAD AJAX PAGES
 
 function loadURL(url, container) {
-    console.log(url)
+    // console.log(url)
 
     $.ajax({
         type: "GET",

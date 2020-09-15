@@ -5,19 +5,19 @@
 	<div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
 		<ul id="sparks" class="">
 			<li class="sparks-info">
-				<h5> CPU <span class="txt-color-blue">$47,171</span></h5>
+				<h5> My Income <span class="txt-color-blue">$47,171</span></h5>
 				<div class="sparkline txt-color-blue hidden-mobile hidden-md hidden-sm">
 					1300, 1877, 2500, 2577, 2000, 2100, 3000, 2700, 3631, 2471, 2700, 3631, 2471
 				</div>
 			</li>
 			<li class="sparks-info">
-				<h5> RAM <span class="txt-color-purple"><i class="fa fa-arrow-circle-up"></i>&nbsp;45%</span></h5>
+				<h5> Site Traffic <span class="txt-color-purple"><i class="fa fa-arrow-circle-up"></i>&nbsp;45%</span></h5>
 				<div class="sparkline txt-color-purple hidden-mobile hidden-md hidden-sm">
 					110,150,300,130,400,240,220,310,220,300, 270, 210
 				</div>
 			</li>
 			<li class="sparks-info">
-				<h5> ??? <span class="txt-color-greenDark"><i class="fa fa-shopping-cart"></i>&nbsp;2447</span></h5>
+				<h5> Site Orders <span class="txt-color-greenDark"><i class="fa fa-shopping-cart"></i>&nbsp;2447</span></h5>
 				<div class="sparkline txt-color-greenDark hidden-mobile hidden-md hidden-sm">
 					110,150,300,130,400,240,220,310,220,300, 270, 210
 				</div>
@@ -27,12 +27,178 @@
 </div>
 <!-- widget grid -->
 <section id="widget-grid" class="">
-	
+
+
 	<!-- row -->
+
 	<div class="row">
-		<article class="col-sm-12">
+
+		<article class="col-sm-12 col-md-12 col-lg-6">
+
+		<!-- new widget -->
+			<div class="jarviswidget" id="wid-id-2" data-widget-colorbutton="false" data-widget-editbutton="false">
+
+				<!-- widget options:
+				usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+				data-widget-colorbutton="false"
+				data-widget-editbutton="false"
+				data-widget-togglebutton="false"
+				data-widget-deletebutton="false"
+				data-widget-fullscreenbutton="false"
+				data-widget-custombutton="false"
+				data-widget-collapsed="true"
+				data-widget-sortable="false"
+
+				-->
+
+				<header>
+					<span class="widget-icon"> <i class="fa fa-map-marker"></i> </span>
+					<h2>Status</h2>
+				</header>
+
+				<!-- widget div-->
+				<div>
+					<!-- widget edit box -->
+					<div class="jarviswidget-editbox">
+						<div>
+							<label>Title:</label>
+							<input type="text" />
+						</div>
+					</div>
+					<!-- end widget edit box -->
+
+					<div class="widget-body no-padding">
+						<!-- content goes here -->
+
+						<table class="table table-striped table-hover table-condensed">
+							<thead>
+								<tr>
+									<th>id</th>
+									<th class="text-align-center">val</th>
+									<th class="text-align-center">last_seen</th>
+									<th class="text-align-center">lasting_time</th>
+									<th class="text-align-center">recent_raw_flag</th>
+									<th class="text-align-center">recent_loc_flag</th>
+									<th class="text-align-center">vm</th>
+								</tr>
+							</thead>
+							<tbody id='statusbody'>
+							</tbody>
+							<tfoot>
+								<tr>
+									<td colspan=5>
+									<ul class="pagination pagination-xs no-margin">
+										<li class="prev disabled">
+											<a href="javascript:void(0);">Previous</a>
+										</li>
+										<li class="active">
+											<a href="javascript:void(0);">1</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);">2</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);">3</a>
+										</li>
+										<li class="next">
+											<a href="javascript:void(0);">Next</a>
+										</li>
+									</ul></td>
+								</tr>
+							</tfoot>
+						</table>
+
+						<!-- end content -->
+
+					</div>
+
+				</div>
+				<!-- end widget div -->
+			</div>
+			<!-- end widget -->
+
 			<!-- new widget -->
-			<div class="jarviswidget" id="wid-id-0" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+			<div class="jarviswidget" id="wid-id-2" data-widget-colorbutton="false" data-widget-editbutton="false">
+
+				<!-- widget options:
+				usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+				data-widget-colorbutton="false"
+				data-widget-editbutton="false"
+				data-widget-togglebutton="false"
+				data-widget-deletebutton="false"
+				data-widget-fullscreenbutton="false"
+				data-widget-custombutton="false"
+				data-widget-collapsed="true"
+				data-widget-sortable="false"
+
+				-->
+
+				<header>
+					<span class="widget-icon"> <i class="fa fa-map-marker"></i> </span>
+					<h2>Logger</h2>
+				</header>
+
+				<!-- widget div-->
+				<div>
+					<!-- widget edit box -->
+					<div class="jarviswidget-editbox">
+						<div>
+							<label>Title:</label>
+							<input type="text" />
+						</div>
+					</div>
+					<!-- end widget edit box -->
+
+					<div class="widget-body no-padding">
+						<!-- content goes here -->
+						<table id="datatable_fixed_column" class="table table-bordered smart-form">
+							<thead>
+								<tr>
+									<th> <i class="fa fa-building"></i> date</th>
+									<th> <i class="fa fa-calendar"></i> s-type</th>
+									<th> <i class="glyphicon glyphicon-send"></i> content</th>
+								</tr>
+								<tr class="second">
+									<td>
+										<label class="input">
+											<input type="text" name="search_date" value="Filter time" class="search_init">
+										</label>
+									</td>
+									<td>
+										<label class="input">
+											<input type="text" name="search_src_type" value="Filter source type" class="search_init">
+										</label>	
+									</td>
+									<td>
+										<label class="input">
+											<input type="text" name="search_content" value="Filter content" class="search_init">
+										</label>	
+									</td>
+								</tr>
+							</thead>
+							<tbody id='logsbody'></tbody>
+						</table>
+
+						<!-- end content -->
+
+					</div>
+
+				</div>
+				<!-- end widget div -->
+			</div>
+			<!-- end widget -->
+
+			
+
+		</article>
+
+		<article class="col-sm-12 col-md-12 col-lg-6">
+
+			<!-- new widget -->
+			<div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-3" data-widget-colorbutton="false">
+
 				<!-- widget options:
 				usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
 
@@ -47,188 +213,52 @@
 
 				-->
 				<header>
-					<span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
-					<h2>Monitor</h2>
-
-					<ul class="nav nav-tabs pull-right in" id="myTab">
-						<li class="active">
-							<a data-toggle="tab" href="#s4"> <span class="hidden-mobile hidden-tablet">KLB</span></a>
-						</li>
-
-						<li>
-							<a data-toggle="tab" href="#s2"> <span class="hidden-mobile hidden-tablet">YMT</span></a>
-						</li>
-
-						<li>
-							<a data-toggle="tab" href="#s3"> <span class="hidden-mobile hidden-tablet">CTL</span></a>
-						</li>
-
-						<li>
-							<a data-toggle="tab" href="#s1"> <span class="hidden-mobile hidden-tablet">test</span></a>
-						</li>
-					</ul>
-
+					<span class="widget-icon"> <i class="fa fa-calendar"></i> </span>
+					<h2> Reporting </h2>
+					<div class="widget-toolbar">
+						<!-- add: non-hidden - to disable auto hide -->
+						<div class="btn-group">
+							<button class="btn dropdown-toggle btn-xs btn-default" data-toggle="dropdown">
+								Showing <i class="fa fa-caret-down"></i>
+							</button>
+							<ul class="dropdown-menu js-status-update pull-right">
+								<li>
+									<a href="javascript:void(0);" id="mt">Month</a>
+								</li>
+								<li>
+									<a href="javascript:void(0);" id="ag">Agenda</a>
+								</li>
+								<li>
+									<a href="javascript:void(0);" id="td">Today</a>
+								</li>
+							</ul>
+						</div>
+					</div>
 				</header>
-				
 
 				<!-- widget div-->
-				<div class="no-padding">
+				<div>
 					<!-- widget edit box -->
 					<div class="jarviswidget-editbox">
 
-						test123123123
+						<input class="form-control" type="text">
+
 					</div>
 					<!-- end widget edit box -->
 
-					<div class="widget-body">
-						<!-- content -->
-						<div id="myTabContent" class="tab-content">
-							
-							<div class="tab-pane fade active in padding-10 no-padding-bottom" id="s1">
-								<div class="row no-space">
-									<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
-										<!-- <span class="demo-liveupdate-1"> <span class="onoffswitch-title">Monitor</span> <span class="onoffswitch">
-												<input type="checkbox" name="start_interval" class="onoffswitch-checkbox" id="start_interval">
-												<label class="onoffswitch-label" for="start_interval"> <div class="onoffswitch-inner" data-swchon-text="ON" data-swchoff-text="OFF"></div> <div class="onoffswitch-switch"></div> </label> </span> </span> -->
-										<!-- <div id="updating-chart" class="chart-large txt-color-blue"></div> -->
-										<!-- <div class="widget-body no-padding"> -->
-						
-											<div id="sin-chart" class="chart-large txt-color-blue"></div>
-											
-										<!-- </div> -->
+					<div class="widget-body no-padding">
+						<!-- content goes here -->
+						<div class="widget-body-toolbar">
 
-									</div>
-									<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 show-stats">
+							<div id="calendar-buttons">
 
-										<div class="row">
-											<span class="col-xs-6 col-sm-6 col-md-12 col-lg-12"> <span class="text"> My Tasks <span class="pull-right">130/200</span> </span>
-												<div class="progress">
-													<div class="progress-bar bg-color-blueDark" style="width: 65%;"></div>
-												</div> </span>
-											<span class="col-xs-6 col-sm-6 col-md-12 col-lg-12"> <span class="text"> Transfered <span class="pull-right">440 GB</span> </span>
-												<div class="progress">
-													<div class="progress-bar bg-color-blue" style="width: 34%;"></div>
-												</div> </span>
-											<span class="col-xs-6 col-sm-6 col-md-12 col-lg-12"> <span class="text"> Bugs Squashed<span class="pull-right">77%</span> </span>
-												<div class="progress">
-													<div class="progress-bar bg-color-blue" style="width: 77%;"></div>
-												</div> </span>
-											<span class="col-xs-6 col-sm-6 col-md-12 col-lg-12"> <span class="text"> User Testing <span class="pull-right">7 Days</span> </span>
-												<div class="progress">
-													<div class="progress-bar bg-color-greenLight" style="width: 84%;"></div>
-												</div> </span>
-
-											<span class="show-stat-buttons"> <span class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> <a href="javascript:void(0);" class="btn btn-default btn-block hidden-xs">Generate PDF</a> </span> <span class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> <a href="javascript:void(0);" class="btn btn-default btn-block hidden-xs">Report a bug</a> </span> </span>
-
-										</div>
-
-									</div>
-								</div>
-
-								<div class="show-stat-microcharts">
-									<?php for ($i=1; $i < 7; $i++) { ?>
-									
-									<div class="col-xs-12 col-sm-3 col-md-3 col-lg-2">
-
-										<!-- <div class="easy-pie-chart txt-color-orangeDark" data-percent="100" data-pie-size="50">
-											<span class="percent percent-sign">35</span>
-										</div> -->
-										<div class="col-lg-4">
-											<p>
-												00:00 H
-											</p>
-											<div class="progress progress-sm progress-striped active">
-												<div class="progress-bar bg-color-greenLight"  role="progressbar" style="width: 100%"></div>
-											</div>
-										</div>
-										<div class="col-lg-3">
-											<span class="label bg-color-blueDark"> S-100<?php echo $i; ?> </span>
-										</div>
-										<div class="col-lg-5">
-											<div class="sparkline txt-color-greenLight hidden-sm hidden-md pull-right" data-sparkline-type="line" data-sparkline-height="33px" data-sparkline-width="80px" data-fill-color="transparent">
-												0.2, 0.1, 0.3, 0.3, 0.2, 0.2, 0.3, 0.2, 0.3, 0.2, 0.2, 0.3, 0.2
-											</div>	
-										</div>
-									</div>
-
-									<?php } ?>
-								</div>
-
-							</div>
-							<!-- end s1 tab pane -->
-
-							<div class="tab-pane fade" id="s2">
-								<div class="widget-body-toolbar bg-color-white">
-
-									<form class="form-inline" role="form">
-
-										<div class="form-group">
-											<label class="sr-only" for="s123">Show From</label>
-											<input type="email" class="form-control input-sm" id="s123" placeholder="Show From">
-										</div>
-										<div class="form-group">
-											<input type="email" class="form-control input-sm" id="s124" placeholder="To">
-										</div>
-
-										<div class="btn-group hidden-phone pull-right">
-											<a class="btn dropdown-toggle btn-xs btn-default" data-toggle="dropdown"><i class="fa fa-cog"></i> More <span class="caret"> </span> </a>
-											<ul class="dropdown-menu pull-right">
-												<li>
-													<a href="javascript:void(0);"><i class="fa fa-file-text-alt"></i> Export to PDF</a>
-												</li>
-												<li>
-													<a href="javascript:void(0);"><i class="fa fa-question-sign"></i> Help</a>
-												</li>
-											</ul>
-										</div>
-
-									</form>
-
-								</div>
-								<div class="padding-10">
-									<div id="statsChart" class="chart-large has-legend-unique"></div>
-								</div>
-
-							</div>
-							<!-- end s2 tab pane -->
-
-							<div class="tab-pane fade" id="s3">
-
-								<div class="widget-body-toolbar bg-color-white smart-form" id="rev-toggles">
-
-									<div class="inline-group">
-
-										<label for="gra-0" class="checkbox">
-											<input type="checkbox" name="gra-0" id="gra-0" checked="checked">
-											<i></i> Target </label>
-										<label for="gra-1" class="checkbox">
-											<input type="checkbox" name="gra-1" id="gra-1" checked="checked">
-											<i></i> Actual </label>
-										<label for="gra-2" class="checkbox">
-											<input type="checkbox" name="gra-2" id="gra-2" checked="checked">
-											<i></i> Signups </label>
-									</div>
-
-									<div class="btn-group hidden-phone pull-right">
-										<a class="btn dropdown-toggle btn-xs btn-default" data-toggle="dropdown"><i class="fa fa-cog"></i> More <span class="caret"> </span> </a>
-										<ul class="dropdown-menu pull-right">
-											<li>
-												<a href="javascript:void(0);"><i class="fa fa-file-text-alt"></i> Export to PDF</a>
-											</li>
-											<li>
-												<a href="javascript:void(0);"><i class="fa fa-question-sign"></i> Help</a>
-											</li>
-										</ul>
-									</div>
-
-								</div>
-
-								<div class="padding-10">
-									<div id="flotcontainer" class="chart-large has-legend-unique"></div>
+								<div class="btn-group">
+									<a href="javascript:void(0)" class="btn btn-default btn-xs" id="btn-prev"><i class="fa fa-chevron-left"></i></a>
+									<a href="javascript:void(0)" class="btn btn-default btn-xs" id="btn-next"><i class="fa fa-chevron-right"></i></a>
 								</div>
 							</div>
-							<!-- end s3 tab pane -->
 						</div>
+						<div id="calendar"></div>
 
 						<!-- end content -->
 					</div>
@@ -237,20 +267,6 @@
 				<!-- end widget div -->
 			</div>
 			<!-- end widget -->
-
-		</article>
-	</div>
-
-	<!-- end row -->
-
-	<!-- row -->
-
-	<div class="row">
-
-
-		<article class="col-sm-12 col-md-12 col-lg-6">
-
-			
 
 			<!-- new widget -->
 			<div class="jarviswidget jarviswidget-color-blue" id="wid-id-4" data-widget-editbutton="false" data-widget-colorbutton="false">
@@ -440,212 +456,101 @@
 	}
 	
 	function generatePageGraphs() {
-		/* chart colors default */
-		var $chrt_border_color = "#efefef";
-		var $chrt_grid_color = "#DDD"
-		var $chrt_main = "#E24913";			/* red       */
-		var $chrt_second = "#6595b4";		/* blue      */
-		var $chrt_third = "#FF9F01";		/* orange    */
-		var $chrt_fourth = "#7e9d3a";		/* green     */
-		var $chrt_fifth = "#BD362F";		/* dark red  */
-		var $chrt_mono = "#000";
 	
 	    /* TAB 1: UPDATING CHART */
 	    // For the demo we use generated data, but normally it would be coming from the server
 	
-	    // var data = [],
-	    //     totalPoints = 10,
-	    //     $UpdatingChartColors = $("#updating-chart").css('color');
+	    var data = [],
+	        totalPoints = 200,
+	        $UpdatingChartColors = $("#updating-chart").css('color');
 	
-	    // function getRandomData() {
-	    //     if (data.length > 0)
-	    //         data = data.slice(1);
+	    function getRandomData() {
+	        if (data.length > 0)
+	            data = data.slice(1);
 	
-	    //     // do a random walk
-	    //     while (data.length < totalPoints) {
-	    //         var prev = data.length > 0 ? data[data.length - 1] : 50;
-	    //         var y = prev + Math.random() * 10 - 5;
-	    //         if (y < 0)
-	    //             y = 0;
-	    //         if (y > 100)
-	    //             y = 100;
-	    //         data.push(y);
-	    //     }
+	        // do a random walk
+	        while (data.length < totalPoints) {
+	            var prev = data.length > 0 ? data[data.length - 1] : 50;
+	            var y = prev + Math.random() * 10 - 5;
+	            if (y < 0)
+	                y = 0;
+	            if (y > 100)
+	                y = 100;
+	            data.push(y);
+	        }
 	
-	    //     // zip the generated y values with the x values
-	    //     var res = [];
-	    //     for (var i = 0; i < data.length; ++i)
-		// 		res.push([i, data[i]])
-		// 	console.log(res)
-	    //     return res;
-	    // }
+	        // zip the generated y values with the x values
+	        var res = [];
+	        for (var i = 0; i < data.length; ++i)
+	            res.push([i, data[i]])
+	        return res;
+	    }
 	
-	    // // setup control widget
-	    // var updateInterval = 1500;
-	    // $("#updating-chart").val(updateInterval).change(function () {
+	    // setup control widget
+	    var updateInterval = 1500;
+	    $("#updating-chart").val(updateInterval).change(function () {
 	
-	    //     var v = $(this).val();
-	    //     if (v && !isNaN(+v)) {
-	    //         updateInterval = +v;
-	    //         $(this).val("" + updateInterval);
-	    //     }
+	        var v = $(this).val();
+	        if (v && !isNaN(+v)) {
+	            updateInterval = +v;
+	            $(this).val("" + updateInterval);
+	        }
 	
-	    // });
+	    });
 	
-	    // // setup plot
-	    // var options = {
-	    //     yaxis: {
-	    //         min: 0,
-	    //         max: 100
-	    //     },
-	    //     xaxis: {
-	    //         min: 0,
-	    //         max: 100
-	    //     },
-	    //     colors: [$UpdatingChartColors],
-	    //     series: {
-	    //         lines: {
-	    //             lineWidth: 2,
-	    //             fill: true,
-	    //             fillColor: {
-	    //                 colors: [{
-	    //                     opacity: 0.4
-	    //                 }, {
-	    //                     opacity: 0
-	    //                 }]
-	    //             },
-	    //             steps: false
+	    // setup plot
+	    var options = {
+	        yaxis: {
+	            min: 0,
+	            max: 100
+	        },
+	        xaxis: {
+	            min: 0,
+	            max: 100
+	        },
+	        colors: [$UpdatingChartColors],
+	        series: {
+	            lines: {
+	                lineWidth: 1,
+	                fill: true,
+	                fillColor: {
+	                    colors: [{
+	                        opacity: 0.4
+	                    }, {
+	                        opacity: 0
+	                    }]
+	                },
+	                steps: false
 	
-	    //         }
-	    //     }
-	    // };
-	
-		// var plot = $.plot($("#updating-chart"), [getRandomData()], options);
-		
-		/* Sin chart */
-		
-		// if ($("#sin-chart").length) {
-			// setInterval("test()",2000);
-		function drawPlot()
-		{
-			var s3 = [], s4 = [];
-			// add data
-			$.ajax({
-				type: "GET",
-				url: 'Api/get_sensor_status',
-				dataType: 'json',
-				cache: true, // (warning: this will cause a timestamp and will call the request twice)
-				beforeSend: function () {
-					// container.html('<h1><i class="fa fa-cog fa-spin"></i> Loading...</h1>');
-				},
-				success: function (data) {
-					// console.log(data);
-					for(var i = 0; i < data['loc'].length; i++){
-						console.log(data['loc'][i]);
-						// if (data['heart'][i]['device'] == '1003'){
-							s3.push([i, data['loc'][i]['val_x']]);
-						// }
-					}
-				},
-				error: function (xhr, ajaxOptions, thrownError) {
-					container.html(
-						'<h4 style="margin-top:10px; display:block; text-align:left"><i class="fa fa-warning txt-color-orangeDark"></i> Error 404! Page not found.</h4>'
-					);
-					drawBreadCrumb();
-				},
-				async: false
-			});
-			// old function
-			// for (var i = 0; i < 16; i += 0.5) {
-			// 	sin.push([i, Math.sin(i)]);
-			// 	cos.push([i, Math.cos(i)]);
-			// }
-	
-			var plot = $.plot($("#sin-chart"), [{
-				data : s3,
-				// label : "sin(x)"
-			}, {
-				data : s4,
-				// label : "cos(x)"
-			}], {
-				series : {
-					lines : {
-						show : true
-					},
-					points : {
-						show : true
-					}
-				},
-				grid : {
-					hoverable : true,
-					clickable : true,
-					tickColor : $chrt_border_color,
-					borderWidth : 0,
-					borderColor : $chrt_border_color,
-				},
-				tooltip : true,
-				tooltipOpts : {
-					//content : "Value <b>$x</b> Value <span>$y</span>",
-					defaultTheme : false
-				},
-				colors : [$chrt_second, $chrt_fourth],
-				yaxis : {
-					min : 0,
-					max : 3
-				},
-				xaxis : {
-					min : 0,
-					max : 10
-				}
-			});
-	   
-			$("#sin-chart").bind("plotclick", function(event, pos, item) {
-				if (item) {
-					$("#clickdata").text("You clicked point " + item.dataIndex + " in " + item.series.label + ".");
-					plot.highlight(item.series, item.datapoint);
-				}
-			});
+	            }
+	        }
 	    };
-		updateInterval = 1500;
-		update();
-		function update() {
-	        if (true) {
-				console.log('draw');
-	            // plot.setData([getRandomData()]);
-				// plot.draw();
-				drawPlot()
+	
+	    var plot = $.plot($("#updating-chart"), [getRandomData()], options);
+	
+	    /* live switch */
+	    $('input[type="checkbox"]#start_interval').click(function () {
+	        if ($(this).prop('checked')) {
+	            $on = true;
+	            updateInterval = 1500;
+	            update();
+	        } else {
+	            clearInterval(updateInterval);
+	            $on = false;
+	        }
+	    });
+	
+	    function update() {
+	        if ($on == true) {
+	            plot.setData([getRandomData()]);
+	            plot.draw();
 	            setTimeout(update, updateInterval);
 	
 	        } else {
 	            clearInterval(updateInterval)
 	        }
-		}
-		
-		/* end sin chart */
-			
-	    /* live switch */
-	    // $('input[type="checkbox"]#start_interval').click(function () {
-	    //     if ($(this).prop('checked')) {
-	    //         $on = true;
-	    //         updateInterval = 1500;
-	    //         update();
-	    //     } else {
-	    //         clearInterval(updateInterval);
-	    //         $on = false;
-	    //     }
-	    // });
 	
-	    // function update() {
-	    //     if ($on == true) {
-	    //         plot.setData([getRandomData()]);
-	    //         plot.draw();
-	    //         setTimeout(update, updateInterval);
-	
-	    //     } else {
-	    //         clearInterval(updateInterval)
-	    //     }
-	
-	    // }
+	    }
 	
 	    var $on = false;
 	
@@ -1092,5 +997,209 @@
 	    $('#calendar').fullCalendar('changeView', 'agendaDay');
 	});
 	
+	/*
+	 * CHAT
+	 */
+	
+	$.filter_input = $('#filter-chat-list');
+	$.chat_users_container = $('#chat-container > .chat-list-body')
+	$.chat_users = $('#chat-users')
+	$.chat_list_btn = $('#chat-container > .chat-list-open-close');
+	$.chat_body = $('#chat-body');
+	
+	/*
+	 * LIST FILTER (CHAT)
+	 */
+	
+	// custom css expression for a case-insensitive contains()
+	jQuery.expr[':'].Contains = function (a, i, m) {
+	    return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
+	};
+	
+	function listFilter(list) { // header is any element, list is an unordered list
+	    // create and add the filter form to the header
+	
+	    $.filter_input.change(function () {
+	        var filter = $(this).val();
+	        if (filter) {
+	            // this finds all links in a list that contain the input,
+	            // and hide the ones not containing the input while showing the ones that do
+	            $.chat_users.find("a:not(:Contains(" + filter + "))").parent().slideUp();
+	            $.chat_users.find("a:Contains(" + filter + ")").parent().slideDown();
+	        } else {
+	            $.chat_users.find("li").slideDown();
+	        }
+	        return false;
+	    }).keyup(function () {
+	        // fire the above change event after every letter
+	        $(this).change();
+	
+	    });
+	
+	}
 
+	loadScript("js/plugin/datatables/jquery.dataTables-cust.min.js", dt_2);
+
+	function dt_2() {
+		loadScript("js/plugin/datatables/ColReorder.min.js", dt_3);
+	}
+
+	function dt_3() {
+		loadScript("js/plugin/datatables/FixedColumns.min.js", dt_4);
+	}
+
+	function dt_4() {
+		loadScript("js/plugin/datatables/ColVis.min.js", dt_5);
+	}
+
+	function dt_5() {
+		loadScript("js/plugin/datatables/ZeroClipboard.js", dt_6);
+	}
+
+	function dt_6() {
+		loadScript("js/plugin/datatables/media/js/TableTools.min.js", dt_7);
+	}
+
+	function dt_7() {
+		loadScript("js/plugin/datatables/DT_bootstrap.js", runDataTables);
+	}
+
+	function runDataTables() {
+
+		/*
+		 * BASIC
+		 */
+		$('#dt_basic').dataTable({
+			"sPaginationType" : "bootstrap_full"
+		});
+
+		/* END BASIC */
+
+		/* Add the events etc before DataTables hides a column */
+		$("#datatable_fixed_column thead input").keyup(function() {
+			oTable.fnFilter(this.value, oTable.oApi._fnVisibleToColumnIndex(oTable.fnSettings(), $("thead input").index(this)));
+		});
+
+		$("#datatable_fixed_column thead input").each(function(i) {
+			this.initVal = this.value;
+		});
+		$("#datatable_fixed_column thead input").focus(function() {
+			if (this.className == "search_init") {
+				this.className = "";
+				this.value = "";
+			}
+		});
+		$("#datatable_fixed_column thead input").blur(function(i) {
+			if (this.value == "") {
+				this.className = "search_init";
+				this.value = this.initVal;
+			}
+		});		
+		
+
+		var oTable = $('#datatable_fixed_column').dataTable({
+			"sDom" : "<'dt-top-row'><'dt-wrapper't><'dt-row dt-bottom-row'<'row'<'col-sm-6'i><'col-sm-6 text-right'p>>",
+			//"sDom" : "t<'row dt-wrapper'<'col-sm-6'i><'dt-row dt-bottom-row'<'row'<'col-sm-6'i><'col-sm-6 text-right'>>",
+			"oLanguage" : {
+				"sSearch" : "Search all columns:"
+			},
+			"bSortCellsTop" : true
+		});		
+		
+
+
+		/*
+		 * COL ORDER
+		 */
+		$('#datatable_col_reorder').dataTable({
+			"sPaginationType" : "bootstrap",
+			"sDom" : "R<'dt-top-row'Clf>r<'dt-wrapper't><'dt-row dt-bottom-row'<'row'<'col-sm-6'i><'col-sm-6 text-right'p>>",
+			"fnInitComplete" : function(oSettings, json) {
+				$('.ColVis_Button').addClass('btn btn-default btn-sm').html('Columns <i class="icon-arrow-down"></i>');
+			}
+		});
+		
+		/* END COL ORDER */
+
+		/* TABLE TOOLS */
+		$('#datatable_tabletools').dataTable({
+			"sDom" : "<'dt-top-row'Tlf>r<'dt-wrapper't><'dt-row dt-bottom-row'<'row'<'col-sm-6'i><'col-sm-6 text-right'p>>",
+			"oTableTools" : {
+				"aButtons" : ["copy", "print", {
+					"sExtends" : "collection",
+					"sButtonText" : 'Save <span class="caret" />',
+					"aButtons" : ["csv", "xls", "pdf"]
+				}],
+				"sSwfPath" : "js/plugin/datatables/media/swf/copy_csv_xls_pdf.swf"
+			},
+			"fnInitComplete" : function(oSettings, json) {
+				$(this).closest('#dt_table_tools_wrapper').find('.DTTT.btn-group').addClass('table_tools_group').children('a.btn').each(function() {
+					$(this).addClass('btn-sm btn-default');
+				});
+			}
+		});
+		
+		/* END TABLE TOOLS */
+
+	}
+
+	loadData();
+	function loadData() {
+    // console.log(url)
+
+		$.ajax({
+			type: "GET",
+			url: "dashboard/real_time_sensor_status",
+			dataType: 'html',
+			cache: true, // (warning: this will cause a timestamp and will call the request twice)
+			beforeSend: function () {
+				// container.html('<h1><i class="fa fa-cog fa-spin"></i> Loading...</h1>');
+			},
+			success: function (data) {
+				console.log("loadData");
+				$('#statusbody')
+					.html(data)
+					.delay(100);
+				setTimeout(loadData, 1000);
+			},
+			error: function (xhr, ajaxOptions, thrownError) {
+				// container.html(
+				// 	'<h4 style="margin-top:10px; display:block; text-align:left"><i class="fa fa-warning txt-color-orangeDark"></i> Error 404! Page not found.</h4>'
+				// );
+			},
+			async: false
+		});
+
+    //console.log("ajax request sent");
+	}
+
+	loadLogs();
+	function loadLogs() {
+    // console.log(url)
+
+		$.ajax({
+			type: "GET",
+			url: "dashboard/logs",
+			dataType: 'html',
+			cache: true, // (warning: this will cause a timestamp and will call the request twice)
+			beforeSend: function () {
+				// container.html('<h1><i class="fa fa-cog fa-spin"></i> Loading...</h1>');
+			},
+			success: function (data) {
+				console.log("loadLogs");
+				$('#logsbody')
+					.html(data)
+					.delay(100);
+				setTimeout(loadLogs, 60 * 1000);
+			},
+			error: function (xhr, ajaxOptions, thrownError) {
+				// container.html(
+				// 	'<h4 style="margin-top:10px; display:block; text-align:left"><i class="fa fa-warning txt-color-orangeDark"></i> Error 404! Page not found.</h4>'
+				// );
+			},
+			async: false
+		});
+
+    //console.log("ajax request sent");
+	}
 </script>

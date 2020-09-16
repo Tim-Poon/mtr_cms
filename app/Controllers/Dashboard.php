@@ -10,8 +10,8 @@ class Dashboard extends Controller
     {
 		// parent::__construct();
 		$this->$valid_log_level = array('info', 'warning', 'error', 'debug');
-		$this->log_level_mapping = array("info" => "danger",
-										 "debug" => "default",
+		$this->log_level_mapping = array("info" => "default",
+										 "debug" => "danger",
 										 "warning" => "warning",
 										 "error" => "danger");
 
@@ -159,19 +159,19 @@ class Dashboard extends Controller
 
 	public function todos($src_type='all', $log_level='all')
 	{
-		$src_type = strtolower($src_type);
-		$log_level = strtolower($log_level);
-		$res = array();
-		if (check_valid_log_src_type($src_type) and check_valid_log_level($log_level)){
-			foreach($model->get_todos($src_type, $log_level)->getResult() as $row){
-				$res['src_type'] = $row->src_type;
-				$res['date'] = $this->ts2date($row->ts);
-				$res['flag'] = $row->flag;
-			}
-		} else {
-			echo "error";			
-		}
-		return $res;
+		// $src_type = strtolower($src_type);
+		// $log_level = strtolower($log_level);
+		// $res = array();
+		// if (check_valid_log_src_type($src_type) and check_valid_log_level($log_level)){
+		// 	foreach($model->get_todos($src_type, $log_level)->getResult() as $row){
+		// 		$res['src_type'] = $row->src_type;
+		// 		$res['date'] = $this->ts2date($row->ts);
+		// 		$res['flag'] = $row->flag;
+		// 	}
+		// } else {
+		// 	echo "error";			
+		// }
+		// return $res;
 	# code...
 	}
 

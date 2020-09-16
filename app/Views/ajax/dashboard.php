@@ -857,6 +857,8 @@
 	
 	// Load Calendar dependency then setup calendar
 	loadScript("js/plugin/fullcalendar/jquery.fullcalendar.min.js", setupCalendar);
+
+	
 	
 	function setupCalendar() {
 	
@@ -879,70 +881,42 @@
 	                left: 'title', //,today
 	                center: 'prev, next, today',
 	                right: 'month, agendaWeek, agenDay' //month, agendaDay,
-	            },
-	
-	            select: function (start, end, allDay) {
-	                var title = prompt('Event Title:');
-	                if (title) {
-	                    calendar.fullCalendar('renderEvent', {
-	                            title: title,
-	                            start: start,
-	                            end: end,
-	                            allDay: allDay
-	                        }, true // make the event "stick"
-	                    );
-	                }
-	                calendar.fullCalendar('unselect');
-	            },
+				},
+				
+	            // select: function (start, end, allDay) {
+	            //     var title = prompt('Event Title:');
+	            //     if (title) {
+	            //         calendar.fullCalendar('renderEvent', {
+	            //                 title: title,
+	            //                 start: start,
+	            //                 end: end,
+	            //                 allDay: allDay
+	            //             }, true // make the event "stick"
+	            //         );
+	            //     }
+	            //     calendar.fullCalendar('unselect');
+				// },
+				
+				eventClick: function (arg) {
+					// window.location.href = arg.title;
+					window.location.href = 'reporting';
+					// console.log(arg);
+				},
 	
 	            events: [{
-	                title: 'All Day Event',
-	                start: new Date(y, m, 1),
-	                description: 'long description',
-	                className: ["event", "bg-color-greenLight"],
-	                icon: 'fa-check'
+	                title: 'miss model',
+					start: new Date(y, m, d),
+					className: ["event", "bg-color-red"],
+					icon: 'fa-clock-o'
 	            }, {
-	                title: 'Long Event',
-	                start: new Date(y, m, d - 5),
-	                end: new Date(y, m, d - 2),
-	                className: ["event", "bg-color-red"],
-	                icon: 'fa-lock'
+	                title: 'empty raw',
+	                start: new Date(y, m, d),
+					className: ["event", "bg-color-yellow"],
+					icon: 'fa-check'
 	            }, {
-	                id: 999,
-	                title: 'Repeating Event',
-	                start: new Date(y, m, d - 3, 16, 0),
-	                allDay: false,
-	                className: ["event", "bg-color-blue"],
-	                icon: 'fa-clock-o'
-	            }, {
-	                id: 999,
-	                title: 'Repeating Event',
-	                start: new Date(y, m, d + 4, 16, 0),
-	                allDay: false,
-	                className: ["event", "bg-color-blue"],
-	                icon: 'fa-clock-o'
-	            }, {
-	                title: 'Meeting',
-	                start: new Date(y, m, d, 10, 30),
-	                allDay: false,
-	                className: ["event", "bg-color-darken"]
-	            }, {
-	                title: 'Lunch',
-	                start: new Date(y, m, d, 12, 0),
-	                end: new Date(y, m, d, 14, 0),
-	                allDay: false,
-	                className: ["event", "bg-color-darken"]
-	            }, {
-	                title: 'Birthday Party',
-	                start: new Date(y, m, d + 1, 19, 0),
-	                end: new Date(y, m, d + 1, 22, 30),
-	                allDay: false,
-	                className: ["event", "bg-color-darken"]
-	            }, {
-	                title: 'Smartadmin Open Day',
-	                start: new Date(y, m, 28),
-	                end: new Date(y, m, 29),
-	                className: ["event", "bg-color-darken"]
+	                title: 'beacon miss',
+	                start: new Date(y, m, d),
+	                className: ["event", "bg-color-red"]
 	            }],
 	
 	            eventRender: function (event, element, icon) {
@@ -961,9 +935,9 @@
 	
 	    /* hide default buttons */
 	    $('.fc-header-right, .fc-header-center').hide();
-	
+		loadCalendarTodos();
 	}
-	
+
 	// calendar prev
 	$('#calendar-buttons #btn-prev').click(function () {
 	    $('.fc-button-prev').click();
@@ -982,9 +956,10 @@
 	    return false;
 	});
 	
+	// sampling
 	// calendar month
 	$('#mt').click(function () {
-	    $('#calendar').fullCalendar('changeView', 'month');
+		$('#calendar').fullCalendar('changeView', 'agendaMonth');
 	});
 	
 	// calendar agenda week
@@ -996,6 +971,35 @@
 	$('#td').click(function () {
 	    $('#calendar').fullCalendar('changeView', 'agendaDay');
 	});
+
+
+	function loadCalendarTodos() {
+    // console.log(url)
+		$.ajax({
+			type: "GET",
+			url: "dashboard/todos",
+			dataType: 'html',
+			cache: true, // (warning: this will cause a timestamp and will call the request twice)
+			beforeSend: function () {
+			},
+			success: function (data) {
+				// console.log("loadData");
+				// todo:for loop to decode data array
+				var myEvent = {
+					title:"SUCCESS",
+					allDay: true,
+					start: '2020-09-19',
+					className: ["event", "bg-color-darken"]
+				};
+				$('#calendar').fullCalendar('renderEvent', myEvent);
+			},
+			error: function (xhr, ajaxOptions, thrownError) {
+			},
+			async: false
+		});
+
+    //console.log("ajax request sent");
+	}
 	
 	/*
 	 * CHAT
@@ -1103,7 +1107,8 @@
 			"oLanguage" : {
 				"sSearch" : "Search all columns:"
 			},
-			"bSortCellsTop" : true
+			"bSortCellsTop" : true,
+			"aaSorting": [[0, "desc"]],
 		});		
 		
 
@@ -1156,7 +1161,7 @@
 				// container.html('<h1><i class="fa fa-cog fa-spin"></i> Loading...</h1>');
 			},
 			success: function (data) {
-				console.log("loadData");
+				// console.log("loadData");
 				$('#statusbody')
 					.html(data)
 					.delay(100);
@@ -1186,11 +1191,11 @@
 				// container.html('<h1><i class="fa fa-cog fa-spin"></i> Loading...</h1>');
 			},
 			success: function (data) {
-				console.log("loadLogs");
+				// console.log("loadLogs");
 				$('#logsbody')
 					.html(data)
 					.delay(100);
-				setTimeout(loadLogs, 60 * 1000);
+				setTimeout(loadLogs, 10 * 60 * 1000);
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
 				// container.html(

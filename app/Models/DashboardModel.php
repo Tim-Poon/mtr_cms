@@ -47,13 +47,13 @@ class DashboardModel extends Model
 
     public function get_todos($minutes)
     {
+        # todo
         if($minutes <= 100)
         {
             // get lastest $minutes data
-            $builder = $this->db->table('daily_log');
-            $builder->orderBy('ts', 'DESC');
-            $query = $builder->get($minutes);
-            return $query;
+            $query   = $this->db->query('SELECT id, ts, src_type, content, level FROM daily_log WHERE todo=0');
+            $results = $query->getResult();
+            return $results;
         }
     }
 

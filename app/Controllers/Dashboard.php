@@ -9,14 +9,21 @@ class Dashboard extends Controller
 	public function __construct()
     {
 		// parent::__construct();
-		$this->$valid_log_level = array('info', 'warning', 'error', 'debug');
+		$this->valid_log_level = array('info', 'warning', 'error', 'debug');
 		$this->log_level_mapping = array("info" => "default",
 										 "debug" => "danger",
 										 "warning" => "warning",
 										 "error" => "danger");
 
-		$this->$valid_src_type = array('sensor', 'server', 'report');
-		$this->$request = \Config\Services::request();
+        $this->loglevel2todo_mapping = array("info" => array("event", "bg-color-greenLight"),
+										 "debug" => array("event", "bg-color-greenLight"),
+										 "warning" => array("event", "bg-color-orange"),
+										 "error" => array("event", "bg-color-red"));
+
+		$this->model = new DashboardModel();
+
+		$this->valid_src_type = array('sensor', 'server', 'report');
+		$this->request = \Config\Services::request();
 	}
 
 	private function check_valid_log_level($log_level){
@@ -123,7 +130,7 @@ class Dashboard extends Controller
 	public function logs()
 	{
 		$res = array();
-		$m = new DashboardModel();
+		$m = $this->model;
 		$logs = $m->get_logs(30);
 
 
@@ -141,7 +148,7 @@ class Dashboard extends Controller
 			$src_type = $log['src_type'];
 			$content = $log['content'];
 			$level = $this->log_level_mapping[$log['level']];
-			
+
 			// print_r($this->log_level_mapping);
 			// echo $this->log_level_mapping[$level].'</br>';
 			echo "<tr class= \"$level\">
@@ -159,20 +166,25 @@ class Dashboard extends Controller
 
 	public function todos($src_type='all', $log_level='all')
 	{
-		// $src_type = strtolower($src_type);
-		// $log_level = strtolower($log_level);
-		// $res = array();
-		// if (check_valid_log_src_type($src_type) and check_valid_log_level($log_level)){
-		// 	foreach($model->get_todos($src_type, $log_level)->getResult() as $row){
-		// 		$res['src_type'] = $row->src_type;
-		// 		$res['date'] = $this->ts2date($row->ts);
-		// 		$res['flag'] = $row->flag;
-		// 	}
-		// } else {
-		// 	echo "error";			
-		// }
-		// return $res;
-	# code...
+			$res = array();
+            $m = $this->model;
+            $todos = $m->get_todos(30);
+
+            foreach($todos as $todo){
+                $todo_status['title'] = $todo->content;
+                $todo_status['allDay'] = true;
+                $time = Time::createFromTimestamp($todo->ts / 1000, 'Asia/Shanghai', 'en_US');
+                $todo_status['start'] = "{$time->getYear()}-{$time->getMonth()}-{$time->getDay()}";
+                $todo_status['className'] = $this->loglevel2todo_mapping[$todo->level];
+
+                $todo_status['ts'] = $time;
+                $todo_status['src_type'] = $todo->src_type;
+                $todo_status['content'] = $todo->content;
+                $todo_status['level'] = $todo->level;
+                array_push($res, $todo_status);
+			}
+
+		    return json_encode($res);
 	}
 
 	public function unhandled_reports()

@@ -902,23 +902,7 @@
 					window.location.href = 'reporting';
 					// console.log(arg);
 				},
-	
-	            events: [{
-	                title: 'miss model',
-					start: new Date(y, m, d),
-					className: ["event", "bg-color-red"],
-					icon: 'fa-clock-o'
-	            }, {
-	                title: 'empty raw',
-	                start: new Date(y, m, d),
-					className: ["event", "bg-color-yellow"],
-					icon: 'fa-check'
-	            }, {
-	                title: 'beacon miss',
-	                start: new Date(y, m, d),
-	                className: ["event", "bg-color-red"]
-	            }],
-	
+
 	            eventRender: function (event, element, icon) {
 	                if (!event.description == "") {
 	                    element.find('.fc-event-title').append("<br/><span class='ultra-light'>" + event.description +
@@ -978,20 +962,18 @@
 		$.ajax({
 			type: "GET",
 			url: "dashboard/todos",
-			dataType: 'html',
+			dataType: 'json',
 			cache: true, // (warning: this will cause a timestamp and will call the request twice)
 			beforeSend: function () {
 			},
 			success: function (data) {
-				// console.log("loadData");
-				// todo:for loop to decode data array
-				var myEvent = {
-					title:"SUCCESS",
-					allDay: true,
-					start: '2020-09-19',
-					className: ["event", "bg-color-darken"]
-				};
-				$('#calendar').fullCalendar('renderEvent', myEvent);
+// 				console.log(data);
+				var i = 0;
+                $.each(data, function () {
+                    $('#calendar').fullCalendar('renderEvent', data[i]);
+                    i++;
+                });
+
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
 			},

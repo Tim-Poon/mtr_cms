@@ -47,7 +47,6 @@ class DashboardModel extends Model
 
     public function get_todos($minutes)
     {
-        # todo
         if($minutes <= 100)
         {
             // get lastest $minutes data

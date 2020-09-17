@@ -34,13 +34,6 @@ class Dashboard extends Controller
 
 	}
 
-	private function ts2date($ts)
-	{
-		# todo
-		$date = NULL;
-		return $date;
-	}
-
 	public function index()
 	{
 		$data = [
@@ -69,7 +62,6 @@ class Dashboard extends Controller
 			# todo: get val for var 
 			$sensor_status['site_id'] = $sensor->sensor_site;
 			$sensor_status['sensor_id'] = $sensor->sensor_id;
-			// $sensor_status['last_seen_time'] = $sensor->l_conn;
 			$sensor_status['last_seen_time'] = Time::createFromTimestamp($sensor->l_conn / 1000, 'Asia/Shanghai', 'en_US');
 			$sensor_status['lasting_time'] = intval(($sensor->l_conn - $sensor->s_conn) / (1000 * 60));  # if lasting_time is Null, 
 			$sensor_status['recent_raw_flag'] = 'default';
@@ -170,24 +162,18 @@ class Dashboard extends Controller
                 $todo_status['start'] = "{$time->getYear()}-{$time->getMonth()}-{$time->getDay()}";
                 $todo_status['className'] = $this->loglevel2todo_mapping[$todo->level];
 
+
+                $todo_status['id'] = "reporting{$todo->id}"; //todo
                 $todo_status['ts'] = $time;
                 $todo_status['src_type'] = $todo->src_type;
                 $todo_status['content'] = $todo->content;
 				$todo_status['level'] = $todo->level;
 				
 				// link to reporting page
-				$todo_status['url'] = "reporting?stype=$todo->src_type&seq=$todo->id";
+				$todo_status['url'] = "reporting?stype=$todo->src_type&id=$todo->id";
                 array_push($res, $todo_status);
 			}
 
 		    return json_encode($res);
 	}
-
-	public function unhandled_reports()
-	{
-		// print_r($this->$request->getGet());
-		# note: the returned value will show which date is left to be done.
-		# code...
-	}
-
 }

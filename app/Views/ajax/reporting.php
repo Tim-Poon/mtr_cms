@@ -40,7 +40,7 @@
 	<div class="row">
 
 		<!-- NEW WIDGET START -->
-		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
 			<!-- Widget ID (each widget will need unique ID)-->
 			<div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
@@ -59,7 +59,7 @@
 				-->
 				<header>
 					<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-					<h2>Normal Table</h2>
+					<h2>TODO</h2>
 
 				</header>
 
@@ -78,13 +78,13 @@
 							</thead>
 							<tbody>
 								<tr class="danger">
-									<td>2020-20-20 20:20:20</td>
+									<td><?= $date ?></td>
 									<td>
 										<code>
-											offline_reporting
+											<?= $stype ?>
 										</code
 									></td>
-									<td>xxxxxxxxxxxxxxxxx</td>
+									<td><?= $content ?></td>
 								</tr>
 							</tbody>
 						</table>
@@ -123,7 +123,7 @@
 
 
 		<!-- NEW WIDGET START -->
-		<article class="col-sm-12 col-md-12 col-lg-6">
+		<article class="col-sm-12 col-md-12 col-lg-12">
 
 			<!-- Widget ID (each widget will need unique ID)-->
 			<div class="jarviswidget jarviswidget-color-greenLight" id="wid-id-3" data-widget-editbutton="false">
@@ -142,7 +142,7 @@
 				-->
 				<header>
 					<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-					<h2>Table TR with colors </h2>
+					<h2>88888 </h2>
 
 				</header>
 
@@ -158,49 +158,27 @@
 
 					<!-- widget content -->
 					<div class="widget-body no-padding">
-						
-						<div class="alert alert-info no-margin fade in">
-							<button class="close" data-dismiss="alert">
-								×
-							</button>
-							<i class="fa-fw fa fa-info"></i>
-							Add custom colors to your TR and TD <code>&lt;tr&gt;</code> by adding <code>.success</code>, <code>.danger</code>, <code>.warning</code> and <code>.info</code> respectively
-						</div>
-						
-						<table class="table">
+
+						<table class="table table-bordered">
 							<thead>
 								<tr>
-									<th>#</th>
-									<th> <i class="fa fa-building"></i> Product</th>
-									<th> <i class="fa fa-calendar"></i> Payment Taken</th>
-									<th> <i class="glyphicon glyphicon-send"></i> Status</th>
+									<th> <i class="fa fa-building"></i> SRC_TYPE </th>
+									<th> <i class="fa fa-calendar"></i> Content</th>
+									<th> <i class="fa fa-calendar"></i> Sovle MSG</th>
+									<th> <i class="glyphicon glyphicon-send"></i> TODO </th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr class="success">
-									<td>1</td>
-									<td>TB - Monthly</td>
-									<td>01/04/2012</td>
-									<td>Approved</td>
-								</tr>
-								<tr class="danger">
-									<td>2</td>
-									<td>TB - Monthly</td>
-									<td>02/04/2012</td>
-									<td>Declined</td>
-								</tr>
-								<tr class="warning">
-									<td>3</td>
-									<td>TB - Monthly</td>
-									<td>03/04/2012</td>
-									<td>Pending</td>
-								</tr>
-								<tr class="info">
-									<td>4</td>
-									<td>TB - Monthly</td>
-									<td>04/04/2012</td>
-									<td>Call in to confirm</td>
-								</tr>
+							    <?php if ($related_logs) {foreach($related_logs as $log){
+							        echo " <tr class=\"info\">
+                                            <td>{$log->src_type}</td>
+                                            <td>{$log->content}</td>
+                                            <td>{$log->solve_message}</td>
+                                            <td>{$log->todo}</td>
+                                        </tr>";
+							        }
+							    }
+							        ?>
 							</tbody>
 						</table>
 

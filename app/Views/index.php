@@ -4,51 +4,51 @@
 	<head>
 		<meta charset="utf-8">
 		<!--<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">-->
-		
+
 		<title> SmartAdmin </title>
 		<meta name="description" content="">
 		<meta name="author" content="">
-		
+
 		<!-- http://davidbcalhoun.com/2010/viewport-metatag -->
 		<meta name="HandheldFriendly" content="True">
 		<meta name="MobileOptimized" content="320">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-		
+
 		<!-- Basic Styles -->
-		<link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap.min.css">	
+		<link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" media="screen" href="css/font-awesome.min.css">
 
 		<!-- SmartAdmin Styles : Please note (smartadmin-production.css) was created using LESS variables -->
 		<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-production.css">
-		<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-skins.css">	
-		
+		<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-skins.css">
+
 		<!-- SmartAdmin RTL Support is under construction
 			<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-rtl.css"> -->
-		
+
 		<!-- Demo purpose only: goes with demo.js, you can delete this css when designing your own WebApp -->
 		<link rel="stylesheet" type="text/css" media="screen" href="css/demo.css">
-		
+
 		<!-- FAVICONS -->
 		<link rel="shortcut icon" href="img/favicon/favicon.ico" type="image/x-icon">
 		<link rel="icon" href="img/favicon/favicon.ico" type="image/x-icon">
-		
+
 		<!-- GOOGLE FONT -->
 		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">
 
 	</head>
 	<body class=""> <!-- possible classes: minified, fixed-ribbon, fixed-header, fixed-width-->
-		
+
 		<!-- HEADER -->
 		<header id="header">
 				<div id="logo-group">
-				
+
 				<!-- PLACE YOUR LOGO HERE -->
 				<span id="logo">
 					<img src="img/logo.png" alt="SmartAdmin">
 				</span>
 				<!-- END LOGO PLACEHOLDER -->
-				
-				<!-- Note: The activity badge color changes when clicked and resets the number to 0 
+
+				<!-- Note: The activity badge color changes when clicked and resets the number to 0
 					 Suggestion: You may want to set a flag when this happens to tick off all checked messages / notifications -->
 				<span id="activity" class="activity-dropdown">
 					<i class="fa fa-user"></i>
@@ -56,10 +56,10 @@
 						21
 					</b>
 				</span>
-				
+
 				<!-- AJAX-DROPDOWN : control this dropdown height, look and feel from the LESS variable file -->
 				<div class="ajax-dropdown">
-					
+
 					<!-- the ID links are fetched via AJAX to the ajax container "ajax-notifications" -->
 					<div class="btn-group btn-group-justified" data-toggle="buttons">
 				        <label class="btn btn-default">
@@ -72,20 +72,20 @@
 				          <input type="radio" name="activity" id="ajax/notify/tasks.html"> Tasks (4)
 				        </label>
 				    </div>
-					
+
 					<!-- notification content -->
 					<div class="ajax-notifications custom-scroll">
-						
+
 						<div class="alert alert-transparent">
 							<h4>Click a button to show messages here</h4>
 							This blank page message helps protect your privacy, or you can show the first message here automatically.
 						</div>
-						
+
 						<i class="fa fa-lock fa-4x fa-border"></i>
-						
+
 					</div>
 					<!-- end notification content -->
-					
+
 					<!-- footer: refresh area -->
 					<span>
 						Last updated on: 12/12/2013 9:43AM
@@ -94,17 +94,17 @@
 						</button>
 					</span>
 					<!-- end footer -->
-					
+
 				</div>
 				<!-- END AJAX-DROPDOWN -->
 			</div>
-			
+
 			<!-- projects dropdown -->
 			<div id="project-context">
-				
+
 				<span class="label">Projects:</span>
 				<span id="project-selector" class="popover-trigger-element dropdown-toggle" data-toggle="dropdown">Recent projects <i class="fa fa-angle-down"></i></span>
-				
+
 				<!-- Suggestion: populate this list with fetch and push technique -->
 				<ul class="dropdown-menu">
 					<li>
@@ -122,13 +122,13 @@
 					</li>
 				</ul>
 				<!-- end dropdown-menu-->
-				
+
 			</div>
 			<!-- end projects dropdown -->
-			
+
 			<!-- pulled right: nav area -->
 			<div class="pull-right">
-				
+
 				<!-- collapse menu button -->
 				<div id="hide-menu" class="btn-header pull-right">
 					<span>
@@ -136,7 +136,7 @@
 					</span>
 				</div>
 				<!-- end collapse menu -->
-				
+
 				<!-- logout button -->
 				<div id="logout" class="btn-header transparent pull-right">
 					<span>
@@ -144,43 +144,43 @@
 					</span>
 				</div>
 				<!-- end logout button -->
-			
+
 			</div>
 			<!-- end pulled right: nav area -->
-			
+
 		</header>
 		<!-- END HEADER -->
-		
+
 		<!-- Left panel : Navigation area -->
 		<!-- Note: This width of the aside area can be adjusted through LESS variables -->
 		<aside id="left-panel">
-			
+
 			<!-- User info -->
 			<div class="login-info">
 				<span>
-					<!-- User image size is adjusted inside CSS, it should stay as it --> 
-					<img src="img/avatars/sunny.png" alt="me" class="online" />	
+					<!-- User image size is adjusted inside CSS, it should stay as it -->
+					<img src="img/avatars/sunny.png" alt="me" class="online" />
 					<a href="javascript:void(0);" id="show-shortcut">Welcome: Admin <i class="fa fa-angle-down"></i></a>
 				</span>
 			</div>
 			<!-- end user info -->
-			
-			<!-- NAVIGATION : This navigation is also responsive 
-				 
-				 To make this navigation dynamic please make sure to link the node 
-				 (the reference to the nav > ul) after page load. Or the navigation 
+
+			<!-- NAVIGATION : This navigation is also responsive
+
+				 To make this navigation dynamic please make sure to link the node
+				 (the reference to the nav > ul) after page load. Or the navigation
 				 will not initialize.
 			-->
 			<nav>
-				<!-- NOTE: Notice the gaps after each icon usage <i></i>.. 
+				<!-- NOTE: Notice the gaps after each icon usage <i></i>..
 					 Please note that these links work a bit different than
 					 traditional hre="" links. See documentation for details.
 					-->
-				
+
 				<ul>
 					<li class=""><a href="dashboard" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i>  <span class="menu-item-parent">Dashboard</span></a></li>
 					<li><a href="reporting">
-						<i class="fa fa-lg fa-fw fa-bar-chart-o"></i>  
+						<i class="fa fa-lg fa-fw fa-bar-chart-o"></i>
 						<span class="menu-item-parent">Reporting</span>
 						<span class="badge pull-right inbox-badge">14</span></a>
 					</li>
@@ -216,7 +216,7 @@
 							 <li><a href="#">Icons</a>
 							 	<ul>
 									 <li><a href="ajax/fa.html"><i class="fa fa-plane"></i> Font Awesome</a>
-									 <li><a href="ajax/glyph.html"><i class="glyphicon glyphicon-plane"></i> Glyph Icons </a>	
+									 <li><a href="ajax/glyph.html"><i class="glyphicon glyphicon-plane"></i> Glyph Icons </a>
 							 	</ul>
 							 </li>
 							 <li><a href="ajax/grid.html">Grid</a></li>
@@ -248,7 +248,7 @@
 							 	</ul>
 							 </li>
 							 <li><a href="#"><i class="fa fa-fw fa-folder-open"></i> Folder</a>
-							 	
+
 								<ul>
 									 <li><a href="#"><i class="fa fa-fw fa-folder-open"></i> 3ed Level </a>
 									 	<ul>
@@ -257,14 +257,14 @@
 									 	</ul>
 									 </li>
 							 	</ul>
-							 	
+
 							 </li>
 						</ul>
-					</li>	
+					</li>
 					<li><a href="ajax/calendar.html"><i class="fa fa-lg fa-fw fa-calendar"><em>3</em></i>  <span class="menu-item-parent">Calendar</span></a></li>
 					<li><a href="ajax/widgets.html"><i class="fa fa-lg fa-fw fa-list-alt"></i>  <span class="menu-item-parent">Widgets</span></a></li>
 					<li><a href="ajax/gallery.html"><i class="fa fa-lg fa-fw fa-picture-o"></i>  <span class="menu-item-parent">Gallery</span></a></li>
-					<li><a href="ajax/gmap-xml.html"><i class="fa fa-lg fa-fw fa-map-marker"></i>  <span class="menu-item-parent">Google Map Skins</span><span class="badge bg-color-greenLight pull-right inbox-badge">9</span></a></li>					
+					<li><a href="ajax/gmap-xml.html"><i class="fa fa-lg fa-fw fa-map-marker"></i>  <span class="menu-item-parent">Google Map Skins</span><span class="badge bg-color-greenLight pull-right inbox-badge">9</span></a></li>
 					<li><a href="#"><i class="fa fa-lg fa-fw fa-windows"></i>  <span class="menu-item-parent">Miscellaneous</span></a>
 						<ul>
 							 <li><a href="ajax/typography.html">Typography</a></li>
@@ -287,16 +287,16 @@
 				<i class="fa fa-arrow-circle-left hit"></i>
 			</span>
 
-			
+
 		</aside>
 		<!-- END NAVIGATION -->
-		
+
 		<!-- MAIN PANEL -->
 		<div id="main" role="main">
-			
+
 			<!-- RIBBON -->
 			<div id="ribbon">
-				
+
 				<span class="ribbon-button-alignment">
 					<span id="refresh" class="btn btn-ribbon" data-title="refresh"  rel="tooltip" data-placement="bottom" data-original-title="<i class='text-warning fa fa-warning'></i> Warning! This will reset all your widget settings." data-html="true"><i class="fa fa-refresh"></i></span>
 				</span>
@@ -304,31 +304,31 @@
 				<!-- breadcrumb -->
 				<ol class="breadcrumb">
 					<!-- This is auto generated -->
-				</ol>		
-				<!-- end breadcrumb -->	
-				
-				<!-- You can also add more buttons to the 
-					 ribbon for further usability 
-					 
-					 Example below: 
-					 
+				</ol>
+				<!-- end breadcrumb -->
+
+				<!-- You can also add more buttons to the
+					 ribbon for further usability
+
+					 Example below:
+
 				<span class="ribbon-button-alignment pull-right">
 					<span id="search" class="btn btn-ribbon hidden-xs" data-title="search"><i class="fa-grid"></i> Change Grid</span>
 					<span id="add" class="btn btn-ribbon hidden-xs" data-title="add"><i class="fa-plus"></i> Add</span>
 					<span id="search" class="btn btn-ribbon" data-title="search"><i class="fa-search"></i> <span class="hidden-mobile">Search</span></span>
 				</span> -->
-				
+
 			</div>
 			<!-- END RIBBON -->
-			
+
 			<!-- MAIN CONTENT -->
 			<div id="content">
 			</div>
-			<!-- END MAIN CONTENT -->				
-					
+			<!-- END MAIN CONTENT -->
+
 		</div>
 		<!-- END MAIN PANEL -->
-		
+
 		<!-- SHORTCUT AREA : With large tiles (activated via clicking user name tag)
 			 Note: These tiles are completely responsive,
 			 you can add as many as you like
@@ -387,7 +387,7 @@
 		</div>
 		<!-- END SHORTCUT AREA -->
 
-		<!--================================================== -->	
+		<!--================================================== -->
 
 		<!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)
 		<script data-pace-options='{ "restartOnRequestAfter": true }' src="js/plugin/pace/pace.min.js"></script>-->
@@ -399,10 +399,10 @@
 	    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 		<script> if (!window.jQuery.ui) { document.write('<script src="js/libs/jquery-ui-1.10.3.min.js"><\/script>');} </script>
 
-		<!-- JS TOUCH : include this plugin for mobile drag / drop touch events 		
+		<!-- JS TOUCH : include this plugin for mobile drag / drop touch events
 		<script src="js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script> -->
 
-		<!-- BOOTSTRAP JS -->		
+		<!-- BOOTSTRAP JS -->
 		<script src="js/bootstrap/bootstrap.min.js"></script>
 
 		<!-- CUSTOM NOTIFICATION -->
@@ -410,56 +410,56 @@
 
 		<!-- JARVIS WIDGETS -->
 		<script src="js/smartwidgets/jarvis.widget.min.js"></script>
-		
+
 		<!-- EASY PIE CHARTS -->
 		<script src="js/plugin/easy-pie-chart/jquery.easy-pie-chart.min.js"></script>
-		
+
 		<!-- SPARKLINES -->
 		<script src="js/plugin/sparkline/jquery.sparkline.min.js"></script>
-		
+
 		<!-- JQUERY VALIDATE -->
 		<script src="js/plugin/jquery-validate/jquery.validate.min.js"></script>
-		
+
 		<!-- JQUERY MASKED INPUT -->
 		<script src="js/plugin/masked-input/jquery.maskedinput.min.js"></script>
-		
+
 		<!-- JQUERY SELECT2 INPUT -->
 		<script src="js/plugin/select2/select2.min.js"></script>
 
 		<!-- JQUERY UI + Bootstrap Slider -->
 		<script src="js/plugin/bootstrap-slider/bootstrap-slider.min.js"></script>
-		
+
 		<!-- browser msie issue fix -->
 		<script src="js/plugin/msie-fix/jquery.mb.browser.min.js"></script>
-		
+
 		<!--[if IE 7]>
-			
+
 			<h1>Your browser is out of date, please update your browser by going to www.microsoft.com/download</h1>
-			
+
 		<![endif]-->
-		
+
 		<!-- Demo purpose only -->
 		<script src="js/demo.js"></script>
-		
+
 		<!-- MAIN APP JS FILE -->
 		<script src="js/app.js"></script>
 
 		<!-- Your GOOGLE ANALYTICS CODE Below -->
 		<script type="text/javascript">
-		
+
 		  var _gaq = _gaq || [];
 		  _gaq.push(['_setAccount', 'UA-43548732-3']);
 		  _gaq.push(['_trackPageview']);
-		
+
 		  (function() {
 		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 		  })();
-		
+
 		</script>
 
-		
-	</body>	
-	
+
+	</body>
+
 </html>

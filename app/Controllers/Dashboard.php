@@ -48,19 +48,12 @@ class Dashboard extends Controller
 			'heading' => 'My Heading',
 			'message' => 'My Message'
 		];
-		echo view('index', $data);
+		echo view('head', $data);
+		echo view('js');
+		echo view('ajax/dashboard', $data);
+		echo view('foot');
 	}
 
-	public function page()
-	{
-		$data = [
-			// 'real_time_sensor_status'   => $this->real_time_sensor_status(),
-			// 'logs' => $this->logs(),
-			'message' => 'My Message'
-		];
-		// echo view('ajax/dashboard', $data);
-		echo view('ajax/dashboard');
-	}
 
 
 	//--------------------------------------------------------------------
@@ -180,7 +173,9 @@ class Dashboard extends Controller
                 $todo_status['ts'] = $time;
                 $todo_status['src_type'] = $todo->src_type;
                 $todo_status['content'] = $todo->content;
-                $todo_status['level'] = $todo->level;
+				$todo_status['level'] = $todo->level;
+				
+				$todo_status['url'] = "reporting/id/$todo->id";
                 array_push($res, $todo_status);
 			}
 

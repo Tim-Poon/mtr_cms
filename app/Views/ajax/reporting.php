@@ -4,7 +4,7 @@
 			<i class="fa fa-table fa-fw "></i> 
 				Table 
 			<span>> 
-				Normal Tables
+				Normal Tables <?php echo $ppp;?>
 			</span>
 		</h1>
 	</div>

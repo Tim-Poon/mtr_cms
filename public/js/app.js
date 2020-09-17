@@ -1373,7 +1373,7 @@ function checkURL() {
         //console.log("page title: " + document.title);
 
         // parse url to jquery
-        loadURL(url + '/page', container);
+        // loadURL(url + '/page', container);
     } else {
         $('nav li.active')
             .removeClass("active");
@@ -1388,7 +1388,7 @@ function checkURL() {
         // //update hash
         // window.location.hash = $this.attr('href');
         document.title = (title || document.title);
-        loadURL("dashboard/page", container);
+        // loadURL("dashboard/page", container);
     }
 
 }

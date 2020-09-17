@@ -19,6 +19,8 @@ class Reporting extends Controller
 
     public function index()
     {
+        echo view('head');
+        echo view('js');
         $data = [];
         if($this->request->getGet()['stype'])
         {
@@ -33,8 +35,6 @@ class Reporting extends Controller
                 'message' => 'My Message'
             ];
         }
-        echo view('head', $data);
-        echo view('js');
         echo view('ajax/reporting', $data);
         echo view('foot');
         
@@ -46,10 +46,12 @@ class Reporting extends Controller
         return 1;
     }
 
-    public function id($id)
+    public function submit()
     {
-        $this->view_data['ppp'] = $id;
-        $pages = view('head', $this->view_data).view('ajax/reporting', $this->view_data).view('foot');
-        echo $pages;
+        if($this->request->getPost()['message'])
+        {
+            $data['msg'] = $this->request->getPost()['message'];
+            echo view('submit', $data);
+        }
     }
 }

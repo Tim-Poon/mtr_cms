@@ -1,3 +1,4 @@
+<div id="done"> </div>
 <div class="row">
 	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
 		<h1 class="page-title txt-color-blueDark">
@@ -89,15 +90,15 @@
 						</table>
 					</div>
 					<div class="widget-body no-padding">
-						<form action="demo-contacts.php" method="post" id="contact-form" class="smart-form">
+						<form id="contact-form" class="smart-form">
 							<header>Check form</header>
 							
 							<fieldset>					
 								<section>
-									<label class="label">Message</label>
-									<label class="textarea">
-										<i class="icon-append fa fa-comment"></i>
-										<textarea rows="4" name="message" id="reporting_message"></textarea>
+									<label class="label">message</label>
+									<div class="note note-error">This is a required field.</div>
+									<label class="textarea state-error" >
+										<textarea rows="4" name="message" id="reporting_message" ></textarea>
 									</label>
 								</section>
 								
@@ -227,5 +228,12 @@
 	pageSetUp();
 
 	// PAGE RELATED SCRIPTS
+	$('#contact-form').submit(function(e){
+		$.post( "reporting/submit", $( "#contact-form" ).serialize())
+		.done(function( data ) {
+			$('#done').html(data);
+		});
+		return false;
+	});
 
 </script>

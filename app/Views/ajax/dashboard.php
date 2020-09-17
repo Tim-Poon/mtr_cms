@@ -971,7 +971,7 @@
 // 				console.log(data);
 				var i = 0;
                 $.each(data, function () {
-                    $('#calendar').fullCalendar('renderEvent', data[i]);
+                    $('#calendar').('renderEvent', data[i]);
                     i++;
                 });
 

@@ -2,9 +2,9 @@
 	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
 		<h1 class="page-title txt-color-blueDark">
 			<i class="fa fa-table fa-fw "></i> 
-				Table 
+				Reporting 
 			<span>> 
-				Normal Tables <?php echo $ppp;?>
+				<?= $stype ?> # <?= $seq ?> 
 			</span>
 		</h1>
 	</div>
@@ -39,7 +39,7 @@
 	<div class="row">
 
 		<!-- NEW WIDGET START -->
-		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
 
 			<!-- Widget ID (each widget will need unique ID)-->
 			<div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
@@ -65,167 +65,52 @@
 				<!-- widget div-->
 				<div>
 
-					<!-- widget edit box -->
-					<div class="jarviswidget-editbox">
-						<!-- This area used as dropdown edit box -->
-
-					</div>
-					<!-- end widget edit box -->
-
-					<!-- widget content -->
-					<div class="widget-body">
-						<p>Adds borders to any table row within <code>&lt;table&gt;</code> by adding the <code>.table-bordered</code> with the base class</p>
-						<table class="table table-bordered">
-							<thead>
-								<tr>
-									<th>Column name</th>
-									<th>Column name</th>
-									<th>Column name</th>
-									<th>Column name</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>Row 1</td>
-									<td>Row 2</td>
-									<td>Row 3</td>
-									<td>Row 4</td>
-								</tr>
-								<tr>
-									<td>Row 1</td>
-									<td>Row 2</td>
-									<td>Row 3</td>
-									<td>Row 4</td>
-								</tr>
-								<tr>
-									<td>Row 1</td>
-									<td>Row 2</td>
-									<td>Row 3</td>
-									<td>Row 4</td>
-								</tr>
-								<tr>
-									<td>Row 1</td>
-									<td>Row 2</td>
-									<td>Row 3</td>
-									<td>Row 4</td>
-								</tr>
-								<tr>
-									<td>Row 1</td>
-									<td>Row 2</td>
-									<td>Row 3</td>
-									<td>Row 4</td>
-								</tr>
-								<tr>
-									<td>Row 1</td>
-									<td>Row 2</td>
-									<td>Row 3</td>
-									<td>Row 4</td>
-								</tr>
-							</tbody>
-						</table>
-
-					</div>
-					<!-- end widget content -->
-
-				</div>
-				<!-- end widget div -->
-
-			</div>
-			<!-- end widget -->
-
-			<!-- Widget ID (each widget will need unique ID)-->
-			<div class="jarviswidget jarviswidget-color-darken" id="wid-id-1" data-widget-editbutton="false">
-				<!-- widget options:
-				usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
-
-				data-widget-colorbutton="false"
-				data-widget-editbutton="false"
-				data-widget-togglebutton="false"
-				data-widget-deletebutton="false"
-				data-widget-fullscreenbutton="false"
-				data-widget-custombutton="false"
-				data-widget-collapsed="true"
-				data-widget-sortable="false"
-
-				-->
-				<header>
-					<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-					<h2>No Padding</h2>
-				</header>
-
-				<!-- widget div-->
-				<div>
-
-					<!-- widget edit box -->
-					<div class="jarviswidget-editbox">
-						<!-- This area used as dropdown edit box -->
-
-					</div>
-					<!-- end widget edit box -->
-
-					<!-- widget content -->
-					<div class="widget-body no-padding">
-
-						<div class="alert alert-info no-margin fade in">
-							<button class="close" data-dismiss="alert">
-								×
-							</button>
-							<i class="fa-fw fa fa-info"></i>
-							Adds zebra-striping to table row within <code>&lt;table&gt;</code> by adding the <code>.table-striped</code> with the base class
-						</div>
+					<div class="table-responsive">
 						
-						<table class="table table-bordered table-striped">
+						<table class="table table-bordered hidden-mobile">
 							<thead>
 								<tr>
-									<th>Column name</th>
-									<th>Column name</th>
-									<th>Column name</th>
-									<th>Column name</th>
+									<th>Date</th>
+									<th>scr_type</th>
+									<th>content</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>Row 1</td>
-									<td>Row 2</td>
-									<td>Row 3</td>
-									<td>Row 4</td>
-								</tr>
-								<tr>
-									<td>Row 1</td>
-									<td>Row 2</td>
-									<td>Row 3</td>
-									<td>Row 4</td>
-								</tr>
-								<tr>
-									<td>Row 1</td>
-									<td>Row 2</td>
-									<td>Row 3</td>
-									<td>Row 4</td>
-								</tr>
-								<tr>
-									<td>Row 1</td>
-									<td>Row 2</td>
-									<td>Row 3</td>
-									<td>Row 4</td>
-								</tr>
-								<tr>
-									<td>Row 1</td>
-									<td>Row 2</td>
-									<td>Row 3</td>
-									<td>Row 4</td>
-								</tr>
-								<tr>
-									<td>Row 1</td>
-									<td>Row 2</td>
-									<td>Row 3</td>
-									<td>Row 4</td>
+								<tr class="danger">
+									<td>2020-20-20 20:20:20</td>
+									<td>
+										<code>
+											offline_reporting
+										</code
+									></td>
+									<td>xxxxxxxxxxxxxxxxx</td>
 								</tr>
 							</tbody>
 						</table>
-
 					</div>
-					<!-- end widget content -->
-
+					<div class="widget-body no-padding">
+						<form action="demo-contacts.php" method="post" id="contact-form" class="smart-form">
+							<header>Check form</header>
+							
+							<fieldset>					
+								<section>
+									<label class="label">Message</label>
+									<label class="textarea">
+										<i class="icon-append fa fa-comment"></i>
+										<textarea rows="4" name="message" id="reporting_message"></textarea>
+									</label>
+								</section>
+								
+								<section>
+									<label class="checkbox"><input type="checkbox" name="copy" id="copy"><i></i>Send a copy to my e-mail address</label>
+								</section>
+							</fieldset>
+							
+							<footer>
+								<button type="submit" class="btn btn-primary">Submit</button>
+							</footer>
+						</form>
+					</div>
 				</div>
 				<!-- end widget div -->
 
@@ -235,99 +120,6 @@
 		</article>
 		<!-- WIDGET END -->
 
-		<!-- NEW WIDGET START -->
-		<article class="col-sm-12 col-md-12 col-lg-6">
-
-			<!-- Widget ID (each widget will need unique ID)-->
-			<div class="jarviswidget jarviswidget-color-greenDark" id="wid-id-2" data-widget-editbutton="false">
-				<!-- widget options:
-				usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
-
-				data-widget-colorbutton="false"
-				data-widget-editbutton="false"
-				data-widget-togglebutton="false"
-				data-widget-deletebutton="false"
-				data-widget-fullscreenbutton="false"
-				data-widget-custombutton="false"
-				data-widget-collapsed="true"
-				data-widget-sortable="false"
-
-				-->
-				<header>
-					<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-					<h2>Table hover states </h2>
-
-				</header>
-
-				<!-- widget div-->
-				<div>
-
-					<!-- widget edit box -->
-					<div class="jarviswidget-editbox">
-						<!-- This area used as dropdown edit box -->
-
-					</div>
-					<!-- end widget edit box -->
-
-					<!-- widget content -->
-					<div class="widget-body no-padding">
-						
-						<div class="alert alert-info no-margin fade in">
-							<button class="close" data-dismiss="alert">
-								×
-							</button>
-							<i class="fa-fw fa fa-info"></i>
-							Enables hover effect <code>&lt;table&gt;</code> by adding the <code>.table-hover</code> with the base class
-						</div>
-						
-						<table class="table table-hover">
-							<thead>
-								<tr>
-									<th>#</th>
-									<th>First Name</th>
-									<th>Last Name</th>
-									<th>Username</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>1</td>
-									<td>Mark</td>
-									<td>Otto</td>
-									<td>@mdo</td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>Jacob</td>
-									<td>Thornton</td>
-									<td>@fat</td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td>Larry</td>
-									<td>the Bird</td>
-									<td>@twitter</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td>Wise</td>
-									<td>Man</td>
-									<td>@myorange</td>
-								</tr>
-							</tbody>
-						</table>
-
-					</div>
-					<!-- end widget content -->
-
-				</div>
-				<!-- end widget div -->
-
-			</div>
-			<!-- end widget -->
-
-		</article>
-		<!-- WIDGET END -->
 
 		<!-- NEW WIDGET START -->
 		<article class="col-sm-12 col-md-12 col-lg-6">
@@ -407,160 +199,6 @@
 									<td>TB - Monthly</td>
 									<td>04/04/2012</td>
 									<td>Call in to confirm</td>
-								</tr>
-							</tbody>
-						</table>
-
-					</div>
-					<!-- end widget content -->
-
-				</div>
-				<!-- end widget div -->
-
-			</div>
-			<!-- end widget -->
-
-		</article>
-		<!-- WIDGET END -->
-
-	</div>
-
-	<!-- end row -->
-
-	<!-- row -->
-
-	<div class="row">
-
-		<!-- NEW WIDGET START -->
-		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-			<!-- Widget ID (each widget will need unique ID)-->
-			<div class="jarviswidget" id="wid-id-4" data-widget-editbutton="false">
-				<!-- widget options:
-				usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
-
-				data-widget-colorbutton="false"
-				data-widget-editbutton="false"
-				data-widget-togglebutton="false"
-				data-widget-deletebutton="false"
-				data-widget-fullscreenbutton="false"
-				data-widget-custombutton="false"
-				data-widget-collapsed="true"
-				data-widget-sortable="false"
-
-				-->
-				<header>
-					<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-					<h2>Condenced table + combined prev. classes </h2>
-
-				</header>
-
-				<!-- widget div-->
-				<div>
-
-					<!-- widget edit box -->
-					<div class="jarviswidget-editbox">
-						<!-- This area used as dropdown edit box -->
-
-					</div>
-					<!-- end widget edit box -->
-
-					<!-- widget content -->
-					<div class="widget-body no-padding">
-						<div class="alert alert-warning no-margin fade in">
-							<button class="close" data-dismiss="alert">
-								×
-							</button>
-							<i class="fa-fw fa fa-info"></i>
-							A combined table effect with all classes mentioned above added to <code>&lt;table&gt;</code>. <code> .table-bordered .table-striped .table-condensed .table-hover .smart-form .has-tickbox </code>
-						</div>
-						<table class="table table-bordered table-striped table-condensed table-hover smart-form has-tickbox">
-							<thead>
-								<tr>
-									<th>
-										<label class="checkbox">
-											<input type="checkbox" name="checkbox-inline">
-											<i></i>
-										</label>
-									</th>
-									<th>Column name <a href="javascript:void(0);" class="btn btn-xs btn-default pull-right"><i class="fa fa-filter"></i></a> </th>
-									<th>Column name <a href="javascript:void(0);" class="btn btn-xs btn-default pull-right"><i class="fa fa-filter"></i></a></th>
-									<th>Column name <a href="javascript:void(0);" class="btn btn-xs btn-default pull-right"><i class="fa fa-filter"></i></a></th>
-									<th>Column name <a href="javascript:void(0);" class="btn btn-xs btn-default pull-right"><i class="fa fa-filter"></i></a></th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>
-										<label class="checkbox">
-											<input type="checkbox" name="checkbox-inline">
-											<i></i>
-										</label>
-									</td>
-									<td>Row 1</td>
-									<td>Row 2</td>
-									<td>Row 3</td>
-									<td>Row 4</td>
-								</tr>
-								<tr>
-									<td>
-										<label class="checkbox">
-											<input type="checkbox" name="checkbox-inline">
-											<i></i>
-										</label>
-									</td>
-									<td>Row 1</td>
-									<td>Row 2</td>
-									<td>Row 3</td>
-									<td>Row 4</td>
-								</tr>
-								<tr>
-									<td>
-										<label class="checkbox">
-											<input type="checkbox" name="checkbox-inline">
-											<i></i>
-										</label>
-									</td>
-									<td>Row 1</td>
-									<td>Row 2</td>
-									<td>Row 3</td>
-									<td>Row 4</td>
-								</tr>
-								<tr>
-									<td>
-										<label class="checkbox">
-											<input type="checkbox" name="checkbox-inline">
-											<i></i>
-										</label>
-									</td>
-									<td>Row 1</td>
-									<td>Row 2</td>
-									<td>Row 3</td>
-									<td>Row 4</td>
-								</tr>
-								<tr>
-									<td>
-										<label class="checkbox">
-											<input type="checkbox" name="checkbox-inline">
-											<i></i>
-										</label>
-									</td>
-									<td>Row 1</td>
-									<td>Row 2</td>
-									<td>Row 3</td>
-									<td>Row 4</td>
-								</tr>
-								<tr>
-									<td>
-										<label class="checkbox">
-											<input type="checkbox" name="checkbox-inline">
-											<i></i>
-										</label>
-									</td>
-									<td>Row 1</td>
-									<td>Row 2</td>
-									<td>Row 3</td>
-									<td>Row 4</td>
 								</tr>
 							</tbody>
 						</table>

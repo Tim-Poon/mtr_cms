@@ -175,7 +175,8 @@ class Dashboard extends Controller
                 $todo_status['content'] = $todo->content;
 				$todo_status['level'] = $todo->level;
 				
-				$todo_status['url'] = "reporting/id/$todo->id";
+				// link to reporting page
+				$todo_status['url'] = "reporting?stype=$todo->src_type&seq=$todo->id";
                 array_push($res, $todo_status);
 			}
 

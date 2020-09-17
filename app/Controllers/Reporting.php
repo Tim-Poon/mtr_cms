@@ -20,10 +20,15 @@ class Reporting extends Controller
     public function index()
     {
         $data = [];
-        if($this->request->getGet()['seq'])
+        if($this->request->getGet()['stype'])
         {
+            // todo: get seq data from model
+            $tmp_data = $this->get_todos($this->request->getGet());
+            
+
             $data = [
-                'page_content'   => 'reporting/page',
+                'stype' => $this->request->getGet()['stype'],
+                'seq'   => $this->request->getGet()['seq'],
                 'heading' => 'My Heading',
                 'message' => 'My Message'
             ];
@@ -33,6 +38,12 @@ class Reporting extends Controller
         echo view('ajax/reporting', $data);
         echo view('foot');
         
+    }
+
+    protected function get_todos($tmp)
+    {
+        // todo: get seq data from model
+        return 1;
     }
 
     public function id($id)

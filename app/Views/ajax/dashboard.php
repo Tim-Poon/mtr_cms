@@ -165,17 +165,17 @@
 								<tr class="second">
 									<td>
 										<label class="input">
-											<input type="text" name="search_date" value="Filter time" class="search_init">
+											<input type="text" name="search_date" placeholder="Filter time" class="search_init">
 										</label>
 									</td>
 									<td>
 										<label class="input">
-											<input type="text" name="search_src_type" value="Filter source type" class="search_init">
+											<input type="text" name="search_src_type" placeholder="Filter source type" class="search_init">
 										</label>	
 									</td>
 									<td>
 										<label class="input">
-											<input type="text" name="search_content" value="Filter content" class="search_init">
+											<input type="text" name="search_content" placeholder="Filter content" class="search_init">
 										</label>	
 									</td>
 								</tr>

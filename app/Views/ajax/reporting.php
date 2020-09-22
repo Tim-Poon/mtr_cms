@@ -2,10 +2,10 @@
 <div class="row">
 	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
 		<h1 class="page-title txt-color-blueDark">
-			<i class="fa fa-table fa-fw "></i> 
-				Reporting 
-			<span>> 
-				<?= $stype ?> # <?= $seq ?> 
+			<i class="fa fa-table fa-fw "></i>
+				Reporting
+			<span>>
+				<?= $stype ?> # <?= $seq ?>
 			</span>
 		</h1>
 	</div>
@@ -35,98 +35,12 @@
 
 <!-- widget grid -->
 <section id="widget-grid" class="">
-
 	<!-- row -->
 	<div class="row">
-
-		<!-- NEW WIDGET START -->
-		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-			<!-- Widget ID (each widget will need unique ID)-->
-			<div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
-				<!-- widget options:
-				usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
-
-				data-widget-colorbutton="false"
-				data-widget-editbutton="false"
-				data-widget-togglebutton="false"
-				data-widget-deletebutton="false"
-				data-widget-fullscreenbutton="false"
-				data-widget-custombutton="false"
-				data-widget-collapsed="true"
-				data-widget-sortable="false"
-
-				-->
-				<header>
-					<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-					<h2>TODO</h2>
-
-				</header>
-
-				<!-- widget div-->
-				<div>
-
-					<div class="table-responsive">
-						
-						<table class="table table-bordered hidden-mobile">
-							<thead>
-								<tr>
-									<th>Date</th>
-									<th>scr_type</th>
-									<th>content</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr class="danger">
-									<td><?= $date ?></td>
-									<td>
-										<code>
-											<?= $stype ?>
-										</code
-									></td>
-									<td><?= $content ?></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-					<div class="widget-body no-padding">
-						<form id="contact-form" class="smart-form">
-							<header>Check form</header>
-							
-							<fieldset>					
-								<section>
-									<label class="label">message</label>
-									<div class="note note-error">This is a required field.</div>
-									<label class="textarea state-error" >
-										<textarea rows="4" name="message" id="reporting_message" ></textarea>
-									</label>
-								</section>
-								
-								<section>
-									<label class="checkbox"><input type="checkbox" name="copy" id="copy"><i></i>Send a copy to my e-mail address</label>
-								</section>
-							</fieldset>
-							
-							<footer>
-								<button type="submit" class="btn btn-primary">Submit</button>
-							</footer>
-						</form>
-					</div>
-				</div>
-				<!-- end widget div -->
-
-			</div>
-			<!-- end widget -->
-
-		</article>
-		<!-- WIDGET END -->
-
-
-		<!-- NEW WIDGET START -->
 		<article class="col-sm-12 col-md-12 col-lg-12">
+					<!-- new widget -->
+			<div class="jarviswidget jarviswidget-color-blue" id="wid-id-4" data-widget-editbutton="false" data-widget-colorbutton="false">
 
-			<!-- Widget ID (each widget will need unique ID)-->
-			<div class="jarviswidget jarviswidget-color-greenLight" id="wid-id-3" data-widget-editbutton="false">
 				<!-- widget options:
 				usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
 
@@ -140,10 +54,10 @@
 				data-widget-sortable="false"
 
 				-->
-				<header>
-					<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-					<h2>88888 </h2>
 
+				<header>
+					<span class="widget-icon"> <i class="fa fa-check txt-color-white"></i> </span>
+					<h2> ToDo's </h2>
 				</header>
 
 				<!-- widget div-->
@@ -151,52 +65,23 @@
 
 					<!-- widget edit box -->
 					<div class="jarviswidget-editbox">
-						<!-- This area used as dropdown edit box -->
-
+						<div>
+							<label>Title:</label>
+							<input type="text" />
+						</div>
 					</div>
 					<!-- end widget edit box -->
 
-					<!-- widget content -->
-					<div class="widget-body no-padding">
-
-						<table class="table table-bordered">
-							<thead>
-								<tr>
-									<th> <i class="fa fa-building"></i> SRC_TYPE </th>
-									<th> <i class="fa fa-calendar"></i> Content</th>
-									<th> <i class="fa fa-calendar"></i> Sovle MSG</th>
-									<th> <i class="glyphicon glyphicon-send"></i> TODO </th>
-								</tr>
-							</thead>
-							<tbody>
-							    <?php if ($related_logs) {foreach($related_logs as $log){
-							        echo " <tr class=\"info\">
-                                            <td>{$log->src_type}</td>
-                                            <td>{$log->content}</td>
-                                            <td>{$log->solve_message}</td>
-                                            <td>{$log->todo}</td>
-                                        </tr>";
-							        }
-							    }
-							        ?>
-							</tbody>
-						</table>
-
+					<div id="tabletodos" class="widget-body no-padding smart-form">
+					    <?php echo $tabletodos;?>
 					</div>
-					<!-- end widget content -->
 
 				</div>
 				<!-- end widget div -->
-
 			</div>
 			<!-- end widget -->
-
 		</article>
-		<!-- WIDGET END -->
-
-	</div>
-
-	<!-- end row -->
+    </div>
 
 </section>
 <!-- end widget grid -->
@@ -213,5 +98,4 @@
 		});
 		return false;
 	});
-
 </script>

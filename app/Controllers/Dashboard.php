@@ -37,10 +37,10 @@ class Dashboard extends Controller
 	public function index()
 	{
 		$data = [
-			'page_content'   => 'dashboard/page',
-			'heading' => 'My Heading',
-			'message' => 'My Message'
+			'logs'   => $this->logs(),
+			'num_of_todos' => 0
 		];
+
 		echo view('head', $data);
 		echo view('js');
 		echo view('ajax/dashboard', $data);
@@ -48,7 +48,9 @@ class Dashboard extends Controller
 	}
 
 
-
+    private function generate_todo_url($reporting_type, $id){
+        return "reporting?stype=$todo->src_type&id=$todo->id";
+    }
 	//--------------------------------------------------------------------
 
 	public function real_time_sensor_status()
@@ -62,7 +64,7 @@ class Dashboard extends Controller
 			# todo: get val for var 
 			$sensor_status['site_id'] = $sensor->sensor_site;
 			$sensor_status['sensor_id'] = $sensor->sensor_id;
-			$sensor_status['last_seen_time'] = Time::createFromTimestamp($sensor->l_conn / 1000, 'Asia/Shanghai', 'en_US');
+			$sensor_status['last_seen_time'] = Time::createFromTimestamp($sensor->l_conn / 1000, 'Asia/Hong_Kong', 'en_US');
 			$sensor_status['lasting_time'] = intval(($sensor->l_conn - $sensor->s_conn) / (1000 * 60));  # if lasting_time is Null, 
 			$sensor_status['recent_raw_flag'] = 'default';
 			$sensor_status['recent_raw_flag'] = 'default';
@@ -100,8 +102,6 @@ class Dashboard extends Controller
 				 </tr>";
 
 		}
-		// print_r($res);
-		return $res;
 	}
 
     public function get_sensor_status_dev()
@@ -114,38 +114,20 @@ class Dashboard extends Controller
 
 	public function logs()
 	{
-		$res = array();
-		$m = $this->model;
-		$logs = $m->get_logs(30);
-
+		$res = '';
+		$logs = $this->model->get_logs(30);
 
 		foreach($logs->getResult() as $log){
-			$log_status['ts'] = Time::createFromTimestamp($log->ts / 1000, 'Asia/Shanghai', 'en_US');
-			$log_status['src_type'] = $log->src_type;
-			$log_status['content'] = $log->content;
-			$log_status['level'] = $log->level;
-			array_push($res, $log_status);
-		}
-
-		foreach ($res as $log)
-		{
-			$ts = $log['ts'];
-			$src_type = $log['src_type'];
-			$content = $log['content'];
-			$level = $this->log_level_mapping[$log['level']];
-
-			// print_r($this->log_level_mapping);
-			// echo $this->log_level_mapping[$level].'</br>';
-			echo "<tr class= \"$level\">
+			$ts = Time::createFromTimestamp($log->ts / 1000, 'Asia/Hong_Kong', 'en_US');
+			$level = $this->log_level_mapping[$log->level];
+			$content = $log->content;
+            $res = $res .
+                  "<tr class= \"$level\">
 				  <td> $ts </td>
-				  <td> $src_type </td>
+				  <td> $log->src_type </td>
 				  <td> $content </td>
 			  	  </tr>";
-				// <tr class="danger">
-				// <tr class="warning">
-				// <tr class="info">
 		}
-
 		return $res;
 	}
 
@@ -158,7 +140,7 @@ class Dashboard extends Controller
             foreach($todos as $todo){
                 $todo_status['title'] = $todo->content;
                 $todo_status['allDay'] = true;
-                $time = Time::createFromTimestamp($todo->ts / 1000, 'Asia/Shanghai', 'en_US');
+                $time = Time::createFromTimestamp($todo->ts/1000, 'Asia/Hong_Kong', 'en_US');
                 $todo_status['start'] = "{$time->getYear()}-{$time->getMonth()}-{$time->getDay()}";
                 $todo_status['className'] = $this->loglevel2todo_mapping[$todo->level];
 
@@ -175,5 +157,11 @@ class Dashboard extends Controller
 			}
 
 		    return json_encode($res);
+	}
+
+	public function get_time()
+	{
+	    $time = Time::now('Asia/Hong_Kong', 'en_US');
+	    echo $time;
 	}
 }

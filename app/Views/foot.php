@@ -97,6 +97,17 @@
 		
         </script>
 
+<script>
+get_time();
+function get_time() {
+    $.get("dashboard/get_time")
+        .done(function(data) {
+            $('#time').html(data);
+            setTimeout(get_time, 1000);
+        });
+}
+</script>
+
 		
 	</body>	
 	

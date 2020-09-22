@@ -32,4 +32,29 @@ class ReportingModel extends Model
         return $rows[0];
     }
 
+    public function get_todos($minutes)
+    {
+        if($minutes <= 100)
+        {
+            // get lastest $minutes data
+            $query   = $this->db->query('SELECT id, ts, src_type, content, level FROM daily_log WHERE todo=0');
+            $results = $query->getResult();
+            return $results;
+        }
+    }
+
+    public function update_todos($id, $msg)
+    {
+        $data = ['solve_message' => $msg, 'todo' => 1];
+        $builder = $this->db->table('daily_log');
+        $builder->where('id', $id);
+        $builder->update($data);
+//         try:
+  #      $query = $this->db->query("UPDATE msg FROM daily_log WHERE id = {$id}");  // todo
+  #      $results = $query->getResult();
+//         except:
+//             return 0;
+        return 1;
+    }
+
 }

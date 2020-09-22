@@ -3,7 +3,7 @@
 	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
 		<h1 class="page-title txt-color-blueDark">
 			<i class="fa fa-table fa-fw "></i>
-				Reporting
+				Todos
 			<span>>
 				<?= $stype ?> # <?= $seq ?>
 			</span>

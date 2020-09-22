@@ -2,7 +2,7 @@
 
 use CodeIgniter\Model;
 
-class ReportingModel extends Model
+class TodosModel extends Model
 {
     function __construct()
     {

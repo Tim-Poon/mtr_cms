@@ -1,15 +1,15 @@
 <?php namespace App\Controllers;
 
-use App\Models\ReportingModel;
+use App\Models\TodosModel;
 use CodeIgniter\Controller;
 use CodeIgniter\I18n\Time;
 
-class Reporting extends Controller
+class Todos extends Controller
 {
     public function __construct()
     {
         // parent::__construct();
-        $this->model = new ReportingModel();
+        $this->model = new TodosModel();
         $this->request = \Config\Services::request();
     }
 
@@ -18,7 +18,7 @@ class Reporting extends Controller
         # page data
         $data = [];
 
-        # echo reporting page head
+        # echo todos page head
         echo view('head', $data);
         echo view('js');
 
@@ -61,7 +61,7 @@ class Reporting extends Controller
         }
         else {
             $data['tabletodos'] = $this->tabletodos();
-            echo view('ajax/reporting', $data);
+            echo view('ajax/todos', $data);
         }
     }
 
@@ -141,7 +141,7 @@ class Reporting extends Controller
 				$level = $todo->level;
 
 				// link to reporting page
-                $url = "reporting?stype=$todo->src_type&id=$todo->id";
+                $url = "todos?stype=$todo->src_type&id=$todo->id";
 
                 $view_content = "<li>
                                     <span class=\"handle\"></span>

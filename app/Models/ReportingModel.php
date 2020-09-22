@@ -2,13 +2,10 @@
 
 use CodeIgniter\Model;
 
-class HomeModel extends Model
+class ReportingModel extends Model
 {	
-    function __construct()
+	function __construct()
     {
         parent::__construct();
     }
-
-    
-
 }

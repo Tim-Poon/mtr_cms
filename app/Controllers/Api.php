@@ -15,10 +15,9 @@ class Api extends BaseController
     public function get_sensor_status()
     {
         # code...
-        $a = file_get_contents(config('ApiServer_')->apiServerUrl.config('ApiServer_')->sensor['sensor_status']);
-        // return $a;
-        $b = json_encode($a);
-        return ($a);
+        $sensor_status = file_get_contents(config('ApiServer_')->apiServerUrl.config('ApiServer_')->sensor['sensor_status']);
+        // $b = json_encode($a);
+        return ($sensor_status);
     }
 
 	//--------------------------------------------------------------------

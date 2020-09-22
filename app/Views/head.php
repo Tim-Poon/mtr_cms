@@ -106,18 +106,21 @@
 				<ul>
 					<li class=""><a href="dashboard" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i>  <span class="menu-item-parent">Dashboard</span></a></li>
 					<li><a href="todos">
-						<i class="fa fa-lg fa-fw fa-bar-chart-o"></i>  
+						<i class="fa fa-lg fa-fw fa-check-circle-o"></i>  
 						<span class="menu-item-parent">Todos</span>
 						<span class="badge pull-right inbox-badge"><?= $num_of_todos ?></span></a>
 					</li>
-					<!-- <li><a href="#"><i class="fa fa-lg fa-fw fa-bar-chart-o"></i>  <span class="menu-item-parent">Graphs</span></a>
+					<li class=""><a href="survey" title="Survey"><i class="fa fa-lg fa-fw fa-truck"></i>  <span class="menu-item-parent">Survey</span></a></li>
+					<li class=""><a href="reporting" title="Reporting"><i class="fa fa-lg fa-fw fa-file-text"></i>  <span class="menu-item-parent">Reporting</span></a></li>
+
+					<li><a href="#"><i class="fa fa-lg fa-fw fa-map-marker"></i>  <span class="menu-item-parent">Sites</span></a>
 						<ul>
-							<li><a href="ajax/flot.html">Flot Chart</a></li>
-							<li><a href="ajax/morris.html">Morris Charts</a></li>
-							<li><a href="ajax/inline-charts.html">Inline Charts</a></li>
+							<li><a href="sites?sn=KOB">KOB</a></li>
+							<li><a href="sites?sn=YMT">YMT</a></li>
+							<li><a href="sites?sn=CEN">CEN</a></li>
 						</ul>
 					</li>
-					<li><a href="#"><i class="fa fa-lg fa-fw fa-table"></i>  <span class="menu-item-parent">Tables</span></a>
+					<!-- <li><a href="#"><i class="fa fa-lg fa-fw fa-table"></i>  <span class="menu-item-parent">Tables</span></a>
 						 	<ul>
 								 <li><a href="ajax/table.html">Normal Tables</a></li>
 								 <li><a href="ajax/datatables.html">Data Tables</a></li>

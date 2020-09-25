@@ -8,4 +8,13 @@ class SurveyModel extends Model
     {
         parent::__construct();
     }
+
+    public function get_event()
+    {
+        // get survey event
+        $builder = $this->db->table('survey_event');
+        $builder->orderBy('id', 'DESC');
+        $query = $builder->get();
+        return $query;
+    }
 }

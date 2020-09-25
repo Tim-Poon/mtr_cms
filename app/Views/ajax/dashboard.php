@@ -181,7 +181,7 @@
 								</tr>
 							</thead>
 							<tbody id='logsbody'>
-							<?= $logs ?>
+								<?= $logs ?>
 							</tbody>
 						</table>
 
@@ -279,6 +279,7 @@
 
 </section>
 <!-- end widget grid -->
+
 <script type="text/javascript">
 	// DO NOT REMOVE : GLOBAL FUNCTIONS!
 	pageSetUp();
@@ -495,40 +496,33 @@
 	
 	}
 
-	loadScript("js/plugin/datatables/jquery.dataTables-cust.min.js", dt_2);
+	loadScript("js/plugin/datatables/datatables.min.js", dt_2);
 
 	function dt_2() {
-		loadScript("js/plugin/datatables/ColReorder.min.js", dt_3);
+		loadScript("js/plugin/datatables/ColReorder-1.5.2/js/dataTables.colReorder.min.js", dt_3);
 	}
 
 	function dt_3() {
-		loadScript("js/plugin/datatables/FixedColumns.min.js", dt_4);
+		loadScript("js/plugin/datatables/FixedColumns-3.3.1/js/dataTables.fixedColumns.min.js", dt_4);
 	}
 
 	function dt_4() {
-		loadScript("js/plugin/datatables/ColVis.min.js", dt_5);
+		loadScript("js/plugin/datatables/dataTables.colVis.js", dt_6);
 	}
 
-	function dt_5() {
-		loadScript("js/plugin/datatables/ZeroClipboard.js", dt_6);
-	}
+	// function dt_5() {
+	// 	loadScript("js/plugin/datatables/ZeroClipboard.js", dt_6);
+	// }
 
 	function dt_6() {
-		loadScript("js/plugin/datatables/media/js/TableTools.min.js", dt_7);
+		loadScript("js/plugin/datatables/dataTables.tableTools.min.js", dt_7);
 	}
 
 	function dt_7() {
-		loadScript("js/plugin/datatables/DT_bootstrap.js", runDataTables);
+		loadScript("js/plugin/datatables/DataTables-1.10.22/js/dataTables.bootstrap4.min.js", runDataTables);
 	}
 
 	function runDataTables() {
-
-		/*
-		 * BASIC
-		 */
-		$('#dt_basic').dataTable({
-			"sPaginationType" : "bootstrap_full"
-		});
 
 		/* END BASIC */
 
@@ -555,54 +549,22 @@
 		
 
 		var oTable = $('#datatable_fixed_column').dataTable({
-			"sDom" : "<'dt-top-row'><'dt-wrapper't><'dt-row dt-bottom-row'<'row'<'col-sm-6'i><'col-sm-6 text-right'p>>",
+			dom : "<'dt-top-row'><'dt-wrapper't><'dt-row dt-bottom-row'ip>",
 			//"sDom" : "t<'row dt-wrapper'<'col-sm-6'i><'dt-row dt-bottom-row'<'row'<'col-sm-6'i><'col-sm-6 text-right'>>",
 			"oLanguage" : {
 				"sSearch" : "Search all columns:"
 			},
 			"bSortCellsTop" : true,
-			"aaSorting": [[0, "desc"]],
+			order: [[0, "desc"]],
 		});		
 		
 
-
-		/*
-		 * COL ORDER
-		 */
-		$('#datatable_col_reorder').dataTable({
-			"sPaginationType" : "bootstrap",
-			"sDom" : "R<'dt-top-row'Clf>r<'dt-wrapper't><'dt-row dt-bottom-row'<'row'<'col-sm-6'i><'col-sm-6 text-right'p>>",
-			"fnInitComplete" : function(oSettings, json) {
-				$('.ColVis_Button').addClass('btn btn-default btn-sm').html('Columns <i class="icon-arrow-down"></i>');
-			}
-		});
-		
-		/* END COL ORDER */
-
-		/* TABLE TOOLS */
-		$('#datatable_tabletools').dataTable({
-			"sDom" : "<'dt-top-row'Tlf>r<'dt-wrapper't><'dt-row dt-bottom-row'<'row'<'col-sm-6'i><'col-sm-6 text-right'p>>",
-			"oTableTools" : {
-				"aButtons" : ["copy", "print", {
-					"sExtends" : "collection",
-					"sButtonText" : 'Save <span class="caret" />',
-					"aButtons" : ["csv", "xls", "pdf"]
-				}],
-				"sSwfPath" : "js/plugin/datatables/media/swf/copy_csv_xls_pdf.swf"
-			},
-			"fnInitComplete" : function(oSettings, json) {
-				$(this).closest('#dt_table_tools_wrapper').find('.DTTT.btn-group').addClass('table_tools_group').children('a.btn').each(function() {
-					$(this).addClass('btn-sm btn-default');
-				});
-			}
-		});
-		
 		/* END TABLE TOOLS */
 
 	}
 
-	loadData();
-	function loadData() {
+	load_sensor_status();
+	function load_sensor_status() {
     // console.log(url)
 
 		$.ajax({
@@ -614,11 +576,11 @@
 				// container.html('<h1><i class="fa fa-cog fa-spin"></i> Loading...</h1>');
 			},
 			success: function (data) {
-				// console.log("loadData");
+				// console.log("load_sensor_status");
 				$('#statusbody')
 					.html(data)
 					.delay(100);
-				setTimeout(loadData, 1000);
+				setTimeout(load_sensor_status, 1000);
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
 				// container.html(

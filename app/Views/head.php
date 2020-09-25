@@ -14,22 +14,22 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 		
 		<!-- Basic Styles -->
-		<link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap.min.css">	
-		<link rel="stylesheet" type="text/css" media="screen" href="css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" media="screen" href="<?= base_url('/public/css/bootstrap.min.css')?>">	
+		<link rel="stylesheet" type="text/css" media="screen" href="<?= base_url('/public/css/font-awesome.min.css')?>">
 
 		<!-- SmartAdmin Styles : Please note (smartadmin-production.css) was created using LESS variables -->
-		<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-production.css">
-		<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-skins.css">	
+		<link rel="stylesheet" type="text/css" media="screen" href="<?= base_url('/public/css/smartadmin-production.css')?>">
+		<link rel="stylesheet" type="text/css" media="screen" href="<?= base_url('/public/css/smartadmin-skins.css')?>">	
 		
 		<!-- SmartAdmin RTL Support is under construction
 			<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-rtl.css"> -->
 		
 		<!-- Demo purpose only: goes with demo.js, you can delete this css when designing your own WebApp -->
-		<link rel="stylesheet" type="text/css" media="screen" href="css/demo.css">
+		<link rel="stylesheet" type="text/css" media="screen" href="<?= base_url('/public/css/demo.css')?>">
 		
 		<!-- FAVICONS -->
-		<link rel="shortcut icon" href="img/favicon/favicon.ico" type="image/x-icon">
-		<link rel="icon" href="img/favicon/favicon.ico" type="image/x-icon">
+		<link rel="shortcut icon" href="<?= base_url('/public/img/favicon/favicon.ico')?>" type="image/x-icon">
+		<link rel="icon" href="<?= base_url('/public/img/favicon/favicon.ico')?>" type="image/x-icon">
 		
 		<!-- GOOGLE FONT -->
 		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">
@@ -43,7 +43,7 @@
 
                     <!-- PLACE YOUR LOGO HERE -->
                     <span id="logo">
-                        <img src="img/logo.png" alt="SmartAdmin">
+                        <img src="<?= base_url('/public/img/logo.png')?>" alt="SmartAdmin">
                     </span>
                     <!-- END LOGO PLACEHOLDER -->
 
@@ -85,7 +85,7 @@
 			<div class="login-info">
 				<span>
 					<!-- User image size is adjusted inside CSS, it should stay as it --> 
-					<img src="img/avatars/sunny.png" alt="me" class="online" />	
+					<img src="<?= base_url('/public/img/avatars/sunny.png')?>" alt="me" class="online" />	
 					<a href="javascript:void(0);" id="show-shortcut">Welcome: Admin <i class="fa fa-angle-down"></i></a>
 				</span>
 			</div>
@@ -104,20 +104,20 @@
 					-->
 				
 				<ul>
-					<li class=""><a href="dashboard" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i>  <span class="menu-item-parent">Dashboard</span></a></li>
-					<li><a href="todos">
+					<li class=""><a href="<?= base_url('/public/dashboard')?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i>  <span class="menu-item-parent">Dashboard</span></a></li>
+					<li><a href="<?= base_url('/public/todos')?>">
 						<i class="fa fa-lg fa-fw fa-check-circle-o"></i>  
 						<span class="menu-item-parent">Todos</span>
 						<span class="badge pull-right inbox-badge"><?= $num_of_todos ?></span></a>
 					</li>
-					<li class=""><a href="survey" title="Survey"><i class="fa fa-lg fa-fw fa-truck"></i>  <span class="menu-item-parent">Survey</span></a></li>
-					<li class=""><a href="reporting" title="Reporting"><i class="fa fa-lg fa-fw fa-file-text"></i>  <span class="menu-item-parent">Reporting</span></a></li>
+					<li class=""><a href="<?= base_url('/public/survey')?>" title="Survey"><i class="fa fa-lg fa-fw fa-truck"></i>  <span class="menu-item-parent">Survey</span></a></li>
+					<li class=""><a href="<?= base_url('/public/reporting')?>" title="Reporting"><i class="fa fa-lg fa-fw fa-file-text"></i>  <span class="menu-item-parent">Reporting</span></a></li>
 
 					<li><a href="#"><i class="fa fa-lg fa-fw fa-map-marker"></i>  <span class="menu-item-parent">Sites</span></a>
 						<ul>
-							<li><a href="sites?sn=KOB">KOB</a></li>
-							<li><a href="sites?sn=YMT">YMT</a></li>
-							<li><a href="sites?sn=CEN">CEN</a></li>
+							<li><a href="<?= base_url('/public/sites/sn/KOB')?>">KOB</a></li>
+							<li><a href="<?= base_url('/public/sites/sn/KOB')?>">YMT</a></li>
+							<li><a href="<?= base_url('/public/sites/sn/KOB')?>">CEN</a></li>
 						</ul>
 					</li>
 					<!-- <li><a href="#"><i class="fa fa-lg fa-fw fa-table"></i>  <span class="menu-item-parent">Tables</span></a>

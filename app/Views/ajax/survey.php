@@ -159,7 +159,7 @@
 					className: 'btn btn-primary btn-primary-sm',
 					text: 'New Event',
 					action: function ( e, dt, node, config ) {
-						window.location.href="surveynew";
+						window.location.href="surveyNew";
 					}
 				}
 			]

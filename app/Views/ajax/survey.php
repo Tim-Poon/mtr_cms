@@ -159,7 +159,7 @@
 					className: 'btn btn-primary btn-primary-sm',
 					text: 'New Event',
 					action: function ( e, dt, node, config ) {
-						window.location.href="survey/new_event";
+						window.location.href="surveynew";
 					}
 				}
 			]
@@ -169,7 +169,7 @@
 			var table1 = $('#dt_basic').DataTable();
 			$("#dt_basic tbody").on("click","tr",function(){
 				var data = table1.row( this ).data();
-				alert(data[0]);
+				window.location.href="survey?id=" + data[0];
 			});
         });
 

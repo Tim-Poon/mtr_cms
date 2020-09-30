@@ -113,7 +113,6 @@ class Todos extends Controller
 //                 echo view('submit', $data);
                 return 1;
             }
-
         }
     }
 

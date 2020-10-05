@@ -9,16 +9,13 @@ class Survey extends Controller
     {
 		// parent::__construct();
 		$this->model = new SurveyModel();
+		$this->source = array('survey_beacon', 'survey_wifi', 'survey_imu', 'survey_uwb_loc', 'survey_uwb_dist');
 	}
 
 	public function index()
 	{
 		$events = $this->model->get_event()->getResult();
-		// record each survey
-		// todo: build survey by date
-		// todo: show survey data (include raw & groundture)
 		// todo: online simply analysis
-		// todo: download servey data
         $data = ['events' => $events];
         echo view('head', $data);
 		echo view('js');
@@ -29,16 +26,6 @@ class Survey extends Controller
 	public function update()
 	{
 		# code...
-	}
-
-	public function api_data($source, $event_id)
-	{
-		if ($source == 'survey_beacon' || $source == 'survey_wifi' || $source == 'survey_imu' || $source == 'survey_uwb_loc' || $source == 'survey_uwb_dist' ){
-			$res = $this->model->api_data($source, $event_id)->getResult();
-			echo json_encode($res);
-		}else{
-			echo "error source!";
-		}	
 	}
 
 	protected function set_data(){
@@ -73,5 +60,36 @@ class Survey extends Controller
         else {
             echo view('ajax/survey');
         }
-    }
+	}
+	
+	public function api_data($source, $event_id)
+	{
+		if (in_array($source, $this->source)){
+			$res = $this->model->api_data($source, $event_id)->getResult();
+			echo json_encode($res);
+		}else{
+			echo "error source!";
+		}	
+	}
+	
+	public function download($source, $event_id)
+	{	
+		if (in_array($source, $this->source)){
+			$res = $this->model->api_data($source, $event_id)->getResult('array');
+			if ($res){
+				$head = array_keys($res[0]);
+				header('Content-Type: application/vnd.ms-excel;charset=UTF-8');
+				header('Content-Type: application/force-download');
+				$filename = 'event_'.$event_id.'_'.$source.'.csv';
+				header('Content-Disposition: attachment;filename='.$filename);
+				$fp = fopen('php://output', 'a');
+				fputcsv($fp, $head);
+				foreach($res as $row) {
+					fputcsv($fp, $row);
+				}
+			}
+		}else{
+			echo "error source!";
+		}
+	}
 }

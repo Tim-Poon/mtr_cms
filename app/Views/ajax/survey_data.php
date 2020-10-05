@@ -1,12 +1,3 @@
-<?php 
-    // foreach ($event as $item){
-    // print_r($item);
-    // }
-    // foreach ($data_beacon as $item){
-    //     print_r($item);
-    //     }
-?>
-
 <div class="row">
 	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
 		<h1 class="page-title txt-color-blueDark">
@@ -51,7 +42,7 @@
 		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
             <!-- Widget ID (each widget will need unique ID)-->
-            <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false">
+            <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
                 <!-- widget options:
                 usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
 
@@ -103,9 +94,9 @@
                                     </section>
                                 </div>
                                 <section>
-                                    <label class="label">Remmark</label>
+                                    <label class="label">Remark</label>
                                     <label class="textarea state-info" >
-                                        <textarea rows="4" name="message" id="reporting_message" value="<?=$event->remark?>"></textarea>
+                                        <textarea rows="4" name="message" id="reporting_message"><?=$event->remark?></textarea>
                                     </label>
                                 </section>
                             </fieldset>
@@ -129,7 +120,7 @@
 		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
 
 			<!-- Widget ID (each widget will need unique ID)-->
-			<div class="jarviswidget jarviswidget-color-write" id="wid-id-1" data-widget-editbutton="false" data-widget-colorbutton="false">
+			<div class="jarviswidget jarviswidget-color-write" id="wid-id-1" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
 				<!-- widget options:
 				usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
 				-->
@@ -143,6 +134,7 @@
 				<div>
 					<!-- widget content -->
 					<div class="widget-body">
+                        <?php if ($data_beacon){?>
                         <p>
                             field: <code>uuid, mac, major, minor, rssi, receiver, ts</code>
                         </p>
@@ -152,10 +144,15 @@
                         <p>
                             ts: <code>
                                 <?= $data_beacon[0]->ts?>
-                                (<?= date("Y-m-d H:i", $data_beacon[0]->ts / 1000) ?>) 
                                 - 
                                 <?= end($data_beacon)->ts?>
-                                (<?= date("Y-m-d H:i", end($data_beacon)->ts / 1000) ?>) 
+                            </code>
+                        </p>
+                        <p>
+                            date: <code>
+                                <?= date("Y-m-d H:i", $data_beacon[0]->ts / 1000) ?>
+                                -
+                                <?= date("Y-m-d H:i", end($data_beacon)->ts / 1000) ?>
                             </code>
 						</p>
 						<hr class="simple">
@@ -163,8 +160,11 @@
                             api: <a><code><?= base_url()."/public/survey/api_data/survey_beacon/".$event->event_id?></code></a>
                         </p>
                         <p>
-                            csv: <a href="javascript:void(0);" class="btn btn-xs bg-color-blue txt-color-white">beacon: <?= $event->event_id?></a>
+                            csv: <a href="survey/download/survey_beacon/<?=$event->event_id?>" class="btn btn-xs bg-color-blue txt-color-white">beacon: <?= $event->event_id?></a>
                         </p>
+                        <?php }else{?>
+                        <p>No Data</p>
+                        <?php }?>
 					</div>
 					<!-- end widget content -->
                     
@@ -178,7 +178,7 @@
 		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
 
             <!-- Widget ID (each widget will need unique ID)-->
-            <div class="jarviswidget jarviswidget-color-write" id="wid-id-2" data-widget-editbutton="false" data-widget-colorbutton="false">
+            <div class="jarviswidget jarviswidget-color-write" id="wid-id-2" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
                 <!-- widget options:
                 usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
                 -->
@@ -192,6 +192,7 @@
                 <div>
                     <!-- widget content -->
                     <div class="widget-body">
+                        <?php if ($data_wifi){?>
                         <p>
                             field: <code>src_type, bssid, ssid, rssi, ch, receiver, ts</code>
                         </p>
@@ -201,19 +202,27 @@
                         <p>
                             ts: <code>
                                 <?= $data_wifi[0]->ts?>
-                                (<?= date("Y-m-d H:i", $data_wifi[0]->ts / 1000) ?>) 
                                 - 
                                 <?= end($data_wifi)->ts?>
-                                (<?= date("Y-m-d H:i", end($data_wifi)->ts / 1000) ?>) 
                             </code>
                         </p>
+                        <p>
+                            date: <code>
+                                <?= date("Y-m-d H:i", $data_wifi[0]->ts / 1000) ?>
+                                -
+                                <?= date("Y-m-d H:i", end($data_wifi)->ts / 1000) ?>
+                            </code>
+						</p>
                         <hr class="simple">
                         <p>
                             api: <a><code><?= base_url()."/public/survey/api_data/survey_wifi/".$event->event_id?></code></a>
                         </p>
                         <p>
-                            csv: <a href="javascript:void(0);" class="btn btn-xs bg-color-blue txt-color-white">wi-fi: <?= $event->event_id?></a>
+                            csv: <a href="survey/download/survey_wifi/<?=$event->event_id?>" class="btn btn-xs bg-color-blue txt-color-white">wi-fi: <?= $event->event_id?></a>
                         </p>
+                        <?php }else{?>
+                        <p>No Data</p>
+                        <?php }?>
                     </div>
                     <!-- end widget content -->
                     
@@ -227,7 +236,7 @@
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
 
             <!-- Widget ID (each widget will need unique ID)-->
-            <div class="jarviswidget jarviswidget-color-write" id="wid-id-3" data-widget-editbutton="false" data-widget-colorbutton="false">
+            <div class="jarviswidget jarviswidget-color-write" id="wid-id-3" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
                 <!-- widget options:
                 usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
                 -->
@@ -241,6 +250,7 @@
                 <div>
                     <!-- widget content -->
                     <div class="widget-body">
+                        <?php if ($data_imu){?>
                         <p>
                             field: <code>a, w, h, A, receiver, ts</code>
                         </p>
@@ -250,19 +260,27 @@
                         <p>
                             ts: <code>
                                 <?= $data_imu[0]->ts?>
-                                (<?= date("Y-m-d H:i", $data_imu[0]->ts / 1000) ?>) 
                                 - 
                                 <?= end($data_imu)->ts?>
-                                (<?= date("Y-m-d H:i", end($data_imu)->ts / 1000) ?>) 
                             </code>
                         </p>
+                        <p>
+                            date: <code>
+                                <?= date("Y-m-d H:i", $data_imu[0]->ts / 1000) ?>
+                                -
+                                <?= date("Y-m-d H:i", end($data_imu)->ts / 1000) ?>
+                            </code>
+						</p>
                         <hr class="simple">
                         <p>
                             api: <a><code><?= base_url()."/public/survey/api_data/survey_imu/".$event->event_id?></code></a>
                         </p>
                         <p>
-                            csv: <a href="javascript:void(0);" class="btn btn-xs bg-color-blue txt-color-white">imu: <?= $event->event_id?></a>
+                            csv: <a href="survey/download/survey_imu/<?=$event->event_id?>"s class="btn btn-xs bg-color-blue txt-color-white">imu: <?= $event->event_id?></a>
                         </p>
+                        <?php }else{?>
+                        <p>No Data</p>
+                        <?php }?>
                     </div>
                     <!-- end widget content -->
                     
@@ -277,7 +295,7 @@
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
 
             <!-- Widget ID (each widget will need unique ID)-->
-            <div class="jarviswidget jarviswidget-color-write" id="wid-id-4" data-widget-editbutton="false" data-widget-colorbutton="false">
+            <div class="jarviswidget jarviswidget-color-write" id="wid-id-4" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
                 <!-- widget options:
                 usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
                 -->
@@ -291,6 +309,7 @@
                 <div>
                     <!-- widget content -->
                     <div class="widget-body">
+                        <?php if ($data_uwb_dist){?>
                         <p>
                             field: <code>tag_id, anchor_id, dist_raw, dist_calibration, seq, receiver, ts</code>
                         </p>
@@ -300,19 +319,27 @@
                         <p>
                             ts: <code>
                                 <?= $data_uwb_dist[0]->ts?>
-                                (<?= date("Y-m-d H:i", $data_uwb_dist[0]->ts / 1000) ?>) 
                                 - 
                                 <?= end($data_uwb_dist)->ts?>
-                                (<?= date("Y-m-d H:i", end($data_uwb_dist)->ts / 1000) ?>) 
                             </code>
                         </p>
+                        <p>
+                            date: <code>
+                                <?= date("Y-m-d H:i", $data_uwb_dist[0]->ts / 1000) ?>
+                                -
+                                <?= date("Y-m-d H:i", end($data_uwb_dist)->ts / 1000) ?>
+                            </code>
+						</p>
                         <hr class="simple">
                         <p>
                             api: <a><code><?= base_url()."/public/survey/api_data/survey_uwb_dist/".$event->event_id?></code></a>
                         </p>
                         <p>
-                            csv: <a href="javascript:void(0);" class="btn btn-xs bg-color-blue txt-color-white">uwb_dist: <?= $event->event_id?></a>
+                            csv: <a href="survey/download/survey_uwb_dist/<?=$event->event_id?>" class="btn btn-xs bg-color-blue txt-color-white">uwb_dist: <?= $event->event_id?></a>
                         </p>
+                        <?php }else{?>
+                            <p>No Data</p>
+                        <?php }?>
                     </div>
                     <!-- end widget content -->
                     
@@ -327,7 +354,7 @@
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
 
             <!-- Widget ID (each widget will need unique ID)-->
-            <div class="jarviswidget jarviswidget-color-write" id="wid-id-5" data-widget-editbutton="false" data-widget-colorbutton="false">
+            <div class="jarviswidget jarviswidget-color-write" id="wid-id-5" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
                 <!-- widget options:
                 usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
                 -->
@@ -341,6 +368,7 @@
                 <div>
                     <!-- widget content -->
                     <div class="widget-body">
+                        <?php if ($data_uwb_loc){?>
                         <p>
                             field: <code>tag_id, pos_x, pos_y, pos_z, receiver, ts</code>
                         </p>
@@ -350,19 +378,27 @@
                         <p>
                             ts: <code>
                                 <?= $data_uwb_loc[0]->ts?>
-                                (<?= date("Y-m-d H:i", $data_uwb_loc[0]->ts / 1000) ?>) 
                                 - 
                                 <?= end($data_uwb_loc)->ts?>
-                                (<?= date("Y-m-d H:i", end($data_uwb_loc)->ts / 1000) ?>) 
                             </code>
                         </p>
+                        <p>
+                            date: <code>
+                                <?= date("Y-m-d H:i", $data_uwb_loc[0]->ts / 1000) ?>
+                                -
+                                <?= date("Y-m-d H:i", end($data_uwb_loc)->ts / 1000) ?>
+                            </code>
+						</p>
                         <hr class="simple">
                         <p>
                             api: <a><code><?= base_url()."/public/survey/api_data/survey_uwb_loc/".$event->event_id?></code></a>
                         </p>
                         <p>
-                            csv: <a href="javascript:void(0);" class="btn btn-xs bg-color-blue txt-color-white">uwb_loc: <?= $event->event_id?></a>
+                            csv: <a href="survey/download/survey_uwb_loc/<?=$event->event_id?>" class="btn btn-xs bg-color-blue txt-color-white">uwb_loc: <?= $event->event_id?></a>
                         </p>
+                        <?php }else{?>
+                            <p>No Data</p>
+                        <?php }?>
                     </div>
                     <!-- end widget content -->
                     
@@ -469,5 +505,4 @@
 		});
 		return false;
 	});
-
 </script>

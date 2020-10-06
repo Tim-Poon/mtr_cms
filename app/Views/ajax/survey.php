@@ -2,9 +2,8 @@
 	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
 		<h1 class="page-title txt-color-blueDark">
 			<i class="fa fa-truck fa-fw "></i> 
-				Survey 
-			<span>> 
-				#
+				<a href="survey" style="color:#696969; cursor:pointer"><strong>Survey</strong></a> 
+			<span>
 			</span>
 		</h1>
 	</div>
@@ -81,9 +80,9 @@
 							<tbody>
 								<?php foreach($events as $event) {?>
 								<tr>
-									<td><?= $event->event_id?></td>
+									<td><strong><a href="survey?id=<?=$event->event_id?>" style="cursor:pointer"><?= $event->event_id?></a></strong></td>
 									<td><?= $event->date?></td>
-									<td><?= $event->site_name?> [geo]</td>
+									<td><?= $event->site_name?> </td>
 								<td><?php if($event->remark){?><i class="fa fa-check fa-fw "><?php }?></td>
 								</tr>
 								<?php }?>
@@ -165,13 +164,13 @@
 			]
 		});
 
-		$(document).ready(function() {
-			var table1 = $('#dt_basic').DataTable();
-			$("#dt_basic tbody").on("click","tr",function(){
-				var data = table1.row( this ).data();
-				window.location.href="survey?id=" + data[0];
-			});
-        });
+		// $(document).ready(function() {
+		// 	var table1 = $('#dt_basic').DataTable();
+		// 	$("#dt_basic tbody").on("click","tr th",function(){
+		// 		var data = table1.row( this ).data();
+		// 		window.location.href="survey?id=" + data[0];
+		// 	});
+        // });
 
 		/* END BASIC */
 	}

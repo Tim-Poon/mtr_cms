@@ -104,20 +104,20 @@
 					-->
 				
 				<ul>
-					<li class=""><a href="<?= base_url('/public/dashboard')?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i>  <span class="menu-item-parent">Dashboard</span></a></li>
-					<li><a href="<?= base_url('/public/todos')?>">
+					<li class=""><a href="dashboard" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i>  <span class="menu-item-parent">Dashboard</span></a></li>
+					<li><a href="todos">
 						<i class="fa fa-lg fa-fw fa-check-circle-o"></i>  
 						<span class="menu-item-parent">Todos</span>
 						<span class="badge pull-right inbox-badge"><?= $num_of_todos ?></span></a>
 					</li>
-					<li class=""><a href="<?= base_url('/public/survey')?>" title="Survey"><i class="fa fa-lg fa-fw fa-truck"></i>  <span class="menu-item-parent">Survey</span></a></li>
-					<li class=""><a href="<?= base_url('/public/reporting')?>" title="Reporting"><i class="fa fa-lg fa-fw fa-file-text"></i>  <span class="menu-item-parent">Reporting</span></a></li>
+					<li class=""><a href="survey" title="Survey"><i class="fa fa-lg fa-fw fa-truck"></i>  <span class="menu-item-parent">Survey</span></a></li>
+					<li class=""><a href="reporting" title="Reporting"><i class="fa fa-lg fa-fw fa-file-text"></i>  <span class="menu-item-parent">Reporting</span></a></li>
 
 					<li><a href="#"><i class="fa fa-lg fa-fw fa-map-marker"></i>  <span class="menu-item-parent">Sites</span></a>
 						<ul>
-							<li><a href="<?= base_url('/public/sites/sn/KOB')?>">KOB</a></li>
-							<li><a href="<?= base_url('/public/sites/sn/KOB')?>">YMT</a></li>
-							<li><a href="<?= base_url('/public/sites/sn/KOB')?>">CEN</a></li>
+							<li><a href="sites/sn/KOB">KOB</a></li>
+							<li><a href="sites/sn/YMT">YMT</a></li>
+							<li><a href="sites/sn/CEN">CEN</a></li>
 						</ul>
 					</li>
 					<!-- <li><a href="#"><i class="fa fa-lg fa-fw fa-table"></i>  <span class="menu-item-parent">Tables</span></a>

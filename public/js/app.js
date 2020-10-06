@@ -1352,12 +1352,11 @@ function checkURL() {
 
     // get the url by removing the hash
     // url = location.hash.replace(/^#/, '');
-    // console.log(url);
     url = window.location.href;
     temp = url.split('/');
     url = temp[5];
     container = $('#content');
-    
+    // console.log(url);
     // Do this if url exists (for page refresh, etc...)
     if (url) {
         // remove all active class

@@ -25,7 +25,21 @@ class Survey extends Controller
 
 	public function update()
 	{
-		# code...
+		if($this->request->getPost()['e_id'] && $this->request->getPost()['date'] && $this->request->getPost()['site_name']){
+			$event_id = $this->request->getPost()['e_id'];
+			$data = array(
+                'date' => $this->request->getPost()['date'],
+                'site_name' => $this->request->getPost()['site_name'],
+                'site_geo' => $this->request->getPost()['site_geo'],
+                'remark' => $this->request->getPost()['remark'],
+            );
+			$this->model->update_event($event_id, $data);
+			$submit_msg = "Update Event # $event_id";
+			$submit_data = ['msg' => $submit_msg];
+			echo view('submit', $submit_data);
+		}else{
+			echo 0;
+		}
 	}
 
 	protected function set_data(){

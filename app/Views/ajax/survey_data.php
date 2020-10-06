@@ -1,10 +1,11 @@
+<div id="done"> </div>
 <div class="row">
 	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
 		<h1 class="page-title txt-color-blueDark">
 			<i class="fa fa-truck fa-fw "></i> 
-				Survey 
-			<span>> 
-				Event # <?= $event->event_id?>
+                <a href="survey" style="color:#696969; cursor:pointer"><strong>Survey</strong></a> 
+			<span><strong style="color:#696969">> </strong>
+                <strong style="color:#496949">Event # <?= $event->event_id?></strong>
 			</span>
 		</h1>
 	</div>
@@ -71,7 +72,7 @@
                                     <section class="col col-3">
                                         <label class="label">Event ID</label>
                                         <label class="input state-success"> <i class="icon-prepend fa fa-barcode"></i>
-                                            <input type="text" name="e_id" value="<?=$event->event_id?>" disabled="disabled">
+                                            <input type="text" name="e_id" value="<?=$event->event_id?>" readonly="readonly">
                                         </label>
                                     </section>
                                     <section class="col col-3">
@@ -96,7 +97,7 @@
                                 <section>
                                     <label class="label">Remark</label>
                                     <label class="textarea state-info" >
-                                        <textarea rows="4" name="message" id="reporting_message"><?=$event->remark?></textarea>
+                                        <textarea rows="4" name="remark"><?=$event->remark?></textarea>
                                     </label>
                                 </section>
                             </fieldset>
@@ -157,7 +158,7 @@
 						</p>
 						<hr class="simple">
 						<p>
-                            api: <a><code><?= base_url()."/public/survey/api_data/survey_beacon/".$event->event_id?></code></a>
+                            api: <a href="<?= base_url()."/public/survey/api_data/survey_beacon/".$event->event_id?>"><code>link</code></a>
                         </p>
                         <p>
                             csv: <a href="survey/download/survey_beacon/<?=$event->event_id?>" class="btn btn-xs bg-color-blue txt-color-white">beacon: <?= $event->event_id?></a>
@@ -215,7 +216,7 @@
 						</p>
                         <hr class="simple">
                         <p>
-                            api: <a><code><?= base_url()."/public/survey/api_data/survey_wifi/".$event->event_id?></code></a>
+                            api: <a href="<?= base_url()."/public/survey/api_data/survey_wifi/".$event->event_id?>"><code>link</code></a>
                         </p>
                         <p>
                             csv: <a href="survey/download/survey_wifi/<?=$event->event_id?>" class="btn btn-xs bg-color-blue txt-color-white">wi-fi: <?= $event->event_id?></a>
@@ -273,7 +274,7 @@
 						</p>
                         <hr class="simple">
                         <p>
-                            api: <a><code><?= base_url()."/public/survey/api_data/survey_imu/".$event->event_id?></code></a>
+                            api: <a href="<?= base_url()."/public/survey/api_data/survey_imu/".$event->event_id?>"><code>link</code></a>
                         </p>
                         <p>
                             csv: <a href="survey/download/survey_imu/<?=$event->event_id?>"s class="btn btn-xs bg-color-blue txt-color-white">imu: <?= $event->event_id?></a>
@@ -332,7 +333,7 @@
 						</p>
                         <hr class="simple">
                         <p>
-                            api: <a><code><?= base_url()."/public/survey/api_data/survey_uwb_dist/".$event->event_id?></code></a>
+                            api: <a href="<?= base_url()."/public/survey/api_data/survey_uwb_dist/".$event->event_id?>"><code>link</code></a>
                         </p>
                         <p>
                             csv: <a href="survey/download/survey_uwb_dist/<?=$event->event_id?>" class="btn btn-xs bg-color-blue txt-color-white">uwb_dist: <?= $event->event_id?></a>
@@ -391,7 +392,7 @@
 						</p>
                         <hr class="simple">
                         <p>
-                            api: <a><code><?= base_url()."/public/survey/api_data/survey_uwb_loc/".$event->event_id?></code></a>
+                            api: <a href="<?= base_url()."/public/survey/api_data/survey_uwb_loc/".$event->event_id?>"><code>link</code></a>
                         </p>
                         <p>
                             csv: <a href="survey/download/survey_uwb_loc/<?=$event->event_id?>" class="btn btn-xs bg-color-blue txt-color-white">uwb_loc: <?= $event->event_id?></a>
@@ -494,12 +495,14 @@
 
 	// PAGE RELATED SCRIPTS
 	$('#event-form').submit(function(e){
-		$.post( "survey/update", $( "#newevent-form" ).serialize())
+		$.post( "survey/update", $( "#event-form" ).serialize())
 		.done(function(data) {
             if(data == '0'){
-                alert('please fill ');
+                alert('please fill required field.');
+                
             }else{
-                alert('yes');
+                $('#done').html(data);
+                setTimeout(function(){location.reload();}, 5000);
             }
             // location.reload();
 		});

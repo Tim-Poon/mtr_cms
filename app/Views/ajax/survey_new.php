@@ -93,7 +93,7 @@
 									<label class="label">Remmark</label>
 									<input type="hidden" name="id" value="<?= $id ?>">
 									<label class="textarea state-info" >
-										<textarea rows="4" name="message" id="reporting_message" ></textarea>
+										<textarea rows="4" name="remark" ></textarea>
 									</label>
 								</section>
 							</fieldset>

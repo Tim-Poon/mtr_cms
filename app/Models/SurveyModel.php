@@ -87,4 +87,13 @@ class SurveyModel extends Model
         $builder->insert($data);
         return 1;
     }
+
+    public function update_event($event_id, $data)
+    {
+        // add new survey event
+        $builder = $this->db->table('survey_event');
+        $builder->where('event_id', $event_id);
+        $builder->update($data);
+        return 1;
+    }
 }

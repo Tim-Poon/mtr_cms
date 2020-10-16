@@ -51,7 +51,7 @@ class Todos extends Controller
                 'solve_message' => $log->solve_message,
                 'todo' => $log->todo
             ];
-           echo view('ajax/solve_reporting', $data);
+           echo view('ajax/solve_todos', $data);
         }
         elseif ($stype == 'api_server') {
         }
@@ -145,12 +145,13 @@ class Todos extends Controller
                 $view_content = "<li>
                                     <span class=\"handle\"></span>
                                     <p>
-                                        <strong>{$src_type} #{$id}</strong> - {$content} [<a href=\"{$url}\" class=\"font-xs\">More Details</a>]
+                                        <a href=\"{$url}\"><strong style=\"color:#935116\">{$src_type} #{$id}</strong> <strong style=\"color:#707b7c\">- {$content}</strong> </a>[<a href=\"{$url}\" class=\"font-xs\">SLOVED</a>]
                                         <span class=\"text-muted\">I don't know what to place in here</span>
                                         <span class=\"date\">{$todo_date}</span>
                                     </p>
                                 </li>";
 
+                                // <a href="survey" style="color:#696969; cursor:pointer"><strong>Survey</strong></a> 
                 if ($level == 'error')
                 {
                     $res_err = $res_err . $view_content;

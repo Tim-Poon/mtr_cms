@@ -115,9 +115,16 @@
 
 					<li><a href="#"><i class="fa fa-lg fa-fw fa-map-marker"></i>  <span class="menu-item-parent">Sites</span></a>
 						<ul>
-							<li><a href="sites/sn/KOB">KOB</a></li>
-							<li><a href="sites/sn/YMT">YMT</a></li>
-							<li><a href="sites/sn/CEN">CEN</a></li>
+							<li><a href="site/KOB">KOB</a></li>
+							<li><a href="site/YMT">YMT</a></li>
+							<li><a href="site/CEN">CEN</a></li>
+						</ul>
+					</li>
+					<li><a href="#"><i class="fa fa-lg fa-fw fa-gear"></i>  <span class="menu-item-parent">Tools</span></a>
+						<ul>
+							<li><a href="polygon">Polygon</a></li>
+							<li><a href="xx/YMT">xx</a></li>xx
+							<li><a href="xx/CEN">xx</a></li>
 						</ul>
 					</li>
 					<!-- <li><a href="#"><i class="fa fa-lg fa-fw fa-table"></i>  <span class="menu-item-parent">Tables</span></a>

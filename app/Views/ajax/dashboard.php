@@ -371,7 +371,7 @@
 				
 				eventClick: function (arg) {
 					// window.location.href = arg.title;
-					window.location.href = 'reporting';
+					window.location.href = 'todos';
 					// console.log(arg);
 				},
 

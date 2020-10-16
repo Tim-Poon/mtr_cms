@@ -47,12 +47,6 @@ class Dashboard extends Controller
 		echo view('foot');
 	}
 
-
-    private function generate_todo_url($reporting_type, $id){
-        return "reporting?stype=$todo->src_type&id=$todo->id";
-    }
-	//--------------------------------------------------------------------
-
 	public function real_time_sensor_status()
 	{
 		$sensors = $this->get_sensor_status_dev();
@@ -145,14 +139,14 @@ class Dashboard extends Controller
                 $todo_status['className'] = $this->loglevel2todo_mapping[$todo->level];
 
 
-                $todo_status['id'] = "reporting{$todo->id}"; //todo
+                $todo_status['id'] = "todos{$todo->id}"; //todo
                 $todo_status['ts'] = $time;
                 $todo_status['src_type'] = $todo->src_type;
                 $todo_status['content'] = $todo->content;
 				$todo_status['level'] = $todo->level;
 				
-				// link to reporting page
-				$todo_status['url'] = "reporting?stype=$todo->src_type&id=$todo->id";
+				// link to todos page
+				$todo_status['url'] = "todos?stype=$todo->src_type&id=$todo->id";
                 array_push($res, $todo_status);
 			}
 

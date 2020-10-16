@@ -2,10 +2,9 @@
 <div class="row">
 	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
 		<h1 class="page-title txt-color-blueDark">
-			<i class="fa fa-table fa-fw "></i>
-				Todos
-			<span>>
-				<?= $stype ?> # <?= $seq ?>
+			<i class="fa fa-check-circle-o fa-fw "></i> 
+				<a href="todos" style="color:#696969; cursor:pointer"><strong>Todos</strong></a> 
+			<span>
 			</span>
 		</h1>
 	</div>
@@ -92,7 +91,7 @@
 
 	// PAGE RELATED SCRIPTS
 	$('#contact-form').submit(function(e){
-		$.post( "reporting/submit", $( "#contact-form" ).serialize())
+		$.post( "todos/submit", $( "#contact-form" ).serialize())
 		.done(function( data ) {
 			$('#done').html(data);
 		});

@@ -33,10 +33,10 @@ class Todos extends Controller
 
         $id = $param_from_url['id'];
         $stype = $param_from_url['stype'];
-        if ($stype == 'offline_reporting') {
 
+        if ($stype) {
             $log = $this->log($id);
-            $related_logs = $this->related_offline_reporting_logs($id);
+            $related_logs = $this->related_logs($stype, $id);
             $time = Time::createFromTimestamp($log->ts / 1000, 'Asia/Shanghai', 'en_US');
             $seq = $this->retrieve_process_seq($log);
 
@@ -53,13 +53,8 @@ class Todos extends Controller
             ];
            echo view('ajax/solve_todos', $data);
         }
-        elseif ($stype == 'api_server') {
-        }
-        elseif ($stype == 'reporting_server') {
-        }
-        elseif ($stype == 'sensor') {
-        }
-        else {
+        else
+        {
             $data['tabletodos'] = $this->tabletodos();
             echo view('ajax/todos', $data);
         }
@@ -67,13 +62,24 @@ class Todos extends Controller
 
     protected function log($id)
     {
-        // todo
         return $this->model->get_log($id);
     }
 
-    protected function related_offline_reporting_logs($id)
+    protected function related_logs($stype, $id)
     {
-        // todo
+        // related logs are logs that may help you figure out how to solve current logs
+        if($stype == 'offline_reporting'){
+            return $this->model->get_related_offline_reporting_logs($id);
+        }
+        if($stype == 'api_server'){
+            return $this->model->get_related_api_server_logs($id);
+        }
+        if($stype == 'reporting_server'){
+            return $this->model->get_related_reporting_server_logs($id);
+        }
+        if($stype == 'sensor'){
+            return $this->model->get_related_sensor_logs($id);
+        }
         return $this->model->get_related_offline_reporting_logs($id);
     }
 
@@ -81,25 +87,6 @@ class Todos extends Controller
     {
         # todo
         $content = $log->content;
-        return 1;
-    }
-
-    protected function related_sensor_logs($id)
-    {
-        // todo
-        return 1;
-    }
-
-
-    protected function related_api_server_logs($id)
-    {
-        // todo
-        return 1;
-    }
-
-    protected function related_reporting_server_logs($id)
-    {
-        // todo
         return 1;
     }
 

@@ -2,24 +2,24 @@
 
 <div class="row">
 	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-		<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-home"></i> Dashboard <span>> My Dashboard</span></h1>
+		<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-home"></i> <strong>Dashboard</strong> </h1>
 	</div>
 	<div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
 		<ul id="sparks" class="">
 			<li class="sparks-info">
-				<h5> My Income <span class="txt-color-blue">$47,171</span></h5>
+				<h5> CPU <span class="txt-color-blue"><i class="fa fa-info"></i>&nbsp;<label id="cpu"></label></span></h5>
 				<div class="sparkline txt-color-blue hidden-mobile hidden-md hidden-sm">
-					1300, 1877, 2500, 2577, 2000, 2100, 3000, 2700, 3631, 2471, 2700, 3631, 2471
+					11, 12, 13, 14, 15, 16, 10, 11, 12, 13, 14, 15, 16
 				</div>
 			</li>
 			<li class="sparks-info">
-				<h5> Site Traffic <span class="txt-color-purple"><i class="fa fa-arrow-circle-up"></i>&nbsp;45%</span></h5>
+				<h5> MEMORY <span class="txt-color-purple"><i class="fa fa-info"></i>&nbsp;<label id="memory"></label></span></h5>
 				<div class="sparkline txt-color-purple hidden-mobile hidden-md hidden-sm">
 					110,150,300,130,400,240,220,310,220,300, 270, 210
 				</div>
 			</li>
 			<li class="sparks-info">
-				<h5> Site Orders <span class="txt-color-greenDark"><i class="fa fa-shopping-cart"></i>&nbsp;2447</span></h5>
+				<h5> STORAGE <span class="txt-color-greenDark"><i class="fa fa-info"></i>&nbsp;<label id="storage"></label></span></h5>
 				<div class="sparkline txt-color-greenDark hidden-mobile hidden-md hidden-sm">
 					110,150,300,130,400,240,220,310,220,300, 270, 210
 				</div>
@@ -593,21 +593,21 @@
     //console.log("ajax request sent");
 	}
 
-// 	loadLogs();
-	function loadLogs() {
+	loadOSStatus();
+	function loadOSStatus() {
     // console.log(url)
 
 		$.ajax({
 			type: "GET",
-			url: "dashboard/logs",
-			dataType: 'html',
+			url: "sysinfo/get_os_status",
+			dataType: 'json',
 			cache: true, // (warning: this will cause a timestamp and will call the request twice)
 			success: function (data) {
 				// console.log("loadLogs");
-				$('#logsbody')
-					.html(data)
-					.delay(100);
-				setTimeout(loadLogs, 10 * 60 * 1000);
+				$('#cpu').html(data['cpu'] + "%");
+				$('#memory').html(data['memory']['usage'] + "%");
+				$('#storage').html(data['storage'] + "%");
+				setTimeout(loadOSStatus, 5000);
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
 				// container.html(

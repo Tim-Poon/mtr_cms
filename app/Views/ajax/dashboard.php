@@ -346,8 +346,6 @@
 	
 	// Load Calendar dependency then setup calendar
 	loadScript("js/plugin/fullcalendar/jquery.fullcalendar.min.js", setupCalendar);
-
-	
 	
 	function setupCalendar() {
 	
@@ -384,14 +382,14 @@
 	                    element.find('.fc-event-title').append("<i class='air air-top-right fa " + event.icon +
 	                        " '></i>");
 	                }
-	            }
+	            },
+				events: [<?php foreach($todos as $todo){echo json_encode($todo);};?>],
 	        });
 	
 	    };
 	
 	    /* hide default buttons */
 	    $('.fc-header-right, .fc-header-center').hide();
-		loadCalendarTodos();
 	}
 
 	// calendar prev
@@ -428,33 +426,6 @@
 	    $('#calendar').fullCalendar('changeView', 'agendaDay');
 	});
 
-	function loadCalendarTodos() {
-    // console.log(url)
-		$.ajax({
-			type: "GET",
-			url: "dashboard/todos",
-			dataType: 'json',
-			cache: true, // (warning: this will cause a timestamp and will call the request twice)
-			beforeSend: function () {
-			},
-			success: function (data) {
-// 				console.log(data);
-				var i = 0;
-                $.each(data, function () {
-                    $('#calendar').fullCalendar('renderEvent', data[i]);
-                    // todo: add all todos to the todo table
-                    i++;
-                });
-
-			},
-			error: function (xhr, ajaxOptions, thrownError) {
-			},
-			async: false
-		});
-
-    //console.log("ajax request sent");
-	}
-	
 	/*
 	 * CHAT
 	 */
@@ -607,7 +578,7 @@
 				$('#cpu').html(data['cpu'] + "%");
 				$('#memory').html(data['memory']['usage'] + "%");
 				$('#storage').html(data['storage'] + "%");
-				setTimeout(loadOSStatus, 5000);
+				// setTimeout(loadOSStatus, 5000);
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
 				// container.html(

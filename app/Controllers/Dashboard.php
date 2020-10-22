@@ -38,7 +38,8 @@ class Dashboard extends Controller
 	{
 		$data = [
 			'logs'   => $this->logs(),
-			'num_of_todos' => 0
+			'num_of_todos' => 0,
+			'todos' => $this->todos()
 		];
 
 		echo view('head', $data);
@@ -150,7 +151,7 @@ class Dashboard extends Controller
                 array_push($res, $todo_status);
 			}
 
-		    return json_encode($res);
+		    return ($res);
 	}
 
 	public function get_time()

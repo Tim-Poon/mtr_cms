@@ -9,16 +9,20 @@ class PolygonModel extends Model
         parent::__construct();
     }
 
-    public function get_raw_loc_data($minutes)
+    public function get_sites()
     {
-        if($minutes <= 100)
-        {
-            // get lastest $minutes data
-            $builder = $this->db->table('raw_loc_data');
-            $builder->orderBy('id', 'DESC');
-            $query = $builder->get($minutes);
-            return $query;
-        }
+        $builder = $this->db->table('site');
+        $query = $builder->get();
+        return $query;
+    }
+
+    public function get_polygon($site_id)
+    {
+        // get site polygon
+        $builder = $this->db->table('polygon');
+        $builder->where('site_id', $site_id);
+        $query = $builder->get();
+        return $query;
     }
 
     public function get_raw_beacon_data($minutes)

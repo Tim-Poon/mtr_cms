@@ -71,16 +71,9 @@
 
 					<!-- widget content -->
 					<div class="widget-body">
-						<a href="javascript:void(0);" class="btn btn-success">KOB_1F</a>
-						<a href="javascript:void(0);" class="btn btn-success">MOK_1F</a>
-						<a href="javascript:void(0);" class="btn btn-success">KWF_1F</a>
-						<a href="javascript:void(0);" class="btn btn-info disabled">YMT</a>
-						<a href="javascript:void(0);" class="btn btn-info disabled">--</a>
-						<a href="javascript:void(0);" class="btn btn-info disabled">--</a>
-						<a href="javascript:void(0);" class="btn btn-info disabled">CEN_B1</a>
-						<a href="javascript:void(0);" class="btn btn-info disabled">CEN_B2</a>
-						<a href="javascript:void(0);" class="btn btn-info disabled">--</a>
-
+						<?php foreach($sites as $site) {?>
+						<a href="polygon/site/<?=$site->site_id?>" class="btn btn-success"><?= $site->site_name.' '.$site->floor_name?></a>
+						<?php } ?>
 					</div>
 					<!-- end widget content -->
 					<div class="row no-space">

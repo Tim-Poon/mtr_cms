@@ -127,17 +127,17 @@ $(document)
                 e.preventDefault();
             });
 
-        $('input[name="activity"]')
-            .change(function () {
-                //alert($(this).val())
-                $this = $(this);
+        // $('input[name="activity"]')
+        //     .change(function () {
+        //         //alert($(this).val())
+        //         $this = $(this);
 
-                url = $this.attr('id');
-                container = $('.ajax-notifications');
+        //         url = $this.attr('id');
+        //         container = $('.ajax-notifications');
+                
+        //         loadURL(url, container);
 
-                loadURL(url, container);
-
-            });
+        //     });
 
         $(document)
             .mouseup(function (e) {

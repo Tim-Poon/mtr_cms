@@ -1,38 +1,7 @@
-
-
-<div class="row">
-	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-		<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-home"></i> <strong>Dashboard</strong> </h1>
-	</div>
-	<div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
-		<ul id="sparks" class="">
-			<li class="sparks-info">
-				<h5> CPU <span class="txt-color-blue"><i class="fa fa-info"></i>&nbsp;<label id="cpu"></label></span></h5>
-				<div class="sparkline txt-color-blue hidden-mobile hidden-md hidden-sm">
-					11, 12, 13, 14, 15, 16, 10, 11, 12, 13, 14, 15, 16
-				</div>
-			</li>
-			<li class="sparks-info">
-				<h5> MEMORY <span class="txt-color-purple"><i class="fa fa-info"></i>&nbsp;<label id="memory"></label></span></h5>
-				<div class="sparkline txt-color-purple hidden-mobile hidden-md hidden-sm">
-					110,150,300,130,400,240,220,310,220,300, 270, 210
-				</div>
-			</li>
-			<li class="sparks-info">
-				<h5> STORAGE <span class="txt-color-greenDark"><i class="fa fa-info"></i>&nbsp;<label id="storage"></label></span></h5>
-				<div class="sparkline txt-color-greenDark hidden-mobile hidden-md hidden-sm">
-					110,150,300,130,400,240,220,310,220,300, 270, 210
-				</div>
-			</li>
-		</ul>
-	</div>
-</div>
 <!-- widget grid -->
 <section id="widget-grid" class="">
 
-
 	<!-- row -->
-
 	<div class="row">
 
 		<article class="col-sm-12 col-md-12 col-lg-6">
@@ -345,7 +314,7 @@
 	 */
 	
 	// Load Calendar dependency then setup calendar
-	loadScript("js/plugin/fullcalendar/jquery.fullcalendar.min.js", setupCalendar);
+	loadScript("public/js/plugin/fullcalendar/jquery.fullcalendar.min.js", setupCalendar);
 	
 	function setupCalendar() {
 	
@@ -467,18 +436,18 @@
 	
 	}
 
-	loadScript("js/plugin/datatables/datatables.min.js", dt_2);
+	loadScript("public/js/plugin/datatables/datatables.min.js", dt_2);
 
 	function dt_2() {
-		loadScript("js/plugin/datatables/ColReorder-1.5.2/js/dataTables.colReorder.min.js", dt_3);
+		loadScript("public/js/plugin/datatables/ColReorder-1.5.2/js/dataTables.colReorder.min.js", dt_3);
 	}
 
 	function dt_3() {
-		loadScript("js/plugin/datatables/FixedColumns-3.3.1/js/dataTables.fixedColumns.min.js", dt_4);
+		loadScript("public/js/plugin/datatables/FixedColumns-3.3.1/js/dataTables.fixedColumns.min.js", dt_4);
 	}
 
 	function dt_4() {
-		loadScript("js/plugin/datatables/dataTables.colVis.js", dt_6);
+		loadScript("public/js/plugin/datatables/dataTables.colVis.js", dt_6);
 	}
 
 	// function dt_5() {
@@ -486,11 +455,11 @@
 	// }
 
 	function dt_6() {
-		loadScript("js/plugin/datatables/dataTables.tableTools.min.js", dt_7);
+		loadScript("public/js/plugin/datatables/dataTables.tableTools.min.js", dt_7);
 	}
 
 	function dt_7() {
-		loadScript("js/plugin/datatables/DataTables-1.10.22/js/dataTables.bootstrap4.min.js", runDataTables);
+		loadScript("public/js/plugin/datatables/DataTables-1.10.22/js/dataTables.bootstrap4.min.js", runDataTables);
 	}
 
 	function runDataTables() {
@@ -564,30 +533,4 @@
     //console.log("ajax request sent");
 	}
 
-	loadOSStatus();
-	function loadOSStatus() {
-    // console.log(url)
-
-		$.ajax({
-			type: "GET",
-			url: "sysinfo/get_os_status",
-			dataType: 'json',
-			cache: true, // (warning: this will cause a timestamp and will call the request twice)
-			success: function (data) {
-				// console.log("loadLogs");
-				$('#cpu').html(data['cpu'] + "%");
-				$('#memory').html(data['memory']['usage'] + "%");
-				$('#storage').html(data['storage'] + "%");
-				// setTimeout(loadOSStatus, 5000);
-			},
-			error: function (xhr, ajaxOptions, thrownError) {
-				// container.html(
-				// 	'<h4 style="margin-top:10px; display:block; text-align:left"><i class="fa fa-warning txt-color-orangeDark"></i> Error 404! Page not found.</h4>'
-				// );
-			},
-			async: false
-		});
-
-    //console.log("ajax request sent");
-	}
 </script>

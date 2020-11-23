@@ -104,14 +104,14 @@
 					-->
 				
 				<ul>
-					<li class=""><a href="dashboard" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i>  <span class="menu-item-parent">Dashboard</span></a></li>
-					<li><a href="todos">
+					<li class=""><a href="<?=base_url()?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i>  <span class="menu-item-parent">Dashboard</span></a></li>
+					<li><a href="<?=base_url('todos')?>">
 						<i class="fa fa-lg fa-fw fa-check-circle-o"></i>  
 						<span class="menu-item-parent">Todos</span>
 						<span class="badge pull-right inbox-badge"><?= $num_of_todos ?></span></a>
 					</li>
-					<li class=""><a href="survey" title="Survey"><i class="fa fa-lg fa-fw fa-truck"></i>  <span class="menu-item-parent">Survey</span></a></li>
-					<li class=""><a href="reporting" title="Reporting"><i class="fa fa-lg fa-fw fa-file-text"></i>  <span class="menu-item-parent">Reporting</span></a></li>
+					<li class=""><a href="<?=base_url('survey')?>" title="Survey"><i class="fa fa-lg fa-fw fa-truck"></i>  <span class="menu-item-parent">Survey</span></a></li>
+					<li class=""><a href="<?=base_url('reporting')?>" title="Reporting"><i class="fa fa-lg fa-fw fa-file-text"></i>  <span class="menu-item-parent">Reporting</span></a></li>
 
 					<li><a href="#"><i class="fa fa-lg fa-fw fa-map-marker"></i>  <span class="menu-item-parent">Sites</span></a>
 						<ul>
@@ -122,7 +122,7 @@
 					</li>
 					<li><a href="#"><i class="fa fa-lg fa-fw fa-gear"></i>  <span class="menu-item-parent">Tools</span></a>
 						<ul>
-							<li><a href="polygon">Polygon</a></li>
+							<li><a href="<?=base_url('polygon')?>">Polygon</a></li>
 							<li><a href="xx/YMT">xx</a></li>xx
 							<li><a href="xx/CEN">xx</a></li>
 						</ul>
@@ -259,4 +259,36 @@
 			
 			<!-- MAIN CONTENT -->
 			<div id="content">
-				
+				<div class="row">
+					<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+						<h1 class="page-title txt-color-blueDark">
+							<i class="fa <?=$icon?> fa-fw "></i> 
+								<a href="<?=base_url($title)?>" style="color:#696969; cursor:pointer"><strong><?=$title?></strong></a> 
+							<span>
+								<strong style="color:#496949"><?= $sub_title?></strong>
+							</span>
+						</h1>
+					</div>
+					<div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
+						<ul id="sparks" class="">
+							<li class="sparks-info">
+								<h5> CPU <span class="txt-color-blue"><i class="fa fa-info"></i>&nbsp;<label id="cpu"></label></span></h5>
+								<div class="sparkline txt-color-blue hidden-mobile hidden-md hidden-sm">
+									11, 12, 13, 14, 15, 16, 10, 11, 12, 13, 14, 15, 16
+								</div>
+							</li>
+							<li class="sparks-info">
+								<h5> MEMORY <span class="txt-color-purple"><i class="fa fa-info"></i>&nbsp;<label id="memory"></label></span></h5>
+								<div class="sparkline txt-color-purple hidden-mobile hidden-md hidden-sm">
+									110,150,300,130,400,240,220,310,220,300, 270, 210
+								</div>
+							</li>
+							<li class="sparks-info">
+								<h5> STORAGE <span class="txt-color-greenDark"><i class="fa fa-info"></i>&nbsp;<label id="storage"></label></span></h5>
+								<div class="sparkline txt-color-greenDark hidden-mobile hidden-md hidden-sm">
+									110,150,300,130,400,240,220,310,220,300, 270, 210
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>

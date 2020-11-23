@@ -22,6 +22,9 @@ class Polygon extends Controller
 	{
 		$sites = $this->model->get_sites()->getResult();
 		$data = [
+			'icon' => 'fa-map-marker',
+			'title' => 'Polygon',
+			'sub_title' => '',
 			'sites' => $sites,
 		];
 
@@ -45,23 +48,23 @@ class Polygon extends Controller
 		echo view('foot');
 	}
 
-	public function _remap($method, ...$params)
-	{
-		if ($method === 'get_site')
-		{
-			$this->get_site();
-		}
-		elseif ($method === 'index')
-		{
-			return $this->index();
-		}else
-		{
-			// return $this->index($params);
-			// return redirect()->to('/'); 
-			echo 'not page ' . $method . '<br>';
-			print_r($params);
-		}
-	}
+	// public function _remap($method, ...$params)
+	// {
+	// 	if ($method === 'site')
+	// 	{
+	// 		$this->get_site();
+	// 	}
+	// 	elseif ($method === 'index')
+	// 	{
+	// 		return $this->index();
+	// 	}else
+	// 	{
+	// 		// return $this->index($params);
+	// 		// return redirect()->to('/'); 
+	// 		echo 'not page ' . $method . '<br>';
+	// 		print_r($params);
+	// 	}
+	// }
 
 	public function get_time()
 	{
@@ -69,3 +72,6 @@ class Polygon extends Controller
 	    echo $time;
 	}
 }
+
+// http://127.0.0.1/mtr_cms/polygon/(index)        = polygon -> index()
+// http://127.0.0.1/mtr_cms/polygon/1001   = polygon -> index(site_id = 1001) 

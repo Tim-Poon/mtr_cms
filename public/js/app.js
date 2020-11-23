@@ -1354,16 +1354,16 @@ function checkURL() {
     // url = location.hash.replace(/^#/, '');
     url = window.location.href;
     temp = url.split('/');
-    url = temp[5];
+    url = temp[4];
     container = $('#content');
-    // console.log(url);
+    console.log(url);
     // Do this if url exists (for page refresh, etc...)
     if (url) {
         // remove all active class
         $('nav li.active')
             .removeClass("active");
         // match the url and add the active class
-        $('nav li:has(a[href="' + url + '"])')
+        $('nav li:has(a[href="' + 'http://127.0.0.1/mtr_cms/' + url + '"])')
             .addClass("active");
         title = ($('nav a[href="' + url + '"]')
             .attr('title'));
@@ -1377,9 +1377,9 @@ function checkURL() {
         $('nav li.active')
             .removeClass("active");
         // match the url and add the active class
-        $('nav li:has(a[href="dashboard"])')
+        $('nav li:has(a[href="http://127.0.0.1/mtr_cms"])')
             .addClass("active");
-        title = ($('nav a[href="dashboard"]')
+        title = ($('nav a[href="http://127.0.0.1/mtr_cms"]')
             .attr('title'));
         // grab the first URL from nav
         // document.title = (title || document.title);

@@ -16,6 +16,20 @@ class Survey extends Controller
 	{
 		$events = $this->model->get_event()->getResult();
 		// todo: online simply analysis
+		$data = ['events' => $events,
+				 'icon' => 'fa-truck',
+				 'title' => 'Survey',
+				 'sub_title' => ''];
+        echo view('head', $data);
+		echo view('js');
+		$this->set_data();
+		echo view('foot');
+	}
+	
+	public function event()
+	{
+		$events = $this->model->get_event()->getResult();
+		// todo: online simply analysis
         $data = ['events' => $events];
         echo view('head', $data);
 		echo view('js');
@@ -107,3 +121,6 @@ class Survey extends Controller
 		}
 	}
 }
+
+// http://127.0.0.1/mtr_cms/survey/(index)
+// http://127.0.0.1/mtr_cms/survey/lits

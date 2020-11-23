@@ -37,6 +37,9 @@ class Dashboard extends Controller
 	public function index()
 	{
 		$data = [
+			'icon' => 'fa-home',
+			'title' => 'Dashboard',
+			'sub_title' => '',
 			'logs'   => $this->logs(),
 			'num_of_todos' => 0,
 			'todos' => $this->todos()

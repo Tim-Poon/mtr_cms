@@ -16,7 +16,10 @@ class Todos extends Controller
     public function index()
     {
         # page data
-        $data = [];
+        $data = [
+            'icon' => 'fa-check-circle-o',
+            'title' => 'Todos',
+            'sub_title' => '',];
 
         # echo todos page head
         echo view('head', $data);

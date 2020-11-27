@@ -115,7 +115,7 @@
 
 					<li><a href="#"><i class="fa fa-lg fa-fw fa-map-marker"></i>  <span class="menu-item-parent">Sites</span></a>
 						<ul>
-							<li><a href="site/KOB">KOB</a></li>
+							<li><a href="site">KOB</a></li>
 							<li><a href="site/YMT">YMT</a></li>
 							<li><a href="site/CEN">CEN</a></li>
 						</ul>

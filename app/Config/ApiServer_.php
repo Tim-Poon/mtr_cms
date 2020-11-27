@@ -18,4 +18,8 @@ class ApiServer_ extends BaseConfig
         'Central'      => 'CEN',
         'YauMaTei'      => 'YMT',
     ];
+
+    public $mapbox = [
+        'key' => 'pk.eyJ1Ijoic3RhcnJ5ZmFuIiwiYSI6ImNrZDVrc3N1NDE4NmkyeG54Zzk0dTQ1MmkifQ.TgZ1kXuLRQpNoUy4nApcxg'
+    ];
 }

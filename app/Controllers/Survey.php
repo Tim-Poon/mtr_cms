@@ -2,6 +2,7 @@
 
 use App\Models\SurveyModel;
 use CodeIgniter\Controller;
+use CodeIgniter\I18n\Time;
 
 class Survey extends Controller
 {
@@ -12,11 +13,31 @@ class Survey extends Controller
 		$this->source = array('survey_beacon', 'survey_wifi', 'survey_imu', 'survey_uwb_loc', 'survey_uwb_dist');
 	}
 
+	public function _remap($method, ...$params)
+	{
+		if ($method == 'event')
+		{
+			return $this->event($params);
+		}elseif ($method == 'new_event')
+		{
+			return $this->new_event();
+		}elseif ($method == 'add_event')
+		{
+			$this->add_event();
+		}elseif ($method == 'update')
+		{
+			$this->update();
+		}else
+		{
+			return $this->index();
+		}
+    }
+
 	public function index()
 	{
-		$events = $this->model->get_event()->getResult();
+		$event_all = $this->model->get_event_all()->getResult();
 		// todo: online simply analysis
-		$data = ['events' => $events,
+		$data = ['event_all' => $event_all,
 				 'icon' => 'fa-truck',
 				 'title' => 'Survey',
 				 'sub_title' => ''];
@@ -25,30 +46,83 @@ class Survey extends Controller
 		$this->set_data();
 		echo view('foot');
 	}
-	
-	public function event()
+
+	function new_event()
 	{
-		$events = $this->model->get_event()->getResult();
-		// todo: online simply analysis
-        $data = ['events' => $events];
-        echo view('head', $data);
+		$time = Time::now('Asia/Hong_Kong', 'en_US');
+		$data = array(
+			'date' => $time->toLocalizedString('yyyy-MM-dd'),
+			'ts'   => $time->getTimestamp(),
+			'icon' => 'fa-truck',
+			'title' => 'Survey',
+			'sub_title' => '> New Event'
+		);
+		echo view('head', $data);
 		echo view('js');
-		$this->set_data();
+		echo view('ajax/survey_new', $data);
 		echo view('foot');
 	}
+	
+	public function event($params)
+	{
+		$event = $params[0];
+		if ($event) 
+		{
+			$event_item = $this->model->get_event_item($event)->getResult();
+			if ($event_item)
+			{
+				$event_beacon_data = $this->model->get_beacon($event)->getResult();
+				$event_wifi_data = $this->model->get_wifi($event)->getResult();
+				$event_imu_data = $this->model->get_imu($event)->getResult();
+				// $event_uwb_loc_data = $this->model->get_uwb_loc_by_id($event_id)->getResult();
+				// $event_uwb_dist_data = $this->model->get_uwb_dist_by_id($event_id)->getResult();
+				$data = [
+					'event_item' => $event_item[0],
+					'data_beacon' => $event_beacon_data,
+					'data_wifi' => $event_wifi_data,
+					'data_imu' => $event_imu_data,
+					// 'data_uwb_loc' => $event_uwb_loc_data,
+					// 'data_uwb_dist' => $event_uwb_dist_data,
+					'icon' => 'fa-truck',
+					'title' => 'Survey',
+					'sub_title' => '> Event #'.$event];
+				echo view('head', $data);
+				echo view('js');
+				echo view('ajax/survey_data', $data);
+				echo view('foot');
+			}
+            
+        }
+	}
+
+	public function add_event()
+    {
+        if($this->request->getPost()['event'] && $this->request->getPost()['date'] && $this->request->getPost()['site'])
+        {
+            $data = array(
+                'event' => $this->request->getPost()['event'],
+                'date' => $this->request->getPost()['date'],
+                'site' => $this->request->getPost()['site'],
+                'remark' => $this->request->getPost()['remark'],
+            );
+            $this->model->add_event($data);
+            echo $data['event'];
+        } else{
+            echo '0';
+        }
+    }
 
 	public function update()
 	{
-		if($this->request->getPost()['e_id'] && $this->request->getPost()['date'] && $this->request->getPost()['site_name']){
-			$event_id = $this->request->getPost()['e_id'];
+		if($this->request->getPost()['event'] && $this->request->getPost()['date'] && $this->request->getPost()['site']){
+			$event = $this->request->getPost()['event'];
 			$data = array(
                 'date' => $this->request->getPost()['date'],
-                'site_name' => $this->request->getPost()['site_name'],
-                'site_geo' => $this->request->getPost()['site_geo'],
+                'site' => $this->request->getPost()['site'],
                 'remark' => $this->request->getPost()['remark'],
             );
-			$this->model->update_event($event_id, $data);
-			$submit_msg = "Update Event # $event_id";
+			$this->model->update_event($event, $data);
+			$submit_msg = "Update Event # $event";
 			$submit_data = ['msg' => $submit_msg];
 			echo view('submit', $submit_data);
 		}else{

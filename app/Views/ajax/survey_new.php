@@ -1,36 +1,3 @@
-<div class="row">
-	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-		<h1 class="page-title txt-color-blueDark">
-			<i class="fa fa-truck fa-fw "></i> 
-				Survey 
-			<span>> 
-				new event
-			</span>
-		</h1>
-	</div>
-	<div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
-		<ul id="sparks" class="">
-			<li class="sparks-info">
-				<h5> My Income <span class="txt-color-blue">$47,171</span></h5>
-				<div class="sparkline txt-color-blue hidden-mobile hidden-md hidden-sm">
-					1300, 1877, 2500, 2577, 2000, 2100, 3000, 2700, 3631, 2471, 2700, 3631, 2471
-				</div>
-			</li>
-			<li class="sparks-info">
-				<h5> Site Traffic <span class="txt-color-purple"><i class="fa fa-arrow-circle-up" data-rel="bootstrap-tooltip" title="Increased"></i>&nbsp;45%</span></h5>
-				<div class="sparkline txt-color-purple hidden-mobile hidden-md hidden-sm">
-					110,150,300,130,400,240,220,310,220,300, 270, 210
-				</div>
-			</li>
-			<li class="sparks-info">
-				<h5> Site Orders <span class="txt-color-greenDark"><i class="fa fa-shopping-cart"></i>&nbsp;2447</span></h5>
-				<div class="sparkline txt-color-greenDark hidden-mobile hidden-md hidden-sm">
-					110,150,300,130,400,240,220,310,220,300, 270, 210
-				</div>
-			</li>
-		</ul>
-	</div>
-</div>
 <!-- widget grid -->
 <section id="widget-grid" class="">
 
@@ -41,20 +8,14 @@
 		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
 
 			<!-- Widget ID (each widget will need unique ID)-->
-			<div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
-				<!-- widget options:
-				usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
-
-				data-widget-colorbutton="false"
+			<div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0"
 				data-widget-editbutton="false"
-				data-widget-togglebutton="false"
+				data-widget-colorbutton="false"
 				data-widget-deletebutton="false"
-				data-widget-fullscreenbutton="false"
-				data-widget-custombutton="false"
-				data-widget-collapsed="true"
+				data-widget-togglebutton="false"
 				data-widget-sortable="false"
+				data-widget-fullscreenbutton="false">
 
-				-->
 				<header>
 					<span class="widget-icon"> <i class="fa fa-table"></i> </span>
 					<h2>New Survey Event</h2>
@@ -70,7 +31,7 @@
                                 <section>
                                     <label class="label">Event ID</label>
                                     <label class="input state-success"> <i class="icon-prepend fa fa-barcode"></i>
-                                        <input type="text" name="e_id" value="<?=$ts?>" placeholder="<?=$ts?>">
+                                        <input type="text" name="event" value="<?=$ts?>" placeholder="<?=$ts?>">
                                     </label>
                                 </section>
                                 <section>
@@ -80,13 +41,9 @@
                                     </label>
                                 </section>
                                 <section>
+									<label class="label">Site</label>
                                     <label class="input state-success"> <i class="icon-prepend fa fa-location-arrow"></i>
-                                        <input type="text" name="site_name" placeholder="Site Name">
-                                    </label>
-                                </section>
-                                <section>
-                                    <label class="input"> <i class="icon-prepend fa fa-info"></i>
-                                        <input type="text" name="site_geo" placeholder="Site GeoJson">
+                                        <input type="text" name="site" placeholder="Site Name">
                                     </label>
                                 </section>
 								<section>
@@ -120,19 +77,14 @@
 <!-- end widget grid -->
 
 <script type="text/javascript">
-	// DO NOT REMOVE : GLOBAL FUNCTIONS!
-	pageSetUp();
-
 	// PAGE RELATED SCRIPTS
 	$('#newevent-form').submit(function(e){
-		$.post( "SurveyNew/submit", $( "#newevent-form" ).serialize())
-		.done(function(data) {
+		$.post( "<?=base_url('survey/add_event')?>", $( "#newevent-form" ).serialize()).done(function(data) {
             if(data == '0'){
                 alert('please fill ');
             }else{
-                alert('yes');
+                window.location.href="<?=base_url('survey/event').'/'?>" + data;
             }
-            // location.reload();
 		});
 		return false;
 	});

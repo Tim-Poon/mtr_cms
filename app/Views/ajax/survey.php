@@ -8,20 +8,14 @@
 		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
 			<!-- Widget ID (each widget will need unique ID)-->
-			<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
-				<!-- widget options:
-				usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
-
-				data-widget-colorbutton="false"
+			<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0"
 				data-widget-editbutton="false"
-				data-widget-togglebutton="false"
+				data-widget-colorbutton="false"
 				data-widget-deletebutton="false"
-				data-widget-fullscreenbutton="false"
-				data-widget-custombutton="false"
-				data-widget-collapsed="true"
+				data-widget-togglebutton="false"
 				data-widget-sortable="false"
+				data-widget-fullscreenbutton="false">
 
-				-->
 				<header>
 					<span class="widget-icon"> <i class="fa fa-table"></i> </span>
 					<h2>Survey Events </h2>
@@ -45,12 +39,12 @@
 								</tr>
 							</thead>
 							<tbody>
-								<?php foreach($events as $event) {?>
+								<?php foreach($event_all as $event_item) {?>
 								<tr>
-									<td><strong><a href="survey?id=<?=$event->event_id?>" style="cursor:pointer"><?= $event->event_id?></a></strong></td>
-									<td><?= $event->date?></td>
-									<td><?= $event->site_name?> </td>
-								<td><?php if($event->remark){?><i class="fa fa-check fa-fw "><?php }?></td>
+									<td><strong><a href="<?=base_url('survey/event').'/'.$event_item->event?>" style="cursor:pointer"><?= $event_item->event?></a></strong></td>
+									<td><?= $event_item->date?></td>
+									<td><?= $event_item->site?> </td>
+								<td><?php if($event_item->remark){?><i class="fa fa-check fa-fw "><?php }?></td>
 								</tr>
 								<?php }?>
 							</tbody>
@@ -73,11 +67,6 @@
 <link rel="stylesheet" type="text/css" href="<?=base_url('public/css/DataTables-1.10.22/css/dataTables.bootstrap.min.css')?>"/>
 
 <script type="text/javascript">
-
-	// DO NOT REMOVE : GLOBAL FUNCTIONS!
-	pageSetUp();
-	
-	// PAGE RELATED SCRIPTS
 
 	loadDataTableScripts();
 	function loadDataTableScripts() {
@@ -111,10 +100,6 @@
 
 	function runDataTables() {
 
-		/*
-		 * BASIC
-		 */
-
 		$('#dt_basic').dataTable({
 
 			sPaginationType : "full_numbers",
@@ -125,7 +110,7 @@
 					className: 'btn btn-primary btn-primary-sm',
 					text: 'New Event',
 					action: function ( e, dt, node, config ) {
-						window.location.href="surveyNew";
+						window.location.href="<?=base_url('survey/new_event')?>";
 					}
 				}
 			]

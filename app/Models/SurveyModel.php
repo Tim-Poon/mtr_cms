@@ -9,73 +9,21 @@ class SurveyModel extends Model
         parent::__construct();
     }
 
-    public function get_event()
+    // EVENT START
+    public function get_event_all()
     {
-        // get survey event
+        // get all survey event
         $builder = $this->db->table('survey_event');
         $builder->orderBy('id', 'DESC');
         $query = $builder->get();
         return $query;
     }
 
-    public function api_data($source, $event_id)
+    public function get_event_item($event)
     {
-        $builder = $this->db->table($source);
-        $builder->where('event_id', $event_id);
-        $query = $builder->get();
-        return $query;
-    }
-
-    public function get_event_by_id($event_id)
-    {
-        // get survey event
+        // get survey event item
         $builder = $this->db->table('survey_event');
-        $builder->where('event_id', $event_id);
-        $query = $builder->get();
-        return $query;
-    }
-
-    public function get_beacon_by_id($event_id)
-    {
-        // get survey event
-        $builder = $this->db->table('survey_beacon');
-        $builder->where('event_id', $event_id);
-        $query = $builder->get();
-        return $query;
-    }
-
-    public function get_wifi_by_id($event_id)
-    {
-        // get survey event
-        $builder = $this->db->table('survey_wifi');
-        $builder->where('event_id', $event_id);
-        $query = $builder->get();
-        return $query;
-    }
-
-    public function get_imu_by_id($event_id)
-    {
-        // get survey event
-        $builder = $this->db->table('survey_imu');
-        $builder->where('event_id', $event_id);
-        $query = $builder->get();
-        return $query;
-    }
-
-    public function get_uwb_loc_by_id($event_id)
-    {
-        // get survey event
-        $builder = $this->db->table('survey_uwb_loc');
-        $builder->where('event_id', $event_id);
-        $query = $builder->get();
-        return $query;
-    }
-
-    public function get_uwb_dist_by_id($event_id)
-    {
-        // get survey event
-        $builder = $this->db->table('survey_uwb_dist');
-        $builder->where('event_id', $event_id);
+        $builder->where('event', $event);
         $query = $builder->get();
         return $query;
     }
@@ -88,12 +36,70 @@ class SurveyModel extends Model
         return 1;
     }
 
-    public function update_event($event_id, $data)
+    public function update_event($event, $data)
     {
-        // add new survey event
+        // update survey event
         $builder = $this->db->table('survey_event');
-        $builder->where('event_id', $event_id);
+        $builder->where('event', $event);
         $builder->update($data);
         return 1;
     }
+    // EVENT END
+
+    public function api_data($source, $event)
+    {
+        $builder = $this->db->table($source);
+        $builder->where('event', $event);
+        $query = $builder->get();
+        return $query;
+    }
+
+    
+    // SURVEY DATA START
+    public function get_beacon($event)
+    {
+        // get survey event
+        $builder = $this->db->table('survey_beacon');
+        $builder->where('event', $event);
+        $query = $builder->get();
+        return $query;
+    }
+
+    public function get_wifi($event)
+    {
+        // get survey event
+        $builder = $this->db->table('survey_wifi');
+        $builder->where('event', $event);
+        $query = $builder->get();
+        return $query;
+    }
+
+    public function get_imu($event)
+    {
+        // get survey event
+        $builder = $this->db->table('survey_imu');
+        $builder->where('event', $event);
+        $query = $builder->get();
+        return $query;
+    }
+
+    public function get_uwb_loc($event)
+    {
+        // get survey event
+        $builder = $this->db->table('survey_uwb_loc');
+        $builder->where('event', $event);
+        $query = $builder->get();
+        return $query;
+    }
+
+    public function get_uwb_dist($event)
+    {
+        // get survey event
+        $builder = $this->db->table('survey_uwb_dist');
+        $builder->where('event', $event);
+        $query = $builder->get();
+        return $query;
+    }
+    // SURVEY DATA END
+    
 }

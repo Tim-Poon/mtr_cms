@@ -25,6 +25,16 @@ class PolygonModel extends Model
         return $query;
     }
 
+    public function get_geo_json($site_id, $floor)
+    {
+        // get site geojson data
+        $builder = $this->db->table('site');
+        $builder->where('site_id', $site_id);
+        $builder->where('floor', $floor);
+        $query = $builder->get();
+        return $query->getResult()[0]->geo_json;
+    }
+
     public function get_raw_beacon_data($minutes)
     {
         if($minutes <= 100)

@@ -1,6 +1,5 @@
 <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-<script src="<?= base_url('/public/js/mapbox/mapbox-gl.js')?>"></script>
-<link href="<?= base_url('/public/css/mapbox-gl.css')?>" rel="stylesheet" />
+
 <style>
 #map {
     position: absolute;
@@ -32,6 +31,42 @@
 					<div class="widget-body no-padding" style="height:500px;">
                     	<div id="map"></div>
                             <script>
+                            var coordinate = new Array();
+                            function mappingklb(x, y){
+                                var tempX;
+                                var tempY;
+
+                                tempX = x * (22.322640509124938 - 22.32366230098978) / (113.8655 + 0.1097) + 22.32366230098978;;
+                                //tempY = y * (114.21411744242806 - 114.21400195766319) / 2.5115 + 114.21400195766319;
+                                tempY = y * (114.21409394548903 - 114.21400038785612) / 13.4663 + 114.21400038785612;
+                                return {tempX:tempX, tempY:tempY}
+                            }
+                            $.ajax({
+                                type: "POST",
+                                dataType: "json",
+                                url: "http://143.89.49.63:8080/beacon",
+                                success: function (result) {                                   
+                                    $.each(result.KLB,function(index, obj){
+                                        // console.log(obj.coor[0]);
+                                        var temp = new Array();
+                                        var obj;
+                                        obj = mappingklb(obj.coor[0], obj.coor[1]);
+                                        temp.push(obj.tempY);
+                                        temp.push(obj.tempX);
+                                        var aaa = {
+                                                "type": "Feature",
+                                                "properties": {},
+                                                "geometry": {
+                                                    "type": "Point",
+                                                    "coordinates": temp
+                                                }
+                                        };
+                                        coordinate.push(aaa);
+                                        // drawPoint(obj.coor[0], obj.coor[1], obj.beacon.substr(8, 9), obj.status, variables.beacon_color_normal, variables.color_detect, variables.beacon_radius, obj.rssi, variables.beacon_font, 'KLB', ctx);
+                                    });
+                                    //  console.log(coordinate);
+                                }
+                            });
                             mapboxgl.accessToken = '<?=$mapbox_key?>';
                             var map = new mapboxgl.Map({
                                 container: 'map',
@@ -41,14 +76,13 @@
                                 bearing: 85
                             });
                             var marker = new mapboxgl.Marker();
-
                             function getLonLat() {
                                     $.ajax({
                                         type: "POST",
                                         dataType: "json",
                                         url: "http://127.0.0.1/fakegps.html",
                                         success: function (result) {
-                                            console.log(result['longitude']);
+                                            // console.log(result['longitude']);
                                             marker.setLngLat([result['longitude'],result['latitude']]);
                                             marker.addTo(map);
                                             getLonLat();
@@ -57,11 +91,18 @@
                             }
                             getLonLat();
                            
-                                map.on('load', function() {
+                            map.on('load', function() {
                                 map.addSource('national-park', {
                                     'type': 'geojson',
-                                    'data': <?=$geo_json?>
+                                    'data': <?=$geo_json?>                                
                                 });
+                                map.addSource('beacon_list', {
+                                    type: 'geojson',
+                                    data: {
+                                        "type": "FeatureCollection",
+                                        "features": coordinate
+                                    }
+                                    });
                                 map.addLayer({
                                     'id': 'park-boundary',
                                     'type': 'line',
@@ -74,6 +115,17 @@
                                     'line-color': '#BF93E4',
                                     'line-width': 2
                                     }
+                                });
+
+                                map.addLayer({
+                                    'id': 'park-volcanoes',
+                                    'type': 'circle',
+                                    'source': 'beacon_list',
+                                    'paint': {
+                                    'circle-radius': 6,
+                                    'circle-color': '#B42222'
+                                    },
+                                    'filter': ['==', '$type', 'Point']
                                 });
                             });
                             </script>

@@ -37,11 +37,19 @@ class Polygon extends Controller
 
 	public function site($site_id)
 	{
-		$polygon = $this->model->get_polygon($sites)->getResult();
+		$sites = $this->model->get_sites()->getResult();
+		$polygon = $this->model->get_polygon($site_id)->getResult();
+		$geo_json = $this->model->get_geo_json($site_id,1);
 		$data = [
+			'icon' => 'fa-map-marker',
+			'title' => 'Polygon',
+			'sub_title' => '',
+			'sites' => $sites,
 			'polygon' => $polygon,
+			'geo_json' => $geo_json,
+			'mapbox_key' => config('ApiServer_')->mapbox['key']
 		];
-
+		// print_r($geo_json);
 		echo view('head', $data);
 		echo view('js');
 		echo view('ajax/polygon', $data);

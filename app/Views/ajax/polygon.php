@@ -52,7 +52,7 @@
 					<!-- widget content -->
 					<div class="widget-body">
 						<?php foreach($sites as $site) {?>
-						<a href="polygon/site/<?=$site->site_id?>" class="btn btn-success"><?= $site->site_name.' '.$site->floor_name?></a>
+						<a href="polygon/site/<?=$site->site_name?>" class="btn btn-success"><?= $site->site_name.' '.$site->floor_name?></a>
 						<?php } ?>
 					</div>
 					<!-- end widget content -->

@@ -1,6 +1,7 @@
 <?php namespace App\Controllers;
 
 use App\Models\TodosModel;
+use App\Models\SiteModel;
 use CodeIgniter\Controller;
 use CodeIgniter\I18n\Time;
 
@@ -10,16 +11,20 @@ class Todos extends Controller
     {
         // parent::__construct();
         $this->model = new TodosModel();
+        $this->model_site = new SiteModel();
         $this->request = \Config\Services::request();
     }
 
     public function index()
     {
         # page data
-        $data = [
+        $data = 
+        [
             'icon' => 'fa-check-circle-o',
             'title' => 'Todos',
-            'sub_title' => '',];
+            'sub_title' => '',
+            'site_all' => $this->model_site->get_site_all(),
+        ];
 
         # echo todos page head
         echo view('head', $data);

@@ -92,19 +92,7 @@
 				</span>
 			</div>
 			<!-- end user info -->
-			
-			<!-- NAVIGATION : This navigation is also responsive 
-				 
-				 To make this navigation dynamic please make sure to link the node 
-				 (the reference to the nav > ul) after page load. Or the navigation 
-				 will not initialize.
-			-->
 			<nav>
-				<!-- NOTE: Notice the gaps after each icon usage <i></i>.. 
-					 Please note that these links work a bit different than
-					 traditional hre="" links. See documentation for details.
-					-->
-				
 				<ul>
 					<li class=""><a href="<?=base_url()?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i>  <span class="menu-item-parent">Dashboard</span></a></li>
 					<li><a href="<?=base_url('todos')?>">
@@ -115,110 +103,20 @@
 					<li class=""><a href="<?=base_url('survey')?>" title="Survey"><i class="fa fa-lg fa-fw fa-truck"></i>  <span class="menu-item-parent">Survey</span></a></li>
 					<li class=""><a href="<?=base_url('reporting')?>" title="Reporting"><i class="fa fa-lg fa-fw fa-file-text"></i>  <span class="menu-item-parent">Reporting</span></a></li>
 
-					<li><a href="#"><i class="fa fa-lg fa-fw fa-map-marker"></i>  <span class="menu-item-parent">Sites</span></a>
+					<li><a href="#"><i class="fa fa-lg fa-fw fa-map-marker"></i>  <span class="menu-item-parent">Site</span></a>
 						<ul>
-							<li><a href="site">KOB</a></li>
-							<li><a href="site/YMT">YMT</a></li>
-							<li><a href="site/CEN">CEN</a></li>
+							<?php foreach($site_all as $site_item){?>
+							<li><a href="<?=base_url('site').'/'.$site_item->site_name?>"><?= $site_item->site_name?></a></li>
+							<?php } ?>
 						</ul>
 					</li>
 					<li><a href="#"><i class="fa fa-lg fa-fw fa-gear"></i>  <span class="menu-item-parent">Tools</span></a>
 						<ul>
 							<li><a href="<?=base_url('polygon')?>">Polygon</a></li>
-							<li><a href="xx/YMT">xx</a></li>xx
+							<li><a href="xx/YMT">xx</a></li>
 							<li><a href="xx/CEN">xx</a></li>
 						</ul>
 					</li>
-					<!-- <li><a href="#"><i class="fa fa-lg fa-fw fa-table"></i>  <span class="menu-item-parent">Tables</span></a>
-						 	<ul>
-								 <li><a href="ajax/table.html">Normal Tables</a></li>
-								 <li><a href="ajax/datatables.html">Data Tables</a></li>
-						 	</ul>
-					</li>
-					<li><a href="#"><i class="fa fa-lg fa-fw fa-pencil-square-o"></i>  <span class="menu-item-parent">Forms</span></a>
-					 	<ul>
-							 <li><a href="ajax/form-elements.html">Smart Form Elements</a></li>
-							 <li><a href="ajax/form-templates.html">Smart Form Layouts</a></li>
-							 <li><a href="ajax/validation.html">Smart Form Validation</a></li>
-							 <li><a href="ajax/bootstrap-forms.html">Bootstrap Form Elements</a></li>
-							 <li><a href="ajax/plugins.html">Form Plugins</a></li>
-							 <li><a href="ajax/wizard.html">Wizards</a></li>
-							 <li><a href="ajax/other-editors.html">Bootstrap Editors</a></li>
-							 <li><a href="ajax/dropzone.html">Dropzone <span class="badge pull-right inbox-badge bg-color-yellow">new</span></a></li>
-					 	</ul>
-					</li>
-					<li><a href="#"><i class="fa fa-lg fa-fw fa-desktop"></i>  <span class="menu-item-parent">UI Elements</span></a>
-						<ul>
-							 <li><a href="ajax/general-elements.html">General Elements</a></li>
-							 <li><a href="ajax/buttons.html">Buttons</a></li>
-							 <li><a href="#">Icons</a>
-							 	<ul>
-									 <li><a href="ajax/fa.html"><i class="fa fa-plane"></i> Font Awesome</a>
-									 <li><a href="ajax/glyph.html"><i class="glyphicon glyphicon-plane"></i> Glyph Icons </a>	
-							 	</ul>
-							 </li>
-							 <li><a href="ajax/grid.html">Grid</a></li>
-							 <li><a href="ajax/treeview.html">Tree View</a></li>
-							 <li><a href="ajax/nestable-list.html">Nestable Lists</a></li>
-							 <li><a href="ajax/jqui.html">JQuery UI</a></li>
-						</ul>
-					</li>
-					<li><a href="#"><i class="fa fa-lg fa-fw fa-folder-open"></i>  <span class="menu-item-parent">6 Level Navigation</span></a>
-						<ul>
-							<li><a href="#"><i class="fa fa-fw fa-folder-open"></i> 2nd Level</a>
-							 	<ul>
-									 <li><a href="#"><i class="fa fa-fw fa-folder-open"></i> 3ed Level </a>
-									 	<ul>
-									 		 <li><a href="#"><i class="fa fa-fw fa-file-text"></i> File</a></li>
-											 <li><a href="#"><i class="fa fa-fw fa-folder-open"></i> 4th Level</a>
-											 	<ul>
-											 		 <li><a href="#"><i class="fa fa-fw fa-file-text"></i> File</a></li>
-													 <li><a href="#"><i class="fa fa-fw fa-folder-open"></i> 5th Level</a>
-													 	<ul>
-													 		<li><a href="#"><i class="fa fa-fw fa-file-text"></i> File</a></li>
-													 		<li><a href="#"><i class="fa fa-fw fa-file-text"></i> File</a></li>
-													 	</ul>
-													 </li>
-											 	</ul>
-											 </li>
-									 	</ul>
-									 </li>
-							 	</ul>
-							 </li>
-							 <li><a href="#"><i class="fa fa-fw fa-folder-open"></i> Folder</a>
-							 	
-								<ul>
-									 <li><a href="#"><i class="fa fa-fw fa-folder-open"></i> 3ed Level </a>
-									 	<ul>
-									 		 <li><a href="#"><i class="fa fa-fw fa-file-text"></i> File</a></li>
-											 <li><a href="#"><i class="fa fa-fw fa-file-text"></i> File</a></li>
-									 	</ul>
-									 </li>
-							 	</ul>
-							 	
-							 </li>
-						</ul>
-					</li>	
-					<li><a href="ajax/calendar.html"><i class="fa fa-lg fa-fw fa-calendar"><em>3</em></i>  <span class="menu-item-parent">Calendar</span></a></li>
-					<li><a href="ajax/widgets.html"><i class="fa fa-lg fa-fw fa-list-alt"></i>  <span class="menu-item-parent">Widgets</span></a></li>
-					<li><a href="ajax/gallery.html"><i class="fa fa-lg fa-fw fa-picture-o"></i>  <span class="menu-item-parent">Gallery</span></a></li>
-					<li><a href="ajax/gmap-xml.html"><i class="fa fa-lg fa-fw fa-map-marker"></i>  <span class="menu-item-parent">Google Map Skins</span><span class="badge bg-color-greenLight pull-right inbox-badge">9</span></a></li>					
-					<li><a href="#"><i class="fa fa-lg fa-fw fa-windows"></i>  <span class="menu-item-parent">Miscellaneous</span></a>
-						<ul>
-							 <li><a href="ajax/typography.html">Typography</a></li>
-							 <li><a href="ajax/pricing-table.html">Pricing Tables</a></li>
-							 <li><a href="ajax/invoice.html">Invoice</a></li>
-							 <li><a href="login.html" target="_top">Login</a></li>
-							 <li><a href="register.html" target="_top">Register</a></li>
-							 <li><a href="lock.html" target="_top">Locked Screen</a></li>
-							 <li><a href="ajax/error404.html">Error 404</a></li>
-							 <li><a href="ajax/error500.html">Error 500</a></li>
-							 <li><a href="ajax/blank_.html">Blank Page</a></li>
-							 <li><a href="ajax/email-template.html">Email Template</a></li>
-							 <li><a href="ajax/search.html">Search Page</a></li>
-							 <li><a href="ajax/ckeditor.html">CK Editor</a></li>
-						</ul>
-					</li>						 -->
 				</ul>
 			</nav>
 			<span class="minifyme">
@@ -234,28 +132,9 @@
 			
 			<!-- RIBBON -->
 			<div id="ribbon">
-				
 				<span class="ribbon-button-alignment">
 					<lable class="txt-color-white"><div id="time"></div></lable>
 				</span>
-
-				<!-- breadcrumb -->
-				<ol class="breadcrumb">
-					<!-- This is auto generated -->
-				</ol>		
-				<!-- end breadcrumb -->	
-				
-				<!-- You can also add more buttons to the 
-					 ribbon for further usability 
-					 
-					 Example below: 
-					 
-				<span class="ribbon-button-alignment pull-right">
-					<span id="search" class="btn btn-ribbon hidden-xs" data-title="search"><i class="fa-grid"></i> Change Grid</span>
-					<span id="add" class="btn btn-ribbon hidden-xs" data-title="add"><i class="fa-plus"></i> Add</span>
-					<span id="search" class="btn btn-ribbon" data-title="search"><i class="fa-search"></i> <span class="hidden-mobile">Search</span></span>
-				</span> -->
-				
 			</div>
 			<!-- END RIBBON -->
 			

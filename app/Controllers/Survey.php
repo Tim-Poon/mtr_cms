@@ -1,6 +1,7 @@
 <?php namespace App\Controllers;
 
 use App\Models\SurveyModel;
+use App\Models\SiteModel;
 use CodeIgniter\Controller;
 use CodeIgniter\I18n\Time;
 
@@ -10,6 +11,7 @@ class Survey extends Controller
     {
 		// parent::__construct();
 		$this->model = new SurveyModel();
+		$this->model_site = new SiteModel();
 		$this->source = array('survey_beacon', 'survey_wifi', 'survey_imu', 'survey_uwb_loc', 'survey_uwb_dist');
 	}
 
@@ -37,26 +39,33 @@ class Survey extends Controller
 	{
 		$event_all = $this->model->get_event_all()->getResult();
 		// todo: online simply analysis
-		$data = ['event_all' => $event_all,
-				 'icon' => 'fa-truck',
-				 'title' => 'Survey',
-				 'sub_title' => ''];
+		$data = 
+		[
+			'event_all' => $event_all,
+			'icon' => 'fa-truck',
+			'title' => 'Survey',
+			'sub_title' => '',
+			'site_all' => $this->model_site->get_site_all(),
+		];
         echo view('head', $data);
 		echo view('js');
-		$this->set_data();
+		echo view('ajax/survey', $data);
 		echo view('foot');
 	}
 
 	function new_event()
 	{
 		$time = Time::now('Asia/Hong_Kong', 'en_US');
-		$data = array(
-			'date' => $time->toLocalizedString('yyyy-MM-dd'),
-			'ts'   => $time->getTimestamp(),
+		$data = 
+		[
 			'icon' => 'fa-truck',
 			'title' => 'Survey',
-			'sub_title' => '> New Event'
-		);
+			'sub_title' => '> New Event',
+			'site_all' => $this->model_site->get_site_all(),
+			'date' => $time->toLocalizedString('yyyy-MM-dd'),
+			'ts'   => $time->getTimestamp(),
+		];
+				
 		echo view('head', $data);
 		echo view('js');
 		echo view('ajax/survey_new', $data);
@@ -76,16 +85,20 @@ class Survey extends Controller
 				$event_imu_data = $this->model->get_imu($event)->getResult();
 				// $event_uwb_loc_data = $this->model->get_uwb_loc_by_id($event_id)->getResult();
 				// $event_uwb_dist_data = $this->model->get_uwb_dist_by_id($event_id)->getResult();
-				$data = [
+				$data = 
+				[
+					'icon' => 'fa-truck',
+					'title' => 'Survey',
+					'sub_title' => '> Event #'.$event,
+					'site_all' => $this->model_site->get_site_all(),
 					'event_item' => $event_item[0],
 					'data_beacon' => $event_beacon_data,
 					'data_wifi' => $event_wifi_data,
 					'data_imu' => $event_imu_data,
 					// 'data_uwb_loc' => $event_uwb_loc_data,
 					// 'data_uwb_dist' => $event_uwb_dist_data,
-					'icon' => 'fa-truck',
-					'title' => 'Survey',
-					'sub_title' => '> Event #'.$event];
+				];
+
 				echo view('head', $data);
 				echo view('js');
 				echo view('ajax/survey_data', $data);
@@ -129,40 +142,6 @@ class Survey extends Controller
 			echo 0;
 		}
 	}
-
-	protected function set_data(){
-        # get parameter
-        $param_from_url = $this->request->getGet();
-
-        $event_id = $param_from_url['id'];
-        if ($event_id) {
-			
-            $event_detail = $this->model->get_event_by_id($event_id)->getResult();
-            $event_beacon_data = $this->model->get_beacon_by_id($event_id)->getResult();
-			$event_wifi_data = $this->model->get_wifi_by_id($event_id)->getResult();
-			$event_imu_data = $this->model->get_imu_by_id($event_id)->getResult();
-			$event_uwb_loc_data = $this->model->get_uwb_loc_by_id($event_id)->getResult();
-			$event_uwb_dist_data = $this->model->get_uwb_dist_by_id($event_id)->getResult();
-            $data = [
-                'event' => $event_detail[0],
-				'data_beacon' => $event_beacon_data,
-				'data_wifi' => $event_wifi_data,
-				'data_imu' => $event_imu_data,
-				'data_uwb_loc' => $event_uwb_loc_data,
-				'data_uwb_dist' => $event_uwb_dist_data,
-            ];
-           echo view('ajax/survey_data', $data);
-        }
-        elseif ($stype == 'api_server') {
-        }
-        elseif ($stype == 'reporting_server') {
-        }
-        elseif ($stype == 'sensor') {
-        }
-        else {
-            echo view('ajax/survey');
-        }
-	}
 	
 	public function api_data($source, $event_id)
 	{
@@ -195,6 +174,3 @@ class Survey extends Controller
 		}
 	}
 }
-
-// http://127.0.0.1/mtr_cms/survey/(index)
-// http://127.0.0.1/mtr_cms/survey/lits

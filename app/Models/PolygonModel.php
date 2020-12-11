@@ -16,23 +16,23 @@ class PolygonModel extends Model
         return $query;
     }
 
-    public function get_polygon($site_id)
+    public function get_polygon($site)
     {
         // get site polygon
         $builder = $this->db->table('polygon');
-        $builder->where('site_id', $site_id);
+        $builder->where('site', $site);
         $query = $builder->get();
         return $query;
     }
 
-    public function get_geo_json($site_id, $floor)
+    public function get_geojson($site, $floor)
     {
         // get site geojson data
         $builder = $this->db->table('site');
-        $builder->where('site_id', $site_id);
+        $builder->where('site', $site);
         $builder->where('floor', $floor);
         $query = $builder->get();
-        return $query->getResult()[0]->geo_json;
+        return $query->getResult()[0]->geojson;
     }
 
     public function get_raw_beacon_data($minutes)

@@ -1,6 +1,7 @@
 <?php namespace App\Controllers;
 
 use App\Models\PolygonModel;
+use App\Models\SiteModel;
 use CodeIgniter\Controller;
 use CodeIgniter\I18n\Time;
 
@@ -8,6 +9,7 @@ class Polygon extends Controller
 {
 	public function __construct(){
 		$this->model = new PolygonModel();
+		$this->model_site = new SiteModel();
 	}
 
 	private function check_valid_log_level($log_level){
@@ -21,10 +23,12 @@ class Polygon extends Controller
 	public function index()
 	{
 		$sites = $this->model->get_sites()->getResult();
-		$data = [
+		$data = 
+		[
 			'icon' => 'fa-map-marker',
 			'title' => 'Polygon',
 			'sub_title' => '',
+			'site_all' => $this->model_site->get_site_all(),
 			'sites' => $sites,
 		];
 
@@ -38,18 +42,19 @@ class Polygon extends Controller
 	public function site($site_id)
 	{
 		$sites = $this->model->get_sites()->getResult();
-		$polygon = $this->model->get_polygon($site_id)->getResult();
-		$geo_json = $this->model->get_geo_json($site_id,1);
-		$data = [
+		$polygon = $this->model->get_polygon(1001)->getResult();
+		$geo_json = $this->model->get_geojson(1001, 1);
+		$data = 
+		[
 			'icon' => 'fa-map-marker',
 			'title' => 'Polygon',
 			'sub_title' => '',
+			'site_all' => $this->model_site->get_site_all(),
 			'sites' => $sites,
 			'polygon' => $polygon,
 			'geo_json' => $geo_json,
 			'mapbox_key' => config('ApiServer_')->mapbox['key']
 		];
-		// print_r($geo_json);
 		echo view('head', $data);
 		echo view('js');
 		echo view('ajax/polygon', $data);
@@ -80,6 +85,3 @@ class Polygon extends Controller
 	    echo $time;
 	}
 }
-
-// http://127.0.0.1/mtr_cms/polygon/(index)        = polygon -> index()
-// http://127.0.0.1/mtr_cms/polygon/1001   = polygon -> index(site_id = 1001) 

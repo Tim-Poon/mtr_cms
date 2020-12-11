@@ -1,6 +1,7 @@
 <?php namespace App\Controllers;
 
 use App\Models\DashboardModel;
+use App\Models\SiteModel;
 use CodeIgniter\Controller;
 use CodeIgniter\I18n\Time;
 
@@ -21,6 +22,7 @@ class Dashboard extends Controller
 										 "error" => array("event", "bg-color-red"));
 
 		$this->model = new DashboardModel();
+		$this->model_site = new SiteModel();
 
 		$this->valid_src_type = array('sensor', 'server', 'report');
 		$this->request = \Config\Services::request();
@@ -36,10 +38,12 @@ class Dashboard extends Controller
 
 	public function index()
 	{
-		$data = [
+		$data = 
+		[
 			'icon' => 'fa-home',
 			'title' => 'Dashboard',
 			'sub_title' => '',
+			'site_all' => $this->model_site->get_site_all(),
 			'logs'   => $this->logs(),
 			'num_of_todos' => 0,
 			'todos' => $this->todos()

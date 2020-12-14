@@ -23,7 +23,7 @@ class Todos extends Controller
             'icon' => 'fa-check-circle-o',
             'title' => 'Todos',
             'sub_title' => '',
-            'site_all' => $this->model_site->get_site_all(),
+            'site_names' => $this->model_site->get_site_names(),
         ];
 
         # echo todos page head

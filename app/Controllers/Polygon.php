@@ -12,24 +12,32 @@ class Polygon extends Controller
 		$this->model_site = new SiteModel();
 	}
 
-	private function check_valid_log_level($log_level){
-
-	}
-
-	private function check_valid_log_src_type($src_type){
-
-	}
-
-	public function index()
+	public function _remap($method, ...$params)
 	{
-		$sites = $this->model->get_sites()->getResult();
+		if ($method === 'default')
+		{
+			
+		}
+		elseif ($method === 'index')
+		{
+			return $this->index();
+		}else
+		{
+			$site = $method;
+			$floor = $params[0];
+			return $this->view_polygon($site, $floor);
+		}
+	}
+
+	private function index()
+	{
 		$data = 
 		[
 			'icon' => 'fa-map-marker',
 			'title' => 'Polygon',
 			'sub_title' => '',
+			'site_names' => $this->model_site->get_site_names(),
 			'site_all' => $this->model_site->get_site_all(),
-			'sites' => $sites,
 		];
 
 		echo view('head', $data);
@@ -38,46 +46,30 @@ class Polygon extends Controller
 		echo view('foot');
 	}
 
-
-	public function site($site_id)
+	private function view_polygon($site, $floor)
 	{
-		$sites = $this->model->get_sites()->getResult();
-		$polygon = $this->model->get_polygon(1001)->getResult();
-		$geo_json = $this->model->get_geojson(1001, 1);
+		$polygon = $this->model->get_polygon($site, $floor);
+		$site_item = $this->model_site->get_site_item($site, $floor)[0];
 		$data = 
 		[
 			'icon' => 'fa-map-marker',
 			'title' => 'Polygon',
-			'sub_title' => '',
+			'sub_title' => '> ' . $site_item->site_name . ' ' . $site_item->floor_name,
+			'site_names' => $this->model_site->get_site_names(),
 			'site_all' => $this->model_site->get_site_all(),
-			'sites' => $sites,
 			'polygon' => $polygon,
-			'geo_json' => $geo_json,
+			'geojson' => $site_item->geojson,
 			'mapbox_key' => config('ApiServer_')->mapbox['key']
 		];
+
+		// todo
+		// visit -> view_polygon = [1. load map by geojson(done); 2. load default polygon, darw polygon on view; 3. draw/revise polygon by mapbox;, 4. upload and reflash]
+
 		echo view('head', $data);
 		echo view('js');
 		echo view('ajax/polygon', $data);
 		echo view('foot');
 	}
-
-	// public function _remap($method, ...$params)
-	// {
-	// 	if ($method === 'site')
-	// 	{
-	// 		$this->get_site();
-	// 	}
-	// 	elseif ($method === 'index')
-	// 	{
-	// 		return $this->index();
-	// 	}else
-	// 	{
-	// 		// return $this->index($params);
-	// 		// return redirect()->to('/'); 
-	// 		echo 'not page ' . $method . '<br>';
-	// 		print_r($params);
-	// 	}
-	// }
 
 	public function get_time()
 	{

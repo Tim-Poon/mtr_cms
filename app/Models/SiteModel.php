@@ -9,10 +9,19 @@ class SiteModel extends Model
         parent::__construct();
     }
 
-    public function get_site_item_by_name($site_name)
+    public function get_site_beacon($site, $floor)
+    {
+        $builder = $this->db->table('beacon');
+        $builder->where('major', $site.$floor);
+        $query = $builder->get();
+        return $query->getResult();
+    }
+
+    public function get_site_item($site, $floor)
     {
         $builder = $this->db->table('site');
-        $builder->where('site_name', $site_name);
+        $builder->where('site', $site);
+        $builder->where('floor', $floor);
         $query = $builder->get();
         return $query->getResult();
     }
@@ -22,6 +31,20 @@ class SiteModel extends Model
         $builder = $this->db->table('site');
         $query = $builder->get();
         return $query->getResult();
+    }
+
+    public function get_site_names()
+    {
+        $builder = $this->db->table('site');
+        $query = $builder->get();
+        $site_names = array();
+        foreach ($query->getResult() as $site_item) {
+            if (!in_array($site_item->site_name, $site_names))
+            {
+                array_push($site_names, $site_item->site_name);
+            }
+        }
+        return $site_names;
     }
 
     public function get_geojson($site, $floor)

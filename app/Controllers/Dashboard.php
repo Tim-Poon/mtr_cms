@@ -43,7 +43,7 @@ class Dashboard extends Controller
 			'icon' => 'fa-home',
 			'title' => 'Dashboard',
 			'sub_title' => '',
-			'site_all' => $this->model_site->get_site_all(),
+			'site_names' => $this->model_site->get_site_names(),
 			'logs'   => $this->logs(),
 			'num_of_todos' => 0,
 			'todos' => $this->todos()

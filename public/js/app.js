@@ -1354,25 +1354,26 @@ function checkURL() {
     // url = location.hash.replace(/^#/, '');
     url = window.location.href;
     temp = url.split('/');
-    url = temp[4];
+    url1 = temp[4];
+    url2 = temp[5];
     container = $('#content');
-    console.log(url);
     // Do this if url exists (for page refresh, etc...)
-    if (url) {
+    if (url1) {
         // remove all active class
         $('nav li.active')
             .removeClass("active");
         // match the url and add the active class
-        $('nav li:has(a[href="' + 'http://127.0.0.1/mtr_cms/' + url + '"])')
+        $('nav li:has(a[href="' + 'http://127.0.0.1/mtr_cms/' + url1 + '"])')
             .addClass("active");
-        title = ($('nav a[href="' + url + '"]')
+        title = ($('nav a[href="' + url1 + '"]')
             .attr('title'));
         // change page title from global var
         document.title = (title || document.title);
-        //console.log("page title: " + document.title);
-
-        // parse url to jquery
-        // loadURL(url + '/page', container);
+        if (url2){
+        // match the url and add the active class
+        $('nav li:has(a[href="' + 'http://127.0.0.1/mtr_cms/' + url1 + '/' + url2 + '"])')
+            .addClass("active");
+        }
     } else {
         $('nav li.active')
             .removeClass("active");
@@ -1381,15 +1382,8 @@ function checkURL() {
             .addClass("active");
         title = ($('nav a[href="http://127.0.0.1/mtr_cms"]')
             .attr('title'));
-        // grab the first URL from nav
-        // document.title = (title || document.title);
-        // $this = $('nav > ul > li:first-child > a[href!="#"]');
-        // //update hash
-        // window.location.hash = $this.attr('href');
         document.title = (title || document.title);
-        // loadURL("dashboard/page", container);
     }
-
 }
 
 // LOAD AJAX PAGES

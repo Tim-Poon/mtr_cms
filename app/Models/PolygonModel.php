@@ -9,30 +9,14 @@ class PolygonModel extends Model
         parent::__construct();
     }
 
-    public function get_sites()
-    {
-        $builder = $this->db->table('site');
-        $query = $builder->get();
-        return $query;
-    }
-
-    public function get_polygon($site)
+    public function get_polygon($site, $floor)
     {
         // get site polygon
         $builder = $this->db->table('polygon');
         $builder->where('site', $site);
-        $query = $builder->get();
-        return $query;
-    }
-
-    public function get_geojson($site, $floor)
-    {
-        // get site geojson data
-        $builder = $this->db->table('site');
-        $builder->where('site', $site);
         $builder->where('floor', $floor);
         $query = $builder->get();
-        return $query->getResult()[0]->geojson;
+        return $query->getResult();
     }
 
     public function get_raw_beacon_data($minutes)

@@ -1,6 +1,6 @@
 <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/turf/v3.0.11/turf.min.js"></script>
-    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.0/mapbox-gl-draw.js"></script>
-    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.0/mapbox-gl-draw.css" type="text/css" />
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.0/mapbox-gl-draw.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.0/mapbox-gl-draw.css" type="text/css" />
 <style>
 #map {
     position: absolute;
@@ -31,7 +31,13 @@
 	<div class="row">
 		<article class="col-sm-12 col-md-12 col-lg-12">
 			<!-- Widget ID (each widget will need unique ID)-->
-			<div class="jarviswidget" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-sortable="false">
+			<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" 
+				data-widget-editbutton="false"
+				data-widget-colorbutton="false"
+				data-widget-deletebutton="false"
+				data-widget-togglebutton="false"
+				data-widget-sortable="false">
+
 				<header>
 					<span class="widget-icon"> <i class="fa fa-map-marker"></i> </span>
 					<h2>Polygon</h2>
@@ -51,8 +57,8 @@
 
 					<!-- widget content -->
 					<div class="widget-body">
-						<?php foreach($sites as $site) {?>
-						<a href="polygon/site/<?=$site->site_name?>" class="btn btn-success"><?= $site->site_name.' '.$site->floor_name?></a>
+						<?php foreach($site_all as $site_item) {?>
+						<a href="<?= base_url('polygon/'.$site_item->site.'/'.$site_item->floor)?>" class="btn btn-success"><?= $site_item->site_name.' '.$site_item->floor_name?></a>
 						<?php } ?>
 					</div>
 					<!-- end widget content -->
@@ -78,7 +84,7 @@
 							map.on('load', function() {
 								map.addSource('national-park', {
 									'type': 'geojson',
-									'data': <?=$geo_json?>
+									'data': <?=$geojson?>
 								});
 								map.addLayer({
 									'id': 'park-boundary',

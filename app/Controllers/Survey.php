@@ -41,11 +41,11 @@ class Survey extends Controller
 		// todo: online simply analysis
 		$data = 
 		[
-			'event_all' => $event_all,
 			'icon' => 'fa-truck',
 			'title' => 'Survey',
 			'sub_title' => '',
-			'site_all' => $this->model_site->get_site_all(),
+			'site_names' => $this->model_site->get_site_names(),
+			'event_all' => $event_all,
 		];
         echo view('head', $data);
 		echo view('js');
@@ -61,7 +61,7 @@ class Survey extends Controller
 			'icon' => 'fa-truck',
 			'title' => 'Survey',
 			'sub_title' => '> New Event',
-			'site_all' => $this->model_site->get_site_all(),
+			'site_names' => $this->model_site->get_site_names(),
 			'date' => $time->toLocalizedString('yyyy-MM-dd'),
 			'ts'   => $time->getTimestamp(),
 		];
@@ -90,7 +90,7 @@ class Survey extends Controller
 					'icon' => 'fa-truck',
 					'title' => 'Survey',
 					'sub_title' => '> Event #'.$event,
-					'site_all' => $this->model_site->get_site_all(),
+					'site_names' => $this->model_site->get_site_names(),
 					'event_item' => $event_item[0],
 					'data_beacon' => $event_beacon_data,
 					'data_wifi' => $event_wifi_data,

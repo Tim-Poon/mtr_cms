@@ -52,26 +52,36 @@
 <!-- end widget grid -->
 <script type="text/javascript">
     var coordinate = new Array();
+    mapboxgl.accessToken = '<?=$mapbox_key?>';
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [114.21402, 22.3235],
+        zoom: 19,
+        bearing: 85
+    });
     function mappingklb(x, y){
         var tempX;
         var tempY;
-        tempX = x * (22.322640509124938 - 22.32366230098978) / (113.8655 + 0.1097) + 22.32366230098978;;
-        //tempY = y * (114.21411744242806 - 114.21400195766319) / 2.5115 + 114.21400195766319;
-        tempY = y * (114.21409394548903 - 114.21400038785612) / 13.4663 + 114.21400038785612;
+        tempX = (x + 0.1097) * (1522.652698750814 - 694.000000406901) / (113.8655 + 0.1097) + 694.000000406901;
+        tempY = y * (164.99999857584635 - 254.49999934895834) / 13.4663 + 254.49999934895834;
         return {tempX:tempX, tempY:tempY}
     }
     <?php foreach($beacons as $beacon_item){ ?>
     var temp = new Array();
     var obj;
+    var tempLatLng = new Array();
     obj = mappingklb(<?= $beacon_item->x?>, <?= $beacon_item->y?>);
-    temp.push(obj.tempY);
     temp.push(obj.tempX);
+    temp.push(obj.tempY);
+    tempLatLng.push(map.unproject(temp)['lng']);
+    tempLatLng.push(map.unproject(temp)['lat']);
     var aaa = {
             "type": "Feature",
             "properties": {},
             "geometry": {
                 "type": "Point",
-                "coordinates": temp
+                "coordinates": tempLatLng
             }
     };
     coordinate.push(aaa);
@@ -102,14 +112,7 @@
     //         //  console.log(coordinate);
     //     }
     // });
-    mapboxgl.accessToken = '<?=$mapbox_key?>';
-    var map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v11',
-        center: [114.21402, 22.3235],
-        zoom: 19,
-        bearing: 85
-    });
+    
     var marker = new mapboxgl.Marker();
     function getLonLat() {
             $.ajax({

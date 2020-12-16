@@ -53,8 +53,6 @@
 
 					</div>
 					<!-- end widget edit box -->
-
-
 					<!-- widget content -->
 					<div class="widget-body">
 						<?php foreach($site_all as $site_item) {?>
@@ -80,11 +78,16 @@
                                 zoom: 19,
                                 bearing: 85
                             });
-                           
+
 							map.on('load', function() {
 								map.addSource('national-park', {
 									'type': 'geojson',
 									'data': <?=$geojson?>
+								});
+
+								map.addSource('polygon', {
+									'type': 'geojson',
+									'data': <?=$polygon?>.data
 								});
 								map.addLayer({
 									'id': 'park-boundary',
@@ -96,6 +99,20 @@
 									},
 									'paint': {
 									'line-color': '#BF93E4',
+									'line-width': 2
+									}
+								});
+
+								map.addLayer({
+									'id': 'park-volcanoes',
+									'type': 'line',
+									'source': 'polygon',
+									'layout': {
+									'line-join': 'round',
+									'line-cap': 'round'
+									},
+									'paint': {
+									'line-color': '#2E2EFE',
 									'line-width': 2
 									}
 								});
@@ -112,9 +129,11 @@
 							map.on('draw.create', updateArea);
 							map.on('draw.delete', updateArea);
 							map.on('draw.update', updateArea);
-
+					
 							function updateArea(e) {
 								var data = draw.getAll();
+								console.log(data);
+								// console.log(data.features);
 								// console.log(turf.area(data));
 								var answer = document.getElementById('calculated-area');
 								if (data.features.length > 0) {
@@ -141,8 +160,16 @@
 									var convertedData = 'text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data))
 
 									// create export
-									document.getElementById('export').setAttribute('href', 'data:' + convertedData);
-									document.getElementById('export').setAttribute('download', 'data.geojson')
+									// document.getElementById('export').setAttribute('href', 'data:' + convertedData);
+									// document.getElementById('export').setAttribute('download', 'data.geojson');
+									console.log(data);
+									$.post( "<?=base_url('polygon/add/1001/1')?>", {data: data}).done(function(data) {
+										// if(data == '0'){
+											alert(data);
+										// }else{
+										// 	window.location.href="<?=base_url('survey/event').'/'?>" + data;
+										// }
+									});
 								}
 								else{
 									alert("Wouldn't you like to draw some data")

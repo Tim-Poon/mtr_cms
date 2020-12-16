@@ -9,6 +9,12 @@ class PolygonModel extends Model
         parent::__construct();
     }
 
+    public function set_polygon($data)
+    {
+        $builder = $this->db->table('polygon');
+        $builder->insert($data);
+    }
+
     public function get_polygon($site, $floor)
     {
         // get site polygon

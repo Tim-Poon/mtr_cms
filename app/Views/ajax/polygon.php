@@ -85,10 +85,6 @@
 									'data': <?=$geojson?>
 								});
 
-								map.addSource('polygon', {
-									'type': 'geojson',
-									'data': <?=$polygon?>.data
-								});
 								map.addLayer({
 									'id': 'park-boundary',
 									'type': 'line',
@@ -102,21 +98,8 @@
 									'line-width': 2
 									}
 								});
+							});						
 
-								map.addLayer({
-									'id': 'park-volcanoes',
-									'type': 'line',
-									'source': 'polygon',
-									'layout': {
-									'line-join': 'round',
-									'line-cap': 'round'
-									},
-									'paint': {
-									'line-color': '#2E2EFE',
-									'line-width': 2
-									}
-								});
-							});
 							var draw = new MapboxDraw({
 								displayControlsDefault: false,
 								controls: {
@@ -124,7 +107,16 @@
 									trash: true
 								}
 							});
+
 							map.addControl(draw);
+
+							draw.add({ type: 'Polygon', coordinates:  [[
+								[114.21421654994128, 22.323443055138483],
+								[114.2141174660099, 22.32320963054694],
+								[114.21407880922527, 22.323517373549407],
+								[114.21413148255846, 22.32364367905086],
+								[114.21421654994128, 22.323443055138483]
+								]] });
 
 							map.on('draw.create', updateArea);
 							map.on('draw.delete', updateArea);
@@ -162,7 +154,7 @@
 									// create export
 									// document.getElementById('export').setAttribute('href', 'data:' + convertedData);
 									// document.getElementById('export').setAttribute('download', 'data.geojson');
-									console.log(data);
+									// console.log(data);
 									$.post( "<?=base_url('polygon/add/1001/1')?>", {data: data}).done(function(data) {
 										// if(data == '0'){
 											alert(data);

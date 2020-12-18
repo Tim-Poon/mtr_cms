@@ -18,7 +18,7 @@ class Polygon extends Controller
 		{
 			$site = $params[0];
 			$floor = $params[1];
-			$this->add_polygon($site, $floor);
+			$this->add_polygons($site, $floor);
 		}
 		elseif ($method === 'index')
 		{
@@ -59,9 +59,9 @@ class Polygon extends Controller
 			'sub_title' => '> ' . $site_item->site_name . ' ' . $site_item->floor_name,
 			'site_names' => $this->model_site->get_site_names(),
 			'site_all' => $this->model_site->get_site_all(),
-			'polygon' => $polygon->geojson,
-			'geojson' => $site_item->geojson,
-			'mapbox_key' => config('ApiServer_')->mapbox['key']
+			'site_polygon' => $polygon->geojson,
+			'site_item' => $site_item,
+			'mapbox_key' => config('ApiServer_')->mapbox['key'],
 		];
 
 		// todo
@@ -73,23 +73,36 @@ class Polygon extends Controller
 		echo view('foot');
 	}
 
-	private function add_polygon($site, $floor)
+	private function add_polygons($site, $floor)
 	{
-		$geojson = $this->request->getPost(['data']);
-		$data = 
-		[
-			'site' => $site,
-			'floor' => $floor,
-			'poly' => 1,
-			'geojson' => json_encode($geojson)
-		];
-		print_r($data);
-		$this->model->set_polygon($data);
+		$raw_polygons = $this->request->getPost(['raw_polygons']);
+		if ($raw_polygons['raw_polygons']['features']) {
+			// get raw ploygons
+			// geometry coordinates
+			$poly = 1;
+			$ts_create = $this->get_timestamp();
+			foreach ($raw_polygons['raw_polygons']['features'] as $polygon_item) {
+				if (count($polygon_item['geometry']['coordinates'][0]) == (4 + 1)) {
+					$polygon_data = 
+					[
+						'site' => $site,
+						'floor' => $floor,
+						'poly' => $poly,
+						'geojson' => json_encode($polygon_item),
+						'ts_create' => $ts_create
+					];
+					$this->model->set_polygons($polygon_data);
+					$poly += 1;
+				}
+			}
+		}else {
+			echo 0;
+		}
 	}
 
-	public function get_time()
+	private function get_timestamp()
 	{
 	    $time = Time::now('Asia/Hong_Kong', 'en_US');
-	    echo $time;
+	    return $time->getTimestamp();
 	}
 }

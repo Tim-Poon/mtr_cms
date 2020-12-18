@@ -9,18 +9,20 @@ class PolygonModel extends Model
         parent::__construct();
     }
 
-    public function set_polygon($data)
+    public function set_polygons($data)
     {
         $builder = $this->db->table('polygon');
         $builder->insert($data);
     }
 
-    public function get_polygon($site, $floor)
+    public function get_lastest_polygon($site, $floor)
     {
         // get site polygon
         $builder = $this->db->table('polygon');
+        $max_ts_create = $builder->selectMax('ts_create');
         $builder->where('site', $site);
         $builder->where('floor', $floor);
+        $builder->where('ts_create', $max_ts_create);
         $query = $builder->get();
         return $query->getResult();
     }

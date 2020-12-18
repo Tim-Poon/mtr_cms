@@ -31,3 +31,6 @@
 <!-- MAIN APP JS FILE -->
 <script src="<?= base_url('/public/js/app.js');?>"></script>
 
+<!-- MAPBOX JS FILE -->
+<script src="<?= base_url('/public/js/mapbox/mapbox-gl.js')?>"></script>
+

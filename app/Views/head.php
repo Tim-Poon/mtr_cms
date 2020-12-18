@@ -33,8 +33,10 @@
 		
 		<!-- GOOGLE FONT -->
 		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">
-		<script src="<?= base_url('/public/js/mapbox/mapbox-gl.js')?>"></script>
-		<link href="<?= base_url('/public/css/mapbox-gl.css')?>" rel="stylesheet" />
+
+		<!-- MAPBOX -->
+		<link href="<?= base_url('/public/css/mapbox/mapbox-gl.css')?>" rel="stylesheet" />
+		<link href="<?= base_url('/public/css/mapbox/mapbox-gl-app.css')?>" rel="stylesheet" />
 	
 	</head>
 	<body class=""> <!-- possible classes: minified, fixed-ribbon, fixed-header, fixed-width-->

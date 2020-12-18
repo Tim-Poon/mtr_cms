@@ -1,13 +1,3 @@
-<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-
-<style>
-#map {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 100%;
-}
-</style>
 <!-- widget grid -->
 <section id="widget-grid" class="">
 
@@ -55,7 +45,7 @@
     mapboxgl.accessToken = '<?=$mapbox_key?>';
     var map = new mapboxgl.Map({
         container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v11',
+        style: 'mapbox://styles/mapbox/light-v10',
         center: [114.21402, 22.3235],
         zoom: 19,
         bearing: 85
@@ -86,32 +76,6 @@
     };
     coordinate.push(aaa);
     <?php } ?>
-    // $.ajax({
-    //     type: "POST",
-    //     dataType: "json",
-    //     url: "http://143.89.49.63:8080/beacon",
-    //     success: function (result) {                                   
-    //         $.each(result.KLB,function(index, obj){
-    //             // console.log(obj.coor[0]);
-    //             var temp = new Array();
-    //             var obj;
-    //             obj = mappingklb(obj.coor[0], obj.coor[1]);
-    //             temp.push(obj.tempY);
-    //             temp.push(obj.tempX);
-    //             var aaa = {
-    //                     "type": "Feature",
-    //                     "properties": {},
-    //                     "geometry": {
-    //                         "type": "Point",
-    //                         "coordinates": temp
-    //                     }
-    //             };
-    //             coordinate.push(aaa);
-    //             // drawPoint(obj.coor[0], obj.coor[1], obj.beacon.substr(8, 9), obj.status, variables.beacon_color_normal, variables.color_detect, variables.beacon_radius, obj.rssi, variables.beacon_font, 'KLB', ctx);
-    //         });
-    //         //  console.log(coordinate);
-    //     }
-    // });
     
     var marker = new mapboxgl.Marker();
     function getLonLat() {

@@ -1,30 +1,7 @@
-<script src="https://api.tiles.mapbox.com/mapbox.js/plugins/turf/v3.0.11/turf.min.js"></script>
-<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.0/mapbox-gl-draw.js"></script>
-<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.0/mapbox-gl-draw.css" type="text/css" />
-<style>
-#map {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 100%;
-}
-.calculation-box {
-        height: 90px;
-        width: 150px;
-        position: absolute;
-        bottom: 425px;
-        left: 920px;
-        background-color: rgba(255, 255, 255, 0.9);
-        padding: 15px;
-        text-align: center;
-    }
+<script src="<?= base_url('/public/js/mapbox/turf.min.js')?>"></script>
+<script src="<?= base_url('/public/js/mapbox/mapbox-gl-draw.js')?>"></script>
+<link href="<?= base_url('/public/css/mapbox/mapbox-gl-draw.css')?>" rel="stylesheet" />
 
-    p {
-        font-family: 'Open Sans';
-        margin: 0;
-        font-size: 13px;
-    }
-</style>
 <!-- widget grid -->
 <section id="widget-grid" class="">
 	<!-- row -->
@@ -41,18 +18,10 @@
 				<header>
 					<span class="widget-icon"> <i class="fa fa-map-marker"></i> </span>
 					<h2>Polygon</h2>
-
 				</header>
 
 				<!-- widget div-->
 				<div>
-
-					<!-- widget edit box -->
-					<div class="jarviswidget-editbox">
-						<!-- This area used as dropdown edit box -->
-
-					</div>
-					<!-- end widget edit box -->
 					<!-- widget content -->
 					<div class="widget-body">
 						<?php foreach($site_all as $site_item) {?>
@@ -63,142 +32,116 @@
 					<div class="row no-space">
 						<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8" style="height:500px;">
 							<!-- TODO: MAP -->
-							<div id="map" ></div>
+							<div id="map"></div>
+						</div>
+
+						<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+							TODO: polygons 
+							TODO: btn group (add point, save all) -> database
+							TODO: history table by site (ts_id vertex) -> display
 							<div class="calculation-box">
 								<p>Draw a polygon using the draw tools.</p>
 								<a ref="#" id="export">SAVE POLYGON</a>
 								<div id="calculated-area"></div>
 							</div>
-                            <script>
-                            mapboxgl.accessToken = '<?=$mapbox_key?>';
-                            var map = new mapboxgl.Map({
-                                container: 'map',
-                                style: 'mapbox://styles/mapbox/streets-v11',
-                                center: [114.21402, 22.3235],
-                                zoom: 19,
-                                bearing: 85
-                            });
-
-							map.on('load', function() {
-								map.addSource('national-park', {
-									'type': 'geojson',
-									'data': <?=$geojson?>
-								});
-
-								map.addLayer({
-									'id': 'park-boundary',
-									'type': 'line',
-									'source': 'national-park',
-									'layout': {
-									'line-join': 'round',
-									'line-cap': 'round'
-									},
-									'paint': {
-									'line-color': '#BF93E4',
-									'line-width': 2
-									}
-								});
-							});						
-
-							var draw = new MapboxDraw({
-								displayControlsDefault: false,
-								controls: {
-									polygon: true,
-									trash: true
-								}
-							});
-
-							map.addControl(draw);
-
-							draw.add({ type: 'Polygon', coordinates:  [[
-								[114.21421654994128, 22.323443055138483],
-								[114.2141174660099, 22.32320963054694],
-								[114.21407880922527, 22.323517373549407],
-								[114.21413148255846, 22.32364367905086],
-								[114.21421654994128, 22.323443055138483]
-								]] });
-
-							map.on('draw.create', updateArea);
-							map.on('draw.delete', updateArea);
-							map.on('draw.update', updateArea);
-					
-							function updateArea(e) {
-								var data = draw.getAll();
-								console.log(data);
-								// console.log(data.features);
-								// console.log(turf.area(data));
-								var answer = document.getElementById('calculated-area');
-								if (data.features.length > 0) {
-									var area = turf.area(data);
-									// restrict to area to 2 decimal points
-									var rounded_area = Math.round(area * 100) / 100;
-									// answer.innerHTML =
-									// 	'<p><strong>' +
-									// 	rounded_area +
-									// 	'</strong></p><p>square meters</p>';
-								} else {
-									// answer.innerHTML = '';
-									if (e.type !== 'draw.delete')
-										alert('Use the draw tools to draw a polygon!');
-								}
-							}
-
-							document.getElementById('export').onclick = function(e){
-								// extract GeoJson from featureGroup
-								var data = draw.getAll();
-
-								if(data.features.length > 0){
-									// Stringify the GeoJson
-									var convertedData = 'text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data))
-
-									// create export
-									// document.getElementById('export').setAttribute('href', 'data:' + convertedData);
-									// document.getElementById('export').setAttribute('download', 'data.geojson');
-									// console.log(data);
-									$.post( "<?=base_url('polygon/add/1001/1')?>", {data: data}).done(function(data) {
-										// if(data == '0'){
-											alert(data);
-										// }else{
-										// 	window.location.href="<?=base_url('survey/event').'/'?>" + data;
-										// }
-									});
-								}
-								else{
-									alert("Wouldn't you like to draw some data")
-								}
-								}
-                            </script>
-						</div>
-						<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-							TODO: polygons 
 						</div>
 					</div>
-					
-					TODO: btn group (add point, save all) -> database
-					TODO: history table by site (ts_id vertex) -> display
-					<table class="table table-bordered">
-						<thead> 
 				</div>
 				<!-- end widget div -->
-
 			</div>
 			<!-- end widget -->
 		</article>
     </div>
-
 </section>
+
 <!-- end widget grid -->
-
-<script type="text/javascript">
-	// DO NOT REMOVE : GLOBAL FUNCTIONS!
-	pageSetUp();
-
-	// PAGE RELATED SCRIPTS
-	$('#contact-form').submit(function(e){
-		$.post( "todos/submit", $( "#contact-form" ).serialize())
-		.done(function( data ) {
-			$('#done').html(data);
+<script>
+		mapboxgl.accessToken = '<?=$mapbox_key?>';
+		var map = new mapboxgl.Map({
+			container: 'map',
+			style: 'mapbox://styles/mapbox/light-v10',
+			center: [<?=$site_item->mapbox_center_lng?>, <?=$site_item->mapbox_center_lat?>],
+			zoom: <?=$site_item->mapbox_zoom?>,
+			bearing: <?=$site_item->mapbox_bearing?>
 		});
-		return false;
-	});
-</script>
+
+		map.on('load', function() {
+			map.addSource('national-park', {
+				'type': 'geojson',
+				'data': <?=$site_item->geojson?>
+			});
+
+			map.addLayer({
+				'id': 'park-boundary',
+				'type': 'line',
+				'source': 'national-park',
+				'layout': {
+					'line-join': 'round',
+					'line-cap': 'round'
+				},
+				'paint': {
+					'line-color': '#BF93E4',
+					'line-width': 2
+				}
+			});
+		});						
+
+		var draw = new MapboxDraw({
+			displayControlsDefault: false,
+			controls: {
+				polygon: true,
+				trash: true
+			}
+		});
+
+		map.addControl(draw);
+
+		draw.add({ id:'123', type: 'Polygon', coordinates:  [[
+			[114.21421654994128, 22.323443055138483],
+			[114.2141174660099, 22.32320963054694],
+			[114.21407880922527, 22.323517373549407],
+			[114.21413148255846, 22.32364367905086],
+			[114.21421654994128, 22.323443055138483]
+			]] });
+
+		map.on('draw.create', updateArea);
+		map.on('draw.delete', updateArea);
+		map.on('draw.update', updateArea);
+
+		function updateArea(e) {
+			var data = draw.getAll();
+			var answer = document.getElementById('calculated-area');
+			if (data.features.length > 0) {
+				var area = turf.area(data);
+				// restrict to area to 2 decimal points
+				var rounded_area = Math.round(area * 100) / 100;
+			} else {
+				// answer.innerHTML = '';
+				if (e.type !== 'draw.delete')
+					alert('Use the draw tools to draw a polygon!');
+			}
+		}
+
+		document.getElementById('export').onclick = function(e){
+			// extract GeoJson from featureGroup
+			var data = draw.getAll();
+
+			if(data.features.length > 0){
+				// Stringify the GeoJson
+				var convertedData = 'text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data))
+				// download polygon
+				// document.getElementById('export').setAttribute('href', 'data:' + convertedData);
+				// document.getElementById('export').setAttribute('download', 'data.geojson');
+				$.post( "<?=base_url('polygon/add/1001/1')?>", {raw_polygons: data}).done(function(data) {
+					// if(data == '0'){
+						alert(data);
+					// }else{
+					// 	window.location.href="<?=base_url('survey/event').'/'?>" + data;
+					// }
+				});
+			}
+			else{
+				alert("Wouldn't you like to draw some data")
+			}
+			}
+		</script>

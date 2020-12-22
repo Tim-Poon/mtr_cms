@@ -19,47 +19,14 @@ class PolygonModel extends Model
     {
         // get site polygon
         $builder = $this->db->table('polygon');
-        $max_ts_create = $builder->selectMax('ts_create');
+        $builder->selectMax('ts_create');
+        $max_ts_create = $builder->get()->getResult()[0]->ts_create;
+
         $builder->where('site', $site);
         $builder->where('floor', $floor);
         $builder->where('ts_create', $max_ts_create);
         $query = $builder->get();
         return $query->getResult();
-    }
-
-    public function get_raw_beacon_data($minutes)
-    {
-        if($minutes <= 100)
-        {
-            // get lastest $minutes data
-            $builder = $this->db->table('raw_beacon_data');
-            $builder->orderBy('id', 'DESC');
-            $query = $builder->get($minutes);
-            return $query;
-        }
-    }
-
-    public function get_logs($minutes)
-    {
-        if($minutes <= 100)
-        {
-            // get lastest $minutes data
-            $builder = $this->db->table('daily_log');
-            $builder->orderBy('ts', 'DESC');
-            $query = $builder->get($minutes);
-            return $query;
-        }
-    }
-
-    public function get_todos($minutes)
-    {
-        if($minutes <= 100)
-        {
-            // get lastest $minutes data
-            $query   = $this->db->query('SELECT id, ts, src_type, content, level FROM daily_log WHERE todo=0');
-            $results = $query->getResult();
-            return $results;
-        }
     }
 
 }

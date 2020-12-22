@@ -64,7 +64,6 @@
 			zoom: <?=$site_item->mapbox_zoom?>,
 			bearing: <?=$site_item->mapbox_bearing?>
 		});
-
 		map.on('load', function() {
 			map.addSource('national-park', {
 				'type': 'geojson',
@@ -95,18 +94,14 @@
 		});
 
 		map.addControl(draw);
-
-		draw.add({ id:'123', type: 'Polygon', coordinates:  [[
-			[114.21421654994128, 22.323443055138483],
-			[114.2141174660099, 22.32320963054694],
-			[114.21407880922527, 22.323517373549407],
-			[114.21413148255846, 22.32364367905086],
-			[114.21421654994128, 22.323443055138483]
-			]] });
-
+		
 		map.on('draw.create', updateArea);
 		map.on('draw.delete', updateArea);
 		map.on('draw.update', updateArea);
+
+		<?php foreach($site_polygons as $site_polygon_item){?>
+			draw.add({type: 'Polygon', coordinates:  <?=$site_polygon_item->geojson?> });
+		<?php }?>
 
 		function updateArea(e) {
 			var data = draw.getAll();

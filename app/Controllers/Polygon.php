@@ -50,7 +50,8 @@ class Polygon extends Controller
 
 	private function view_polygon($site, $floor)
 	{
-		$polygon = $this->model->get_polygon($site, $floor)[0];
+		$site_polygons = $this->model->get_lastest_polygon($site, $floor);
+		
 		$site_item = $this->model_site->get_site_item($site, $floor)[0];
 		$data = 
 		[
@@ -59,13 +60,13 @@ class Polygon extends Controller
 			'sub_title' => '> ' . $site_item->site_name . ' ' . $site_item->floor_name,
 			'site_names' => $this->model_site->get_site_names(),
 			'site_all' => $this->model_site->get_site_all(),
-			'site_polygon' => $polygon->geojson,
+			'site_polygons' => $site_polygons,
 			'site_item' => $site_item,
 			'mapbox_key' => config('ApiServer_')->mapbox['key'],
 		];
 
-		// todo
-		// visit -> view_polygon = [1. load map by geojson(done); 2. load default polygon, darw polygon on view; 3. draw/revise polygon by mapbox;, 4. upload and reflash]
+		// // todo
+		// // visit -> view_polygon = [1. load map by geojson(done); 2. load default polygon, darw polygon on view; 3. draw/revise polygon by mapbox;, 4. upload and reflash]
 
 		echo view('head', $data);
 		echo view('js');
@@ -88,7 +89,7 @@ class Polygon extends Controller
 						'site' => $site,
 						'floor' => $floor,
 						'poly' => $poly,
-						'geojson' => json_encode($polygon_item),
+						'geojson' => str_replace('"', '', json_encode($polygon_item['geometry']['coordinates'])),
 						'ts_create' => $ts_create
 					];
 					$this->model->set_polygons($polygon_data);

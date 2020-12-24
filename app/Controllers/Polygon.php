@@ -20,14 +20,23 @@ class Polygon extends Controller
 			$floor = $params[1];
 			$this->add_polygons($site, $floor);
 		}
+		elseif($method === 'del')
+		{
+			$site = $params[0];
+			$floor = $params[1];
+			$ts_create = $params[2];
+			$this->del_polygon($site, $floor, $ts_create);
+		}
 		elseif ($method === 'index')
 		{
 			return $this->index();
-		}else
+		}
+		else
 		{
 			$site = $method;
 			$floor = $params[0];
-			return $this->view_polygon($site, $floor);
+			$ts_create = $params[1];
+			return $this->view_polygon($site, $floor, $ts_create);
 		}
 	}
 
@@ -40,6 +49,10 @@ class Polygon extends Controller
 			'sub_title' => '',
 			'site_names' => $this->model_site->get_site_names(),
 			'site_all' => $this->model_site->get_site_all(),
+
+			'site_polygons' => $this->model->get_lastest_polygon(1001, 1),
+			'site_ts_create' => $this->model->get_ts_create($site, $floor),
+			'mapbox_key' => config('ApiServer_')->mapbox['key'],
 		];
 
 		echo view('head', $data);
@@ -48,11 +61,16 @@ class Polygon extends Controller
 		echo view('foot');
 	}
 
-	private function view_polygon($site, $floor)
+	private function view_polygon($site, $floor, $ts_create)
 	{
-		$site_polygons = $this->model->get_lastest_polygon($site, $floor);
-		
+		if($ts_create){
+			$site_polygons = $this->model->get_polygon($site, $floor, $ts_create);
+		}else{
+			$site_polygons = $this->model->get_lastest_polygon($site, $floor);
+		}
 		$site_item = $this->model_site->get_site_item($site, $floor)[0];
+		$site_ts_create = $this->model->get_ts_create($site, $floor);
+
 		$data = 
 		[
 			'icon' => 'fa-map-marker',
@@ -62,11 +80,9 @@ class Polygon extends Controller
 			'site_all' => $this->model_site->get_site_all(),
 			'site_polygons' => $site_polygons,
 			'site_item' => $site_item,
+			'site_ts_create' => $site_ts_create,
 			'mapbox_key' => config('ApiServer_')->mapbox['key'],
 		];
-
-		// // todo
-		// // visit -> view_polygon = [1. load map by geojson(done); 2. load default polygon, darw polygon on view; 3. draw/revise polygon by mapbox;, 4. upload and reflash]
 
 		echo view('head', $data);
 		echo view('js');
@@ -99,6 +115,11 @@ class Polygon extends Controller
 		}else {
 			echo 0;
 		}
+	}
+
+	private function del_polygon($site, $floor, $ts_create){
+		$result = $this->model->del_polygon($site, $floor, $ts_create);
+		$this->view_polygon($site, $floor, $ts_create);
 	}
 
 	private function get_timestamp()

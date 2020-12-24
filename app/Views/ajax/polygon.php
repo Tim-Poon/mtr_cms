@@ -44,6 +44,24 @@
 								<a ref="#" id="export">SAVE POLYGON</a>
 								<div id="calculated-area"></div>
 							</div>
+						
+							<table id="datatable_sensor" class="table table-striped table-hover">
+								<thead>
+									<tr>
+										<th class="text-align-center">ts_create</th>
+										<th class="text-align-center">operation</th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php foreach ($site_ts_create as $site_ts_create_item) {?>
+										<tr>
+											<td class="text-align-center"><a href="<?= base_url('polygon/'.$site_item->site.'/'.$site_item->floor.'/'.$site_ts_create_item->ts_create)?>"><?= $site_ts_create_item->ts_create?></a></td>
+											<td class="text-align-center"><a href="<?= base_url('polygon/del/'.$site_item->site.'/'.$site_item->floor.'/'.$site_ts_create_item->ts_create)?>">delete</a></td>
+										</tr>
+									<?php }?>
+									
+								</tbody>
+							</table>
 						</div>
 					</div>
 				</div>
@@ -83,7 +101,7 @@
 					'line-width': 2
 				}
 			});
-		});						
+		});
 
 		var draw = new MapboxDraw({
 			displayControlsDefault: false,

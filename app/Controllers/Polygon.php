@@ -20,6 +20,12 @@ class Polygon extends Controller
 			$floor = $params[1];
 			$this->add_polygons($site, $floor);
 		}
+		elseif($method === 'import')
+		{
+			$site = $params[0];
+			$floor = $params[1];
+			$this->import_polygons($site, $floor);
+		}
 		elseif($method === 'del')
 		{
 			$site = $params[0];
@@ -90,6 +96,34 @@ class Polygon extends Controller
 		echo view('foot');
 	}
 
+	private function import_polygons($site, $floor)
+	{
+		$raw_polygons = $this->request->getPost(['import']);
+		
+		// if ($raw_polygons['raw_polygons']['features']) {
+		// 	// get raw ploygons
+		// 	// geometry coordinates
+		// 	$poly = 1;
+		// 	$ts_create = $this->get_timestamp();
+		// 	foreach ($raw_polygons['raw_polygons']['features'] as $polygon_item) {
+		// 		if (count($polygon_item['geometry']['coordinates'][0]) == (4 + 1)) {
+		// 			$polygon_data = 
+		// 			[
+		// 				'site' => $site,
+		// 				'floor' => $floor,
+		// 				'poly' => $poly,
+		// 				'geojson' => str_replace('"', '', json_encode($polygon_item['geometry']['coordinates'])),
+		// 				'ts_create' => $ts_create
+		// 			];
+		// 			$this->model->set_polygons($polygon_data);
+		// 			$poly += 1;
+		// 		}
+		// 	}
+		// }else {
+		// 	echo 0;
+		// }	
+	}
+
 	private function add_polygons($site, $floor)
 	{
 		$raw_polygons = $this->request->getPost(['raw_polygons']);
@@ -114,7 +148,7 @@ class Polygon extends Controller
 			}
 		}else {
 			echo 0;
-		}
+		}	
 	}
 
 	private function del_polygon($site, $floor, $ts_create){

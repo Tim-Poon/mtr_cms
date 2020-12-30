@@ -79,7 +79,7 @@
 <script type="text/javascript">
 	// PAGE RELATED SCRIPTS
 	$('#newevent-form').submit(function(e){
-		$.post( "<?=base_url('survey/add_event')?>", $( "#newevent-form" ).serialize()).done(function(data) {
+		$.post("<?=base_url('survey/add_event')?>", $( "#newevent-form" ).serialize()).done(function(data) {
             if(data == '0'){
                 alert('please fill ');
             }else{

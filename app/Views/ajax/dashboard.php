@@ -297,10 +297,6 @@
 		loadScript("<?= base_url('public/js/plugin/datatables/dataTables.colVis.js')?>", dt_6);
 	}
 
-	// function dt_5() {
-	// 	loadScript("<?= base_url('js/plugin/datatables/ZeroClipboard.js')?>", dt_6);
-	// }
-
 	function dt_6() {
 		loadScript("<?= base_url('public/js/plugin/datatables/dataTables.tableTools.min.js')?>", dt_7);
 	}

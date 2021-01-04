@@ -35,30 +35,24 @@
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-4 col-lg-3"> 
 								<div class="calculation-box">
-									<a href="javascript:void(0);" id="save_polygon" class="btn btn-primary">Save</a>
-									<a href="javascript:void(0);" id="export_polygon" class="btn btn-success">todo: Export</a>
+									<button type="submit" id="save_polygon" class="btn btn-primary">Save</button>
+									<!-- <button type="submit" id="export_polygon" class="btn btn-success">Export</button> -->
 								</div>
 								<hr class="simple">
 								<form id="import-form" class="smart-form">
 									<fieldset>
 										<div class="row">
 											<section class="col col-9">
-												<label class="textarea state-info" >
-													<textarea rows="1" name="import"></textarea>
+												<label class="input state-success" >
+													<input type="text" name="import"></input>
 												</label>
 											</section>
 											<section class="col col-3">
-												<button type="submit" class="btn btn-primary">Import</button>
+												<button type="submit" class="btn btn-primary btn-sm">Import</button>
 											</section>
 										</div>
 									</fieldset>
 								</form>
-								<!-- <div class="input-group">
-									<input class="form-control" type="text" placeholder="Your Polygon" id="import_content">
-									<div class="input-group-btn">
-										<a href="javascript:void(0);" id="import_polygon" class="btn btn-primary">Import</a>
-									</div>
-								</div> -->
 								<hr class="simple">
 								<h4>HISTORY</h4>
 								<table id="dt_basic" class="table table-striped table-bordered table-hover">
@@ -82,6 +76,10 @@
 												<td class="text-align-center">
 													<a href="<?= base_url('polygon/del/'.$site_item->site.'/'.$site_item->floor.'/'.$site_ts_create_item->ts_create)?>">
 														<i class="fa fa-trash-o"></i>
+													</a>
+													&nbsp;
+													<a href="<?= base_url('polygon/export/'.$site_item->site.'/'.$site_item->floor.'/'.$site_ts_create_item->ts_create)?>">
+														<i class="fa fa-download"></i>
 													</a>
 												</td>
 											</tr>
@@ -182,15 +180,16 @@
 	map.on('draw.delete', updateArea);
 	map.on('draw.update', updateArea);
 
-	<?php foreach($site_polygons as $site_polygon_item){?>
-		draw.add({type: 'Polygon', coordinates:  <?=$site_polygon_item->geojson?> });
-	<?php }?>
+	<?php if($site_polygons){ 
+		foreach($site_polygons as $site_polygon_item){?>
+			draw.add({type: 'Polygon', coordinates:  <?=$site_polygon_item->geojson?> });
+	<?php }}?>
 
 	function updateArea(e) {
 		var data = draw.getAll();
 	}
 
-	document.getElementById('save_polygon').onclick = function(e){
+	$('#save_polygon').click(function(){
 		// extract GeoJson from featureGroup
 		var data = draw.getAll();
 		if(data.features.length > 0){
@@ -201,24 +200,23 @@
 			// document.getElementById('export').setAttribute('download', 'data.geojson');
 			$.post( "<?=base_url('polygon/add/'.$site_item->site.'/'.$site_item->floor)?>", {raw_polygons: data}).done(function(data) {
 				// alert("Save Successfully!");
-				window.location.href="<?= base_url('polygon/'.$site_item->site.'/'.$site_item->floor)?>";
-				// if(data == '0'){
-					// alert(data);
-				// }else{
-				// 	window.location.href="<?=base_url('survey/event').'/'?>" + data;
-				// }
+				link = "<?= base_url('polygon/'.$site_item->site.'/'.$site_item->floor)?>" + "/" + data;
+				window.location.href= link;
 			});
 		}
 		else{
-			alert("Wouldn't you like to draw some data")
+			alert("Wouldn't you like to draw some data");
 		}
-	}
-	$('#import-form').submit(function(e){console.log(1);
+	});
+
+	$('#import-form').submit(function(e){
 		$.post("<?=base_url('polygon/import/'.$site_item->site.'/'.$site_item->floor)?>", $("#import-form").serialize()).done(function(data) {
             if(data == '0'){
-                alert('please fill required field.');
-            }else{
-				console.log(data);
+                alert('error format, please fill again.');
+			}else{
+				// alert("Save Successfully!");
+				link = "<?= base_url('polygon/'.$site_item->site.'/'.$site_item->floor)?>" + "/" + data;
+				window.location.href= link;
             }
 		});
 		return false;

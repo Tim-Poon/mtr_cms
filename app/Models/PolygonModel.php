@@ -22,6 +22,7 @@ class PolygonModel extends Model
         $builder->select('ts_create');
         $builder->where('site', $site);
         $builder->where('floor', $floor);
+        $builder->where('flag', 1);
         $builder->groupBy('ts_create');
         $builder->orderBy('ts_create', 'DESC');
         $query = $builder->get()->getResult();
@@ -44,6 +45,7 @@ class PolygonModel extends Model
         // get site polygon
         $builder = $this->db->table('polygon');
         $builder->selectMax('ts_create');
+        $builder->where('flag', 1);
         $max_ts_create = $builder->get()->getResult()[0]->ts_create;
 
         $builder->where('site', $site);
@@ -57,11 +59,17 @@ class PolygonModel extends Model
     {
         // delete selected ts_create polygons
         try {
+            // $builder = $this->db->table('polygon');
+            // $builder->where('site', $site);
+            // $builder->where('floor', $floor);
+            // $builder->where('ts_create', $ts_create);
+            // $builder->delete();
             $builder = $this->db->table('polygon');
+            $builder->set('flag', 0);
             $builder->where('site', $site);
             $builder->where('floor', $floor);
             $builder->where('ts_create', $ts_create);
-            $builder->delete();
+            $builder->update();
             return 1;
         }
         catch (\Exception $e)

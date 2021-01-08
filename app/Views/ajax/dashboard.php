@@ -26,7 +26,7 @@
 
 				<header>
 					<span class="widget-icon"> <i class="fa fa-map-marker"></i> </span>
-					<h2>Sendor</h2>
+					<h2>Sensor</h2>
 				</header>
 
 				<!-- widget div-->
@@ -37,27 +37,14 @@
 						<table id="datatable_sensor" class="table table-striped table-hover">
 							<thead>
 								<tr>
-									<th>ID</th>
-									<th>Name</th>
-									<th>Phone</th>
-									<th>Company</th>
-									<th>Zip</th>
-									<th>City</th>
-									<th>Date</th>
+									<th width='15%'>Site</th>
+									<th width='5%'>ID</th>
+									<th width='30%'>Sensor</th>
+									<th width='35%'>HCI</th>
+									<th width='15%'>VM</th>
 								</tr>
 							</thead>
-							<tbody>
-								<?php for ($i=0; $i < 10; $i++) { ?>
-								<tr>
-									<td class="text-align-center">1</td>
-									<td class="text-align-center">2</td>
-									<td class="text-align-center">3</td>
-									<td class="text-align-center">4</td>
-									<td class="text-align-center"><span class="label label-default">0</span></td>
-									<td class="text-align-center"><span class="label label-success">1</span></td>
-									<td class="text-align-center">5</td>
-								</tr>
-								<?php }?>
+							<tbody id='statusbody'>
 							</tbody>
 						</table>
 						<!-- end content -->
@@ -354,28 +341,34 @@
 
 	load_sensor_status();
 	function load_sensor_status() {
-		$.ajax({
-			type: "GET",
-			url: "dashboard/real_time_sensor_status",
-			dataType: 'html',
-			cache: true, // (warning: this will cause a timestamp and will call the request twice)
-			beforeSend: function () {
-				// container.html('<h1><i class="fa fa-cog fa-spin"></i> Loading...</h1>');
-			},
-			success: function (data) {
-				// console.log("load_sensor_status");
-				$('#statusbody')
-					.html(data)
-					.delay(100);
-				setTimeout(load_sensor_status, 1000);
-			},
-			error: function (xhr, ajaxOptions, thrownError) {
-				// container.html(
-				// 	'<h4 style="margin-top:10px; display:block; text-align:left"><i class="fa fa-warning txt-color-orangeDark"></i> Error 404! Page not found.</h4>'
-				// );
-			},
-			async: false
+		$.get("dashboard/real_time_sensor_status", '', function(result){
+			// data = JSON.parse(result);
+			// console.log(result);
+			$('#statusbody').html(result).delay(100);
+			setTimeout(load_sensor_status, 1000);
 		});
+		// $.ajax({
+		// 	type: "GET",
+		// 	url: "dashboard/real_time_sensor_status",
+		// 	dataType: 'html',
+		// 	cache: true, // (warning: this will cause a timestamp and will call the request twice)
+		// 	beforeSend: function () {
+		// 		// container.html('<h1><i class="fa fa-cog fa-spin"></i> Loading...</h1>');
+		// 	},
+		// 	success: function (data) {
+		// 		// console.log("load_sensor_status");
+		// 		$('#statusbody')
+		// 			.html(data)
+		// 			.delay(100);
+		// 		setTimeout(load_sensor_status, 1000);
+		// 	},
+		// 	error: function (xhr, ajaxOptions, thrownError) {
+		// 		// container.html(
+		// 		// 	'<h4 style="margin-top:10px; display:block; text-align:left"><i class="fa fa-warning txt-color-orangeDark"></i> Error 404! Page not found.</h4>'
+		// 		// );
+		// 	},
+		// 	async: false
+		// });
 	}
 
 </script>

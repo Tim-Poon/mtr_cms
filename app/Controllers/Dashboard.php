@@ -26,6 +26,9 @@ class Dashboard extends Controller
 
 		$this->valid_src_type = array('sensor', 'server', 'report');
 		$this->request = \Config\Services::request();
+
+		$this->sensor_info = $this->model->get_sensor_info()->getResult();
+		$this->site_info = $this->model->get_site_info()->getResult();
 	}
 
 	private function check_valid_log_level($log_level){
@@ -57,61 +60,57 @@ class Dashboard extends Controller
 
 	public function real_time_sensor_status()
 	{
-		$sensors = $this->get_sensor_status_dev();
-
-		$cur_ts = time();
-		$res = array();
-		foreach($sensors as $sensor){
-			$sensor_status = array();
-			# todo: get val for var 
-			$sensor_status['site_id'] = $sensor->sensor_site;
-			$sensor_status['sensor_id'] = $sensor->sensor_id;
-			$sensor_status['last_seen_time'] = Time::createFromTimestamp($sensor->l_conn / 1000, 'Asia/Hong_Kong', 'en_US');
-			$sensor_status['lasting_time'] = intval(($sensor->l_conn - $sensor->s_conn) / (1000 * 60));  # if lasting_time is Null, 
-			$sensor_status['recent_raw_flag'] = 'default';
-			$sensor_status['recent_raw_flag'] = 'default';
-			if($cur_ts - $sensor->ts_beacon / 1000 < 60)
-			{
-				$sensor_status['recent_raw_flag'] = 'success';
-			}
-			if($cur_ts - $sensor->ts_loc / 1000 < 60)
-			{
-				$sensor_status['recent_loc_flag'] = 'success';
-			}
-			$sensor_status['vm'] = $sensor->vm;
-			array_push($res, $sensor_status);
-
-		}
-		foreach ($res as $sensor)
-		{
-			$site_id = $sensor['site_id'];
-			$sensor_id = $sensor['sensor_id'];
-			$sensor_val = $sensor['val'];
-			$sensor_last_seen_time = $sensor['last_seen_time'];
-			$sensor_lasting_time = $sensor['lasting_time'];
-			$sensor_recent_raw_flag = $sensor['recent_raw_flag'];
-			$sensor_recent_loc_flag = $sensor['recent_loc_flag'];
-			$sensor_vm = $sensor['vm'];
-
-			echo "<tr>
-					<td class=\"text-align-center\">$site_id-$sensor_id</td>
-					<td class=\"text-align-center\">$sensor_val</td>
-					<td class=\"text-align-center\">$sensor_last_seen_time</td>
-					<td class=\"text-align-center\">$sensor_lasting_time</td>
-					<td class=\"text-align-center\"><span class=\"label label-$sensor_recent_raw_flag\">$sensor_recent_raw_flag</span></td>
-					<td class=\"text-align-center\"><span class=\"label label-$sensor_recent_loc_flag\">$sensor_recent_loc_flag</span></td>
-					<td class=\"text-align-center\">$sensor_vm</td>
+		try {
+            $result = file_get_contents('http://192.168.10.167:8080/latest_sensor_status');
+			// $this->response->setStatusCode(200)->setBody($result);
+			$res = json_decode($result);
+			foreach ($res as $sensor => $value) {
+				// check if registered sensor
+				$sensor_check = 0;
+				$sensor_site = "";
+				$sensor_site_name = "";
+				$site_url = "";
+				$sensor_label = "<strong style=\"color:#FF5733\">unregistered</strong>";
+				foreach ($this->sensor_info as $sensor_item) {
+					if ($sensor == $sensor_item->sensor) {
+						$sensor_check = 1;
+						// get sensor site
+						$sensor_site = $sensor_item->site;
+						foreach ($this->site_info as $site_item) {
+							if ($sensor_site == $site_item->site) {
+								// get sensor site name
+								$sensor_site_name = $site_item->site_name;
+								$site_url = base_url("site/$sensor_site");
+								break;
+							}
+						}
+						// get sensor label
+						$sensor_label = $sensor_item->label;
+						break;
+					}
+				}
+				
+				$hci_status_td = '';
+				foreach ($value->hci_status as $hci_item) {
+					if($hci_item)
+					{
+						$lable = 'success';
+					}else 
+					{
+						$lable = 'default';
+					}
+					$hci_status_td = $hci_status_td."<span class=\"label label-$lable\">$hci_item</span> ";
+				}
+				echo "<tr>
+					<td class=\"text-align-center\"><a href=\"\"> $sensor_site_name</a></td>
+					<td class=\"text-align-center\">$sensor_label</td>
+					<td class=\"text-align-center\">$sensor</td>
+					<td class=\"text-align-center\">$hci_status_td</td>
+					<td class=\"text-align-center\">$value->vm</td>
 				 </tr>";
-
-		}
-	}
-
-    public function get_sensor_status_dev()
-    {
-        # code...
-        $a = file_get_contents(config('ApiServer_')->apiServerUrl . config('ApiServer_')->sensor['sensor_status_dev']);
-        // return $a;
-        return json_decode($a);
+			}
+        } catch (\Throwable $th) {
+        }
 	}
 
 	public function logs()

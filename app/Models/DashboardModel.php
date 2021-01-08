@@ -9,6 +9,23 @@ class DashboardModel extends Model
         parent::__construct();
     }
 
+    public function get_sensor_info()
+    {
+        // get all sensor
+        $builder = $this->db->table('sensor');
+        $query = $builder->get();
+        return $query;
+    }
+
+    public function get_site_info()
+    {
+        // get all sensor
+        $builder = $this->db->table('site');
+        $builder->select('site, site_name');
+        $query = $builder->get();
+        return $query;
+    }
+
     public function get_raw_loc_data($minutes)
     {
         if($minutes <= 100)

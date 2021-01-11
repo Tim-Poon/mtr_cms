@@ -31,14 +31,6 @@ class Dashboard extends Controller
 		$this->site_info = $this->model->get_site_info()->getResult();
 	}
 
-	private function check_valid_log_level($log_level){
-
-	}
-
-	private function check_valid_log_src_type($src_type){
-
-	}
-
 	public function index()
 	{
 		$data = 
@@ -102,7 +94,7 @@ class Dashboard extends Controller
 					$hci_status_td = $hci_status_td."<span class=\"label label-$lable\">$hci_item</span> ";
 				}
 				echo "<tr>
-					<td class=\"text-align-center\"><a href=\"\"> $sensor_site_name</a></td>
+					<td class=\"text-align-center\"><a href=\"base_url('site/$sensor_site_name')\"> $sensor_site_name</a></td>
 					<td class=\"text-align-center\">$sensor_label</td>
 					<td class=\"text-align-center\">$sensor</td>
 					<td class=\"text-align-center\">$hci_status_td</td>

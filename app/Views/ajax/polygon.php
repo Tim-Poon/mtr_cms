@@ -24,8 +24,8 @@
 				<div>
 					<!-- widget content -->
 					<div class="widget-body">
-						<?php foreach($site_all as $site_item) {?>
-						<a href="<?= base_url('polygon/'.$site_item->site.'/'.$site_item->floor)?>" class="btn btn-success"><?= $site_item->site_name.' '.$site_item->floor_name?></a>
+						<?php foreach($site_all as $site_item_title) {?>
+						<a href="<?= base_url('polygon/'.$site_item_title->site.'/'.$site_item_title->floor)?>" class="btn btn-success"><?= $site_item_title->site_name.' '.$site_item_title->floor_name?></a>
 						<?php } ?>
 						<hr class="simple">
 						<div class="row no-space">

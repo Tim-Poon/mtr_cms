@@ -98,6 +98,7 @@ class Polygon extends Controller
 			'mapbox_key' => config('ApiServer_')->mapbox['key'],
 		];
 
+		// print_r($site_item);
 		echo view('head', $data);
 		echo view('js');
 		echo view('ajax/polygon', $data);

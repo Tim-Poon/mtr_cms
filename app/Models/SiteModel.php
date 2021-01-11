@@ -9,6 +9,32 @@ class SiteModel extends Model
         parent::__construct();
     }
 
+    public function get_sensor_info()
+    {
+        // get all sensor
+        $builder = $this->db->table('sensor');
+        $query = $builder->get();
+        return $query;
+    }
+
+    public function get_site_info()
+    {
+        // get all sensor
+        $builder = $this->db->table('site');
+        $builder->select('site, site_name');
+        $query = $builder->get();
+        return $query;
+    }
+
+    public function get_site_sensor($site)
+    {
+        $builder = $this->db->table('sensor');
+        $builder->where('site', $site);
+        $builder->orderBy('id', 'DESC');
+        $query = $builder->get();
+        return $query->getResult();
+    }
+
     public function get_site_beacon($site, $floor)
     {
         $builder = $this->db->table('beacon');

@@ -1,7 +1,7 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-<!-- BOOTSTRAP JS -->		
+<!-- BOOTSTRAP JS -->	
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>	
 <script src="<?= base_url('/public/js/bootstrap/bootstrap.min.js');?>"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 <!-- JARVIS WIDGETS -->
 <script src="<?= base_url('/public/js/smartwidgets/jarvis.widget.min.js');?>"></script>
 <!-- EASY PIE CHARTS -->

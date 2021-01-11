@@ -53,7 +53,7 @@ class Dashboard extends Controller
 	public function real_time_sensor_status()
 	{
 		try {
-            $result = file_get_contents('http://192.168.10.167:8080/latest_sensor_status');
+            $result = file_get_contents('http://192.168.10.148:8080/latest_sensor_status');
 			// $this->response->setStatusCode(200)->setBody($result);
 			$res = json_decode($result);
 			foreach ($res as $sensor => $value) {
@@ -94,7 +94,7 @@ class Dashboard extends Controller
 					$hci_status_td = $hci_status_td."<span class=\"label label-$lable\">$hci_item</span> ";
 				}
 				echo "<tr>
-					<td class=\"text-align-center\"><a href=\"base_url('site/$sensor_site_name')\"> $sensor_site_name</a></td>
+					<td class=\"text-align-center\"><a href=\"site/$sensor_site_name\"> $sensor_site_name</a></td>
 					<td class=\"text-align-center\">$sensor_label</td>
 					<td class=\"text-align-center\">$sensor</td>
 					<td class=\"text-align-center\">$hci_status_td</td>

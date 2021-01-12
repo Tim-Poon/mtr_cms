@@ -101,6 +101,85 @@
         zoom: 19,
         bearing: 85
     });
+
+    var size = 200;
+    var alarm = 1;
+
+    var pulsingDot = {
+        width: size,
+        height: size,
+        alarm: alarm,
+        data: new Uint8Array(size * size * 4),
+        
+        // get rendering context for the map canvas when layer is added to the map
+        onAdd: function () {
+            var canvas = document.createElement('canvas');
+            canvas.width = this.width;
+            canvas.height = this.height;
+            this.context = canvas.getContext('2d');
+        },
+        
+        // called once before every frame where the icon will be used
+        render: function () {
+            var duration = 1000;
+            var t = (performance.now() % duration) / duration;
+            
+            var radius = (size / 2) * 0.3;
+            var outerRadius = (size / 2) * 0.7 * t + radius;
+            var context = this.context;
+            
+            // draw outer circle
+            context.clearRect(0, 0, this.width, this.height);
+            context.beginPath();
+            context.arc(
+                this.width / 2,
+                this.height / 2,
+                outerRadius,
+                0,
+                Math.PI * 2
+            );
+            if(this.alarm == 1){
+                context.fillStyle = 'rgba(255, 200, 200,' + (1 - t) + ')';
+            }else{
+                context.fillStyle = '#B8CCD4';
+            }
+            context.fill();
+            
+            // draw inner circle
+            context.beginPath();
+            context.arc(
+                this.width / 2,
+                this.height / 2,
+                radius,
+                0,
+                Math.PI * 2
+            );
+            if(this.alarm == 1){
+                context.fillStyle = 'rgba(255, 100, 100, 1)';
+            }else{
+                context.fillStyle = '#229DCF ';
+            }
+            context.strokeStyle = 'white';
+            context.lineWidth = 2 + 4 * (1 - t);
+            context.fill();
+            context.stroke();
+            
+            // update this image's data with data from the canvas
+            this.data = context.getImageData(
+                0,
+                0,
+                this.width,
+                this.height
+            ).data;
+            
+            // continuously repaint the map, resulting in the smooth animation of the dot
+            map.triggerRepaint();
+            
+            // return `true` to let the map know that the image was updated
+            return true;
+        }
+    };
+
     function mappingklb(x, y){
         var tempX;
         var tempY;
@@ -109,42 +188,27 @@
         return {tempX:tempX, tempY:tempY}
     }
     <?php foreach($site_beacons as $beacon_item){ ?>
-    var temp = new Array();
-    var obj;
-    var tempLatLng = new Array();
-    obj = mappingklb(<?= $beacon_item->x?>, <?= $beacon_item->y?>);
-    temp.push(obj.tempX);
-    temp.push(obj.tempY);
-    tempLatLng.push(map.unproject(temp)['lng']);
-    tempLatLng.push(map.unproject(temp)['lat']);
-    var aaa = {
-            "type": "Feature",
-            "properties": {},
-            "geometry": {
-                "type": "Point",
-                "coordinates": tempLatLng
-            }
-    };
-    coordinate.push(aaa);
+        var temp = new Array();
+        var obj;
+        var tempLatLng = new Array();
+        obj = mappingklb(<?= $beacon_item->x?>, <?= $beacon_item->y?>);
+        temp.push(obj.tempX);
+        temp.push(obj.tempY);
+        tempLatLng.push(map.unproject(temp)['lng']);
+        tempLatLng.push(map.unproject(temp)['lat']);
+        var aaa = {
+                "type": "Feature",
+                "properties": {},
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": tempLatLng
+                }
+        };
+        coordinate.push(aaa);
     <?php } ?>
     
-    var marker = new mapboxgl.Marker();
-    function getLonLat() {
-            $.ajax({
-                type: "POST",
-                dataType: "json",
-                url: "http://127.0.0.1/fakegps.html",
-                success: function (result) {
-                    // console.log(result['longitude']);
-                    marker.setLngLat([result['longitude'],result['latitude']]);
-                    marker.addTo(map);
-                    getLonLat();
-                }
-            });
-    }
-    getLonLat();
-    
     map.on('load', function() {
+        map.addImage('pulsing-dot', pulsingDot, { pixelRatio: 2 });
         map.addSource('national-park', {
             'type': 'geojson',
             'data': <?= $site_geojson?>                                
@@ -155,7 +219,39 @@
                 "type": "FeatureCollection",
                 "features": coordinate
             }
-            });
+        });
+        map.addSource('points', {
+            'type': 'geojson',
+            'data':{
+                    'type': 'FeatureCollection',
+                    'features': [
+                    {
+                    // feature for Mapbox DC
+                    'type': 'Feature',
+                    'geometry': {
+                    'type': 'Point',
+                    'coordinates': [
+                        114.21402, 22.3235
+                    ]
+                    },
+                    'properties': {
+                    'title': 'Mapbox DC'
+                    }
+                    },
+                    {
+                    // feature for Mapbox SF
+                    'type': 'Feature',
+                    'geometry': {
+                    'type': 'Point',
+                    'coordinates': [114.21502, 22.3245]
+                    },
+                    'properties': {
+                    'title': 'Mapbox SF'
+                    }
+                    }
+                    ]
+                }
+        });
         map.addLayer({
             'id': 'park-boundary',
             'type': 'line',
@@ -180,6 +276,61 @@
             },
             'filter': ['==', '$type', 'Point']
         });
+        map.addLayer({
+            'id': 'points',
+            'source': 'points',
+            'type': 'symbol',
+            'layout': {
+                'icon-image': 'pulsing-dot',
+                'text-field': ['get', 'title'],
+                'text-font': [
+                'Open Sans Semibold',
+                'Arial Unicode MS Bold'
+                ],
+                'text-offset': [0, 1.25],
+                'text-anchor': 'top'
+            }
+        });
+        
+        function animateMarker() {
+            // Update the data to a new position based on the animation timestamp. The
+            // divisor in the expression `timestamp / 1000` controls the animation speed.
+            var t = {
+                    'type': 'FeatureCollection',
+                    'features': [
+                    {
+                    // feature for Mapbox DC
+                    'type': 'Feature',
+                    'geometry': {
+                    'type': 'Point',
+                    'coordinates': [
+                        114.21402, 22.3265
+                    ]
+                    },
+                    'properties': {
+                    'title': 'Mapbox DC'
+                    }
+                    },
+                    {
+                    // feature for Mapbox SF
+                    'type': 'Feature',
+                    'geometry': {
+                    'type': 'Point',
+                    'coordinates': [114.21602, 22.3245]
+                    },
+                    'properties': {
+                    'title': 'Mapbox SF'
+                    }
+                    }
+                    ]
+                };
+            map.getSource('points').setData(t);
+            // Request the next frame of the animation.
+            requestAnimationFrame(animateMarker);
+        }
+        
+        // Start the animation.
+        animateMarker(0);
     });
     // switch style change
 	$('input[name="checkbox-style"]').change(function() {
@@ -195,11 +346,12 @@
 		}
 
 	});
+    
     load_sensor_status();
 	function load_sensor_status() {
 		$.get("get_sensor_status_monitor/" + <?= $site_info->site ?>, '', function(result){
             if (result != 0) {
-                data = JSON.parse(result);
+                data = JSON.parse(result);       
                 <?php foreach ($site_sensors as $site_sensor_item) { ?>
                 if (data['<?= $site_sensor_item->sensor?>'] == undefined) {
                     $('#vel_<?= $site_sensor_item->label?>').html('').css('color', '#D5D8DC');

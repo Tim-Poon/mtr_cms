@@ -131,7 +131,7 @@ class Monitor extends Controller
     }
 
     private function init_status_result()
-    {   
+    {
         $sensor_status_all = array();
         try {
             $raw_sensor_status = json_decode(file_get_contents('http://192.168.10.148:8080/latest_sensor_status'));

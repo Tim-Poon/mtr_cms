@@ -50,61 +50,6 @@ class Dashboard extends Controller
 		echo view('foot');
 	}
 
-	public function real_time_sensor_status()
-	{
-		try {
-            $result = file_get_contents('http://192.168.10.148:8080/latest_sensor_status');
-			// $this->response->setStatusCode(200)->setBody($result);
-			$res = json_decode($result);
-			foreach ($res as $sensor => $value) {
-				// check if registered sensor
-				$sensor_check = 0;
-				$sensor_site = "";
-				$sensor_site_name = "";
-				$site_url = "";
-				$sensor_label = "<strong style=\"color:#FF5733\">unregistered</strong>";
-				foreach ($this->sensor_info as $sensor_item) {
-					if ($sensor == $sensor_item->sensor) {
-						$sensor_check = 1;
-						// get sensor site
-						$sensor_site = $sensor_item->site;
-						foreach ($this->site_info as $site_item) {
-							if ($sensor_site == $site_item->site) {
-								// get sensor site name
-								$sensor_site_name = $site_item->site_name;
-								$site_url = base_url("site/$sensor_site");
-								break;
-							}
-						}
-						// get sensor label
-						$sensor_label = $sensor_item->label;
-						break;
-					}
-				}
-				
-				$hci_status_td = '';
-				foreach ($value->hci_status as $hci_item) {
-					if($hci_item)
-					{
-						$lable = 'success';
-					}else 
-					{
-						$lable = 'default';
-					}
-					$hci_status_td = $hci_status_td."<span class=\"label label-$lable\">$hci_item</span> ";
-				}
-				echo "<tr>
-					<td class=\"text-align-center\"><a href=\"site/$sensor_site_name\"> $sensor_site_name</a></td>
-					<td class=\"text-align-center\">$sensor_label</td>
-					<td class=\"text-align-center\">$sensor</td>
-					<td class=\"text-align-center\">$hci_status_td</td>
-					<td class=\"text-align-center\">$value->vm</td>
-				 </tr>";
-			}
-        } catch (\Throwable $th) {
-        }
-	}
-
 	public function logs()
 	{
 		$res = '';

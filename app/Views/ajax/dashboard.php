@@ -341,7 +341,7 @@
 
 	load_sensor_status();
 	function load_sensor_status() {
-		$.get("dashboard/real_time_sensor_status", '', function(result){
+		$.get("monitor/get_sensor_status_dashboard", '', function(result){
 			// data = JSON.parse(result);
 			// console.log(result);
 			$('#statusbody').html(result).delay(100);

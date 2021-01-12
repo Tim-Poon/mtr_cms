@@ -49,11 +49,10 @@
                             </section>
                         </div>
                     </form>
-                    <?= ($site_sensor)?>
                     <div class="show-stat-microcharts">
-                        <?php foreach ($site_sensor as $sensor_item) {?>
+                        <?php foreach ($site_sensors as $site_sensor_item) {?>
                         <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
-                            <span class="sensor-status-title"> <?= $sensor_item->label?> <i class="fa fa-caret-up icon-color-bad"></i><i class="fa fa-caret-down icon-color-good"></i> </span>
+                            <span class="sensor-status-title"> <?= $site_info->site_name.' - '.$site_sensor_item->label?>  </span>
                             
                             <ul class="smaller-stat hidden-sm pull-right">
                                 <li>
@@ -64,10 +63,12 @@
                                 </li>
                             </ul>
                             
-                            <div id="sparkline" class="sparkline txt-color-greenLight hidden-sm hidden-md pull-right" data-sparkline-type="line" data-sparkline-height="33px" data-sparkline-width="80px" data-fill-color="transparent">
-                                130, 187, 250, 257, 200, 210, 300, 270, 363, 247, 270, 363, 247
-                            </div>
-                            <span class="sensor-status-velocity" id='abc'>1.2 m/s</span>
+                            <span id="sparkline_<?= $site_sensor_item->label?>" class="sparkline hidden-sm hidden-md pull-right" >
+                                0
+                            </span>
+                            <span class="sensor-status-velocity" > <i id="vel_<?= $site_sensor_item->label?>"></i>
+                            <i id="faster_flag_<?= $site_sensor_item->label?>"></i>
+                            </span>
                         </div>
                         <?php }?>
                     </div>
@@ -89,7 +90,7 @@
     </div>
 </section>
 <!-- end widget grid -->
-<?php if ($geojson) { ?>
+<?php if ($site_geojson) { ?>
 <script type="text/javascript">
     var coordinate = new Array();
     mapboxgl.accessToken = '<?=$mapbox_key?>';
@@ -107,7 +108,7 @@
         tempY = y * (164.99999857584635 - 254.49999934895834) / 13.4663 + 254.49999934895834;
         return {tempX:tempX, tempY:tempY}
     }
-    <?php foreach($beacons as $beacon_item){ ?>
+    <?php foreach($site_beacons as $beacon_item){ ?>
     var temp = new Array();
     var obj;
     var tempLatLng = new Array();
@@ -146,7 +147,7 @@
     map.on('load', function() {
         map.addSource('national-park', {
             'type': 'geojson',
-            'data': <?=$geojson?>                                
+            'data': <?= $site_geojson?>                                
         });
         map.addSource('beacon_list', {
             type: 'geojson',
@@ -196,87 +197,57 @@
 	});
     load_sensor_status();
 	function load_sensor_status() {
-		$.get("get_realtime_sensor_status_monitor", '', function(result){
-			data = JSON.parse(result);
-            // console.log(data);
-			// $('#abcd').html(result).delay(100);
-            $('#sparkline').sparkline(data, { 
-                // class="sparkline txt-color-greenLight hidden-sm hidden-md pull-right" 
-                type: "line",
-                height: "33px",
-                width: "80px",
-                // data-fill-color="transparent"
-                // width: data.length*5, 
-                // height: 400, 
-                // type: 'line',
-                lineColor: '#1D8348',
-                fillColor: '#EAFAF1',
-                // lineWidth: 5,
-                // spotColor: undefined,
-                // minSpotColor: undefined,
-                // maxSpotColor: undefined,
-            });
+		$.get("get_sensor_status_monitor/" + <?= $site_info->site ?>, '', function(result){
+            if (result != 0) {
+                data = JSON.parse(result);
+                <?php foreach ($site_sensors as $site_sensor_item) { ?>
+                if (data['<?= $site_sensor_item->sensor?>'] == undefined) {
+                    $('#vel_<?= $site_sensor_item->label?>').html('').css('color', '#D5D8DC');
+                    $("#faster_flag_<?= $site_sensor_item->label?>").removeClass();
+                    $('#sparkline_<?= $site_sensor_item->label?>').sparkline(<?= $default_sensor_status?>, { 
+                        type: "line",
+                        height: "45px",
+                        width: "85px",
+                        lineColor: '#D5D8DC',
+                        fillColor: '#EAFAF1',});
+                }else {
+                    $('#vel_<?= $site_sensor_item->label?>').html(data['<?= $site_sensor_item->sensor?>']['vel_x']).css('color', '#1D8348');
+                    var faster_flag = $("#faster_flag_<?= $site_sensor_item->label?>");
+                    if (!faster_flag.hasClass("data['<?= $site_sensor_item->sensor?>']['faster_flag']")) {
+                        faster_flag.removeClass();
+                        faster_flag.addClass(data['<?= $site_sensor_item->sensor?>']['faster_flag']);
+                    }
+                    $('#sparkline_<?= $site_sensor_item->label?>').sparkline(data['<?= $site_sensor_item->sensor?>']['history_vel'], { 
+                        type: "line",
+                        height: "45px",
+                        width: "85px",
+                        lineColor: '#1D8348',
+                        fillColor: '#EAFAF1',
+                        // data-fill-color="transparent"
+                        // width: data.length*5, 
+                        // height: 400, 
+                        // type: 'line',
+                        // lineWidth: 5,
+                        // spotColor: undefined,
+                        // minSpotColor: undefined,
+                        // maxSpotColor: undefined,
+                        });
+                }
+                <?php } ?>
+            }else {
+                <?php foreach ($site_sensors as $site_sensor_item) { ?>
+                    $('#vel_<?= $site_sensor_item->label?>').html('').css('color', '#D5D8DC');
+                    $("#faster_flag_<?= $site_sensor_item->label?>").removeClass();
+                    $('#sparkline_<?= $site_sensor_item->label?>').sparkline(<?= $default_sensor_status?>, { 
+                        type: "line",
+                        height: "45px",
+                        width: "85px",
+                        lineColor: '#D5D8DC',
+                        fillColor: '#D5D8DC',});
+                <?php } ?>
+            }
 			setTimeout(load_sensor_status, 1000);
 		});
 	}
-
-    // $(function() {
-    //     function drawMouseSpeedDemo() {
-    //         var mrefreshinterval = 50; // update display every 500ms
-    //         var lastmousex=-1; 
-    //         var lastmousey=-1;
-    //         var lastmousetime;
-    //         var mousetravel = 0;
-    //         var mpoints = [];
-    //         var mpoints_max = 100;
-    //         $('html').mousemove(function(e) {
-    //             var mousex = e.pageX;
-    //             var mousey = e.pageY;
-    //             if (lastmousex > -1) {
-    //                 mousetravel += Math.max( Math.abs(mousex-lastmousex), Math.abs(mousey-lastmousey) );
-    //             }
-    //             lastmousex = mousex;
-    //             lastmousey = mousey;
-    //         });
-    //         var mdraw = function() {
-    //             var md = new Date();
-    //             var timenow = md.getTime();
-    //             if (lastmousetime && lastmousetime!=timenow) {
-    //                 var pps = Math.round(mousetravel / (timenow - lastmousetime) * 1000);
-    //                 mpoints.push(pps);
-    //                 if (mpoints.length > mpoints_max)
-    //                     mpoints.splice(0,1);
-    //                 mousetravel = 0;
-    //                 $('#sparkline').sparkline(mpoints, { 
-    //                     width: mpoints.length*20, 
-    //                     height: 400, 
-    //                     type: 'line',
-    //                     lineColor: '#e3003d',
-    //                     fillColor: '#061a1b',
-    //                     lineWidth: 5,
-    //                     spotColor: undefined,
-    //                     minSpotColor: undefined,
-    //                     maxSpotColor: undefined,
-    //                     //tooltipSuffix: ' pixels per second' 
-                        
-    //                 });
-    //             }
-    //             lastmousetime = timenow;
-    //             setTimeout(mdraw, mrefreshinterval);
-    //         }
-    //         // We could use setInterval instead, but I prefer to do it this way
-    //         setTimeout(mdraw, mrefreshinterval); 
-    //     }
-    //     drawMouseSpeedDemo();
-    //     /*
-    //             var myvalues = [10,8,5,7,4,4,1];
-    //     $("#sparkline").sparkline(myvalues, {
-    //         type: 'line',
-    //         width: '500',
-    //         height: '500',
-    //         drawNormalOnTop: true
-    //     });*/
-            
-    //     });
 </script>
 <?php } ?>

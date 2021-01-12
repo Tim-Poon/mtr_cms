@@ -103,19 +103,18 @@
 						<span class="badge pull-right inbox-badge"><?= $num_of_todos ?></span></a>
 					</li>
 					<li class=""><a href="<?=base_url('reporting')?>" title="Reporting"><i class="fa fa-lg fa-fw fa-file-text"></i>  <span class="menu-item-parent">Reporting</span></a></li>
-					<li class=""><a href="<?=base_url('Monitor')?>" title="Monitor"><i class="fa fa-lg fa-fw fa-desktop"></i>  <span class="menu-item-parent">Monitor</span></a></li>
+					<li class=""><a href="#" title="Monitor"><i class="fa fa-lg fa-fw fa-desktop"></i>  <span class="menu-item-parent">Monitor</span></a>
+						<ul>
+							<?php foreach($site_names as $site_name){?>
+							<li><a href="<?=base_url('Monitor').'/'.$site_name?>"><?= $site_name?></a></li>
+							<?php } ?>
+						</ul>
+					</li>
 					<li><a href="#"><i class="fa fa-lg fa-fw fa-gear"></i>  <span class="menu-item-parent">Tools</span></a>
 						<ul>
 							<li><a href="<?=base_url('polygon')?>">Polygon</a></li>
 							<li><a href="<?=base_url('survey')?>">Survey</a></li>
-							<li><a href="xx/CEN">xx</a></li>
-						</ul>
-					</li>
-					<li><a href="#"><i class="fa fa-lg fa-fw fa-map-marker"></i>  <span class="menu-item-parent">###Site</span></a>
-						<ul>
-							<?php foreach($site_names as $site_name){?>
-							<li><a href="<?=base_url('site').'/'.$site_name?>"><?= $site_name?></a></li>
-							<?php } ?>
+							<li><a href="<?=base_url('register')?>">Register</a></li>
 						</ul>
 					</li>
 					

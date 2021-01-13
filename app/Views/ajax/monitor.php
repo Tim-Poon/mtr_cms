@@ -179,21 +179,30 @@
             return true;
         }
     };
+    //A = beacon 10032 and B = beacon 10060
+    var coorA = [114.21400184074332,22.323663536861147];
+    var coorB = [114.21419888819668,22.3226334019689];
+    var pA = map.project(coorA);
+    var pB = map.project(coorB);
+    var mA = {x: -0.1097, y: 0};
+    var mB = {x: 115.6502, y: 11.2451};
 
     function mappingklb(x, y){
-        var tempX;
-        var tempY;
-        tempX = (x + 0.1097) * (1522.652698750814 - 694.000000406901) / (113.8655 + 0.1097) + 694.000000406901;
-        tempY = y * (164.99999857584635 - 254.49999934895834) / 13.4663 + 254.49999934895834;
-        return {tempX:tempX, tempY:tempY}
+        var lng;
+        var lat;
+        lng = (x - mA.x) * (pB.x - pA.x) / (mB.x - mA.x) + pA.x;
+        lat = (y - mA.y) * (pB.y - pA.y) / (mB.y - mA.y) + pA.y;
+        
+        return {lng:lng, lat:lat}
     }
+
     <?php foreach($site_beacons as $beacon_item){ ?>
         var temp = new Array();
         var obj;
         var tempLatLng = new Array();
         obj = mappingklb(<?= $beacon_item->x?>, <?= $beacon_item->y?>);
-        temp.push(obj.tempX);
-        temp.push(obj.tempY);
+        temp.push(obj.lng);
+        temp.push(obj.lat);
         tempLatLng.push(map.unproject(temp)['lng']);
         tempLatLng.push(map.unproject(temp)['lat']);
         var aaa = {

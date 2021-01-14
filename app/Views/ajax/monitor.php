@@ -103,7 +103,7 @@
     });
 
     var size = 200;
-    var alarm = 1;
+    var alarm = 0;
 
     var pulsingDot = {
         width: size,
@@ -124,7 +124,7 @@
             var duration = 1000;
             var t = (performance.now() % duration) / duration;
             
-            var radius = (size / 2) * 0.3;
+            var radius = (size / 2) * 0.2;
             var outerRadius = (size / 2) * 0.7 * t + radius;
             var context = this.context;
             
@@ -141,7 +141,7 @@
             if(this.alarm == 1){
                 context.fillStyle = 'rgba(255, 200, 200,' + (1 - t) + ')';
             }else{
-                context.fillStyle = '#B8CCD4';
+                context.fillStyle = 'rgba(171, 235, 198,' + (1 - t) + ')';
             }
             context.fill();
             
@@ -157,7 +157,7 @@
             if(this.alarm == 1){
                 context.fillStyle = 'rgba(255, 100, 100, 1)';
             }else{
-                context.fillStyle = '#229DCF ';
+                context.fillStyle = '#58D68D';
             }
             context.strokeStyle = 'white';
             context.lineWidth = 2 + 4 * (1 - t);
@@ -182,12 +182,13 @@
     //A = beacon 10032 and B = beacon 10060
     var coorA = [114.21400184074332,22.323663536861147];
     var coorB = [114.21419888819668,22.3226334019689];
-    var pA = map.project(coorA);
-    var pB = map.project(coorB);
+    
     var mA = {x: -0.1097, y: 0};
     var mB = {x: 115.6502, y: 11.2451};
 
     function mappingklb(x, y){
+        var pA = map.project(coorA);
+        var pB = map.project(coorB);
         var lng;
         var lat;
         lng = (x - mA.x) * (pB.x - pA.x) / (mB.x - mA.x) + pA.x;
@@ -203,6 +204,7 @@
         obj = mappingklb(<?= $beacon_item->x?>, <?= $beacon_item->y?>);
         temp.push(obj.lng);
         temp.push(obj.lat);
+
         tempLatLng.push(map.unproject(temp)['lng']);
         tempLatLng.push(map.unproject(temp)['lat']);
         var aaa = {
@@ -240,24 +242,14 @@
                     'geometry': {
                     'type': 'Point',
                     'coordinates': [
-                        114.21402, 22.3235
+                        114.23402, 22.3535
                     ]
                     },
                     'properties': {
                     'title': 'Mapbox DC'
                     }
                     },
-                    {
-                    // feature for Mapbox SF
-                    'type': 'Feature',
-                    'geometry': {
-                    'type': 'Point',
-                    'coordinates': [114.21502, 22.3245]
-                    },
-                    'properties': {
-                    'title': 'Mapbox SF'
-                    }
-                    }
+                    
                     ]
                 }
         });
@@ -281,7 +273,7 @@
             'source': 'beacon_list',
             'paint': {
             'circle-radius': 6,
-            'circle-color': '#B42222'
+            'circle-color': '#85C1E9'
             },
             'filter': ['==', '$type', 'Point']
         });
@@ -300,47 +292,114 @@
                 'text-anchor': 'top'
             }
         });
-        
-        function animateMarker() {
-            // Update the data to a new position based on the animation timestamp. The
-            // divisor in the expression `timestamp / 1000` controls the animation speed.
-            var t = {
-                    'type': 'FeatureCollection',
-                    'features': [
-                    {
-                    // feature for Mapbox DC
-                    'type': 'Feature',
-                    'geometry': {
-                    'type': 'Point',
-                    'coordinates': [
-                        114.21402, 22.3265
-                    ]
-                    },
-                    'properties': {
-                    'title': 'Mapbox DC'
+        // abc();
+        var coor1;
+        function abc() {
+            $.get("get_sensor_status_mapbox/" + <?= $site_info->site ?>, '', function(result){
+                if (result != 0) {
+                    data = JSON.parse(result);
+                    console.log(data);
+                    var obj = mappingklb(data['00:00:00:00:00:00']['loc_x'] , data['00:00:00:00:00:00']['loc_y']);
+                    // console.log(obj.lng, obj.lat);
+                    var coor = map.unproject([obj.lng, obj.lat]);
+                    if (coor1 == undefined) {
+                        coor1 = coor;
+                    }else{
+                        // console.log(coor);
+                        animateMarker(coor, coor1)
+                        // requestAnimationFrame(animateMarker);
+                        coor1 = coor;
                     }
-                    },
-                    {
-                    // feature for Mapbox SF
-                    'type': 'Feature',
-                    'geometry': {
-                    'type': 'Point',
-                    'coordinates': [114.21602, 22.3245]
-                    },
-                    'properties': {
-                    'title': 'Mapbox SF'
-                    }
-                    }
-                    ]
-                };
-            map.getSource('points').setData(t);
-            // Request the next frame of the animation.
-            requestAnimationFrame(animateMarker);
+                    // abc();
+                    setTimeout(abc, 1000);
+                    // console.log(coor);
+                    // return coor;
+                }
+            });
         }
-        
-        // Start the animation.
-        animateMarker(0);
+        var coor_pre;
+        animateMarker();
+        function animateMarker() {
+            $.get("get_sensor_status_mapbox/" + <?= $site_info->site ?>, '', function(result){
+                if (result != 0) {
+                    data = JSON.parse(result);
+                    console.log('request--------------');
+                    var obj = mappingklb(data['00:00:00:00:00:00']['loc_x'], data['00:00:00:00:00:00']['loc_y']);
+                    console.log(data['00:00:00:00:00:00']['loc_x']);
+                    var coor_cur = map.unproject([obj.lng, obj.lat]);
+                    if (coor_pre == undefined) {
+                        console.log('fisrt');
+                        coor_pre = coor_cur;
+                        animateMarker();
+                    }else{
+                        console.log(coor_pre);
+                        console.log(coor_cur);
+                        var lng_step = (coor_cur['lng'] - coor_pre['lng']) / 60;
+                        var lat_step = (coor_cur['lat'] - coor_pre['lat']) / 60;
+                        var count = 0;
+                        aaaa();
+                        function aaaa(){
+                            var t = {
+                                'type': 'FeatureCollection',
+                                'features': [
+                                    {
+                                        // feature for Mapbox DC
+                                        'type': 'Feature',
+                                        'geometry': {
+                                            'type': 'Point',
+                                            'coordinates': [coor_pre['lng'] + count * lng_step, coor_pre['lat'] + count * lat_step],
+                                        },
+                                        'properties': {
+                                            'title': '#1'
+                                        }
+                                    },
+                                    {
+                                        // feature for Mapbox DC
+                                        'type': 'Feature',
+                                        'geometry': {
+                                            'type': 'Point',
+                                            'coordinates': [114.21602, 22.3245]
+                                        },
+                                        'properties': {
+                                            'title': 'Mapbox DC'
+                                        }
+                                    }
+                                ]
+                            };
+                            map.getSource('points').setData(t);
+                            count = count + 1;
+                            // console.log(count);
+                            AniID = requestAnimationFrame(aaaa);
+                            if (count > 60) {
+                                // console.log('cancel');
+                                cancelAnimationFrame(AniID)
+                                coor_pre = coor_cur;
+                                animateMarker();
+                            }
+                        }
+                    // var lng_step = (coor2['lng'] - coor1['lng']) / 15;
+                    // var lat_step = (coor2['lat'] - coor1['lat']) / 15;
+                    // console.log(coor2['lng'], coor2['lat']);
+                    // marker.setLngLat([coor2['lng'], coor2['lat']]);
+                    // marker.addTo(map);
+                    // for (let index = 0; index < 15; index++) {
+                    //     // console.log(coor1['lng'] + lng_step * (index + 1), coor1['lat'] + lat_step * (index + 1));  
+                    }
+                    // console.log('loop');
+                    // }
+                    // Request the next frame of the animation.
+                    
+                }
+            });
+        }
+        // requestAnimationFrame(animateMarker);
     });
+    var sleep = function(time) {
+        var startTime = new Date().getTime() + parseInt(time, 10);
+        while(new Date().getTime() < startTime) {}
+    };
+
+
     // switch style change
 	$('input[name="checkbox-style"]').change(function() {
 		//alert($(this).val())

@@ -56,6 +56,10 @@ class Monitor extends Controller
 		{
             $site = $params[0];
 			return $this->get_sensor_status_monitor($site);
+		}elseif ($method == 'get_sensor_status_mapbox')
+		{
+            $site = $params[0];
+			return $this->get_sensor_status_mapbox($site);
 		}else
 		{
             $site_name = $method;
@@ -175,7 +179,7 @@ class Monitor extends Controller
                     $sensor_status['loc_y'] = $sensor_each->loc_y;
                     $sensor_status['loc_z'] = $sensor_each->loc_z;
                     $sensor_status['location_ts'] = $sensor_each->location_ts;
-                    $sensor_status['vel_x'] = $sensor_each->vel_x.' m/s ';
+                    $sensor_status['vel_x'] = $sensor_each->vel_x;
                     $sensor_status['vel_y'] = $sensor_each->vel_y;
                     $sensor_status['vel_z'] = $sensor_each->vel_z;
                     $sensor_status['vm'] = $sensor_each->vm;
@@ -194,6 +198,30 @@ class Monitor extends Controller
         } catch (\Throwable $th) {
             return 0;
         }
+    }
+
+    public function get_sensor_status_mapbox($site)
+    {
+        $maxbox_statue = ($this->init_status_result());
+        // get mapping formular
+        // 
+        if ($maxbox_statue == 0) {
+            return 0;
+        }
+        $res = array();
+        foreach ($maxbox_statue as $sensor_status) {
+            $coordinate = 
+            [
+                'vel_x' => $sensor_status['vel_x'],
+                'vel_y' => $sensor_status['vel_y'],
+                'loc_x' => $sensor_status['loc_x'],
+                'loc_y' => $sensor_status['loc_y'],
+                'loc_z' => $sensor_status['loc_z'],
+                'alarm_flag' => $sensor_status['alarm_flag'],
+            ];
+            $res[$sensor_status['sensor']] = $coordinate;
+        }
+        echo json_encode($res);
     }
 
     public function get_sensor_status_dashboard()

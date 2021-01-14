@@ -212,6 +212,7 @@ class Monitor extends Controller
         foreach ($maxbox_statue as $sensor_status) {
             $coordinate = 
             [
+                'label' => $sensor_status['label'],
                 'vel_x' => $sensor_status['vel_x'],
                 'vel_y' => $sensor_status['vel_y'],
                 'loc_x' => $sensor_status['loc_x'],

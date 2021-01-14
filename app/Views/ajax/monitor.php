@@ -125,7 +125,7 @@
             var t = (performance.now() % duration) / duration;
             
             var radius = (size / 2) * 0.2;
-            var outerRadius = (size / 2) * 0.7 * t + radius;
+            var outerRadius = (size / 2) * 0.5 * t + radius;
             var context = this.context;
             
             // draw outer circle
@@ -292,107 +292,74 @@
                 'text-anchor': 'top'
             }
         });
-        // abc();
-        var coor1;
-        function abc() {
-            $.get("get_sensor_status_mapbox/" + <?= $site_info->site ?>, '', function(result){
-                if (result != 0) {
-                    data = JSON.parse(result);
-                    console.log(data);
-                    var obj = mappingklb(data['00:00:00:00:00:00']['loc_x'] , data['00:00:00:00:00:00']['loc_y']);
-                    // console.log(obj.lng, obj.lat);
-                    var coor = map.unproject([obj.lng, obj.lat]);
-                    if (coor1 == undefined) {
-                        coor1 = coor;
-                    }else{
-                        // console.log(coor);
-                        animateMarker(coor, coor1)
-                        // requestAnimationFrame(animateMarker);
-                        coor1 = coor;
-                    }
-                    // abc();
-                    setTimeout(abc, 1000);
-                    // console.log(coor);
-                    // return coor;
-                }
-            });
-        }
-        var coor_pre;
+        var data_pre;
+        var stepper_info_temp = {};
         animateMarker();
         function animateMarker() {
             $.get("get_sensor_status_mapbox/" + <?= $site_info->site ?>, '', function(result){
                 if (result != 0) {
-                    data = JSON.parse(result);
-                    console.log('request--------------');
-                    var obj = mappingklb(data['00:00:00:00:00:00']['loc_x'], data['00:00:00:00:00:00']['loc_y']);
-                    console.log(data['00:00:00:00:00:00']['loc_x']);
-                    var coor_cur = map.unproject([obj.lng, obj.lat]);
-                    if (coor_pre == undefined) {
-                        console.log('fisrt');
-                        coor_pre = coor_cur;
+                    // console.log('---request');
+                    data_cur = JSON.parse(result);
+                    if (data_pre == undefined) {
+                        data_pre = data_cur;
                         animateMarker();
                     }else{
-                        console.log(coor_pre);
-                        console.log(coor_cur);
-                        var lng_step = (coor_cur['lng'] - coor_pre['lng']) / 60;
-                        var lat_step = (coor_cur['lat'] - coor_pre['lat']) / 60;
                         var count = 0;
-                        aaaa();
-                        function aaaa(){
-                            var t = {
-                                'type': 'FeatureCollection',
-                                'features': [
-                                    {
-                                        // feature for Mapbox DC
-                                        'type': 'Feature',
-                                        'geometry': {
-                                            'type': 'Point',
-                                            'coordinates': [coor_pre['lng'] + count * lng_step, coor_pre['lat'] + count * lat_step],
-                                        },
-                                        'properties': {
-                                            'title': '#1'
-                                        }
-                                    },
-                                    {
-                                        // feature for Mapbox DC
-                                        'type': 'Feature',
-                                        'geometry': {
-                                            'type': 'Point',
-                                            'coordinates': [114.21602, 22.3245]
-                                        },
-                                        'properties': {
-                                            'title': 'Mapbox DC'
-                                        }
-                                    }
-                                ]
+                        stepper_info_temp = {};
+                        for(var sensor in data_cur){
+                            // console.log(data_cur['00:00:00:00:00:00']['loc_x']);
+                            // 1. 对比data_pre, 找到需要移动的点 todo
+                            var coor_mapping_cur = mappingklb(data_cur[sensor]['loc_x'], data_cur[sensor]['loc_y']);
+                            var coor_latlng_cur = map.unproject([coor_mapping_cur.lng, coor_mapping_cur.lat]);
+
+                            var coor_mapping_pre = mappingklb(data_pre[sensor]['loc_x'], data_pre[sensor]['loc_y']);
+                            var coor_latlng_pre = map.unproject([coor_mapping_pre.lng, coor_mapping_pre.lat]);
+
+                            var stepper_info_temp_ = {
+                                'step_lng': (coor_latlng_cur['lng'] - coor_latlng_pre['lng']) / 60,
+                                'step_lat': (coor_latlng_cur['lat'] - coor_latlng_pre['lat']) / 60,
+                                'start_lng': coor_latlng_pre['lng'],
+                                'start_lat': coor_latlng_pre['lat'],
                             };
-                            map.getSource('points').setData(t);
+                            stepper_info_temp[data_cur[sensor]['label']] = stepper_info_temp_;
+                            // console.log(stepper_info_temp);
+                            // break;
+                        }
+                        step_dot();
+                        function step_dot() {
+                            var stepper = {};
+                            stepper['type'] = 'FeatureCollection';
+                            stepper['features'] = new Array;
+                            for(var label in stepper_info_temp){
+                                var stepper_dot = 
+                                {
+                                    'type': 'Feature',
+                                    'geometry': {
+                                        'type': 'Point',
+                                        'coordinates': [stepper_info_temp[label]['start_lng'] + count * stepper_info_temp[label]['step_lng'], 
+                                        stepper_info_temp[label]['start_lat'] + count * stepper_info_temp[label]['step_lat']],
+                                        },
+                                    'properties': {
+                                        'title': label,
+                                        }
+                                };
+                                stepper['features'].push(stepper_dot);
+                                // break;
+                            };
+                            // console.log(stepper);
+                            map.getSource('points').setData(stepper);
                             count = count + 1;
-                            // console.log(count);
-                            AniID = requestAnimationFrame(aaaa);
+                            AniID = requestAnimationFrame(step_dot);
                             if (count > 60) {
-                                // console.log('cancel');
                                 cancelAnimationFrame(AniID)
-                                coor_pre = coor_cur;
+                                data_pre = data_cur;
                                 animateMarker();
                             }
                         }
-                    // var lng_step = (coor2['lng'] - coor1['lng']) / 15;
-                    // var lat_step = (coor2['lat'] - coor1['lat']) / 15;
-                    // console.log(coor2['lng'], coor2['lat']);
-                    // marker.setLngLat([coor2['lng'], coor2['lat']]);
-                    // marker.addTo(map);
-                    // for (let index = 0; index < 15; index++) {
-                    //     // console.log(coor1['lng'] + lng_step * (index + 1), coor1['lat'] + lat_step * (index + 1));  
                     }
-                    // console.log('loop');
-                    // }
-                    // Request the next frame of the animation.
-                    
                 }
             });
         }
-        // requestAnimationFrame(animateMarker);
     });
     var sleep = function(time) {
         var startTime = new Date().getTime() + parseInt(time, 10);

@@ -104,15 +104,17 @@
 
     var size = 200;
     var alarm = 0;
+    var alarm_ = [];
+    var alarm_count = 0;
 
     var pulsingDot = {
         width: size,
         height: size,
-        alarm: alarm,
         data: new Uint8Array(size * size * 4),
         
         // get rendering context for the map canvas when layer is added to the map
         onAdd: function () {
+            
             var canvas = document.createElement('canvas');
             canvas.width = this.width;
             canvas.height = this.height;
@@ -138,9 +140,11 @@
                 0,
                 Math.PI * 2
             );
-            if(this.alarm == 1){
+            if(alarm){
+                // alarm = alarm - 1;
                 context.fillStyle = 'rgba(255, 200, 200,' + (1 - t) + ')';
             }else{
+                // alarm = alarm + 1;
                 context.fillStyle = 'rgba(171, 235, 198,' + (1 - t) + ')';
             }
             context.fill();
@@ -154,11 +158,12 @@
                 0,
                 Math.PI * 2
             );
-            if(this.alarm == 1){
+            if(alarm){
                 context.fillStyle = 'rgba(255, 100, 100, 1)';
             }else{
                 context.fillStyle = '#58D68D';
             }
+            alarm_count = alarm_count + 1;
             context.strokeStyle = 'white';
             context.lineWidth = 2 + 4 * (1 - t);
             context.fill();
@@ -220,7 +225,7 @@
     
     map.on('load', function() {
         map.addImage('pulsing-dot', pulsingDot, { pixelRatio: 2 });
-        map.addSource('national-park', {
+        map.addSource('site_map', {
             'type': 'geojson',
             'data': <?= $site_geojson?>                                
         });
@@ -231,32 +236,17 @@
                 "features": coordinate
             }
         });
-        map.addSource('points', {
+        map.addSource('dots', {
             'type': 'geojson',
             'data':{
-                    'type': 'FeatureCollection',
-                    'features': [
-                    {
-                    // feature for Mapbox DC
-                    'type': 'Feature',
-                    'geometry': {
-                    'type': 'Point',
-                    'coordinates': [
-                        114.23402, 22.3535
-                    ]
-                    },
-                    'properties': {
-                    'title': 'Mapbox DC'
-                    }
-                    },
-                    
-                    ]
+                'type': 'FeatureCollection',
+                'features': []
                 }
         });
         map.addLayer({
-            'id': 'park-boundary',
+            'id': 'site_map_layer',
             'type': 'line',
-            'source': 'national-park',
+            'source': 'site_map',
             'layout': {
             'line-join': 'round',
             'line-cap': 'round'
@@ -268,7 +258,7 @@
         });
 
         map.addLayer({
-            'id': 'park-volcanoes',
+            'id': 'beacon_list_layer',
             'type': 'circle',
             'source': 'beacon_list',
             'paint': {
@@ -278,19 +268,26 @@
             'filter': ['==', '$type', 'Point']
         });
         map.addLayer({
-            'id': 'points',
-            'source': 'points',
+            'id': 'dots_layer',
+            'source': 'dots',
             'type': 'symbol',
             'layout': {
                 'icon-image': 'pulsing-dot',
                 'text-field': ['get', 'title'],
                 'text-font': [
-                'Open Sans Semibold',
-                'Arial Unicode MS Bold'
-                ],
+                    'Open Sans Semibold',
+                    'Arial Unicode MS Bold'
+                    ],
                 'text-offset': [0, 1.25],
-                'text-anchor': 'top'
-            }
+                'text-anchor': 'top',
+            },
+            'pulsing-dot' : {
+                "pixelRatio": 5
+            },
+            'paint': {
+                'text-color': ['get', 'color'],
+                'text-halo-width': 2
+            },
         });
         var data_pre;
         var stepper_info_temp = {};
@@ -306,9 +303,13 @@
                     }else{
                         var count = 0;
                         stepper_info_temp = {};
+                        // alarm = [];
+                        // alarm_count = 0;
                         for(var sensor in data_cur){
                             // console.log(data_cur['00:00:00:00:00:00']['loc_x']);
                             // 1. 对比data_pre, 找到需要移动的点 todo
+                            // alarm.push(data_cur[sensor]['alarm_flag']);
+
                             var coor_mapping_cur = mappingklb(data_cur[sensor]['loc_x'], data_cur[sensor]['loc_y']);
                             var coor_latlng_cur = map.unproject([coor_mapping_cur.lng, coor_mapping_cur.lat]);
 
@@ -325,6 +326,7 @@
                             // console.log(stepper_info_temp);
                             // break;
                         }
+                        
                         step_dot();
                         function step_dot() {
                             var stepper = {};
@@ -336,18 +338,23 @@
                                     'type': 'Feature',
                                     'geometry': {
                                         'type': 'Point',
-                                        'coordinates': [stepper_info_temp[label]['start_lng'] + count * stepper_info_temp[label]['step_lng'], 
-                                        stepper_info_temp[label]['start_lat'] + count * stepper_info_temp[label]['step_lat']],
+                                        'coordinates': [
+                                            stepper_info_temp[label]['start_lng'] + count * stepper_info_temp[label]['step_lng'],
+                                            stepper_info_temp[label]['start_lat'] + count * stepper_info_temp[label]['step_lat']
+                                            ],
                                         },
                                     'properties': {
                                         'title': label,
-                                        }
+                                        'color': 'red'
+                                        },
+                                        
                                 };
                                 stepper['features'].push(stepper_dot);
                                 // break;
                             };
-                            // console.log(stepper);
-                            map.getSource('points').setData(stepper);
+                            // console.log('--setData 1');
+                            map.getSource('dots').setData(stepper);
+                            // console.log('--setData 2');
                             count = count + 1;
                             AniID = requestAnimationFrame(step_dot);
                             if (count > 60) {

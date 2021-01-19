@@ -224,48 +224,7 @@
             
         }
     }
-    site_beacons();
-    function site_beacons(){
-        var rssi;
-        $.get("get_beacon_status_mapbox/" + <?= $site_info->site ?>, '', function(result){
-            var lastest_beacon =  JSON.parse(result);        
-            <?php foreach($site_beacons as $beacon_item){ ?>
-                var temp = new Array();
-                var obj;
-                var tempLatLng = new Array();
-                rssi = '';
-                obj = mappingklb(<?= $beacon_item->x?>, <?= $beacon_item->y?>);
-                temp.push(obj.lng);
-                temp.push(obj.lat);
-
-                tempLatLng.push(map.unproject(temp)['lng']);
-                tempLatLng.push(map.unproject(temp)['lat']);
-
-                for(var beacon_name in lastest_beacon){
-                    if(<?= $beacon_item->major.$beacon_item->minor?> == beacon_name){
-                        rssi = lastest_beacon[beacon_name]['rssi'];
-                        break;
-                    }else{
-                        rssi = '';
-                    }  
-                }  
-                var aaa = {
-                        "type": "Feature",
-                        "properties": {    
-                            'beacon_name': <?= $beacon_item->minor?>,
-                            'rssi': rssi,
-                        },
-                        "geometry": {
-                            "type": "Point",
-                            "coordinates": tempLatLng
-                        }
-                };
-                coordinate.push(aaa);
-            <?php } ?>
-            
-        });
-            
-    }
+    
       
     map.on('load', function() {
         map.addImage('pulsing-dot', pulsingDot, { pixelRatio: 2 });
@@ -277,7 +236,7 @@
             type: 'geojson',
             data: {
                 "type": "FeatureCollection",
-                "features": coordinate
+                "features": []
             }
         });
         map.addLayer({
@@ -367,6 +326,56 @@
                 'text-halo-width': 2
             },
         });
+
+        site_beacons();
+        function site_beacons(){
+            var rssi;
+            $.get("get_beacon_status_mapbox/" + <?= $site_info->site ?>, '', function(result){
+                var lastest_beacon =  JSON.parse(result);
+                
+                var stepper = {};
+                stepper['type'] = 'FeatureCollection';
+                stepper['features'] = new Array;   
+                <?php foreach($site_beacons as $beacon_item){ ?>
+                    var temp = new Array();
+                    var obj;
+                    var tempLatLng = new Array();
+                    rssi = '';
+                    obj = mappingklb(<?= $beacon_item->x?>, <?= $beacon_item->y?>);
+                    temp.push(obj.lng);
+                    temp.push(obj.lat);
+
+                    tempLatLng.push(map.unproject(temp)['lng']);
+                    tempLatLng.push(map.unproject(temp)['lat']);
+
+                    for(var beacon_name in lastest_beacon){
+                        if(<?= $beacon_item->major.$beacon_item->minor?> == beacon_name){
+                            rssi = lastest_beacon[beacon_name]['rssi'];
+                            break;
+                        }else{
+                            rssi = '';
+                        }  
+                    } 
+
+                    var aaa = {
+                            "type": "Feature",
+                            "properties": {    
+                                'beacon_name': <?= $beacon_item->minor?>,
+                                'rssi': rssi,
+                            },
+                            "geometry": {
+                                "type": "Point",
+                                "coordinates": tempLatLng
+                            }
+                    };
+                    coordinate.push(aaa);
+                    stepper['features'].push(aaa);
+                    
+                <?php } ?>
+                map.getSource('beacon_list').setData(stepper);
+            });
+            setTimeout(site_beacons, 3000);
+        }
         var data_pre;
         var stepper_info_temp = {};
         animateMarker();

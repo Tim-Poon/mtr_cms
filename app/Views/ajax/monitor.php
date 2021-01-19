@@ -26,13 +26,13 @@
                             <section class="col col-6">
                                 <div class="note note-success">Beacon</div>
                                 <div class="col col-3">
-                                    <label class="toggle state-success"><input type="checkbox" name="checkbox-toggle" checked><i data-swchon-text="ON" data-swchoff-text="OFF"></i>Statue</label>
+                                    <label class="toggle state-success"><input type="checkbox" name="checkbox-toggle" id="Status" onclick="OncheckBox(this)" checked><i data-swchon-text="ON" data-swchoff-text="OFF"></i>Status</label>
                                 </div>
                                 <div class="col col-3">
-                                    <label class="toggle state-success"><input type="checkbox" name="checkbox-toggle"><i data-swchon-text="ON" data-swchoff-text="OFF"></i>Rssi</label>
+                                    <label class="toggle state-success"><input type="checkbox" name="checkbox-toggle" id="Rssi" onclick="OncheckBox(this)"><i data-swchon-text="ON" data-swchoff-text="OFF"></i>Rssi</label>
                                 </div>
                                 <div class="col col-3">
-                                    <label class="toggle state-success"><input type="checkbox" name="checkbox-toggle"><i data-swchon-text="ON" data-swchoff-text="OFF"></i>Label</label>
+                                    <label class="toggle state-success"><input type="checkbox" name="checkbox-toggle" id="Name" onclick="OncheckBox(this)"><i data-swchon-text="ON" data-swchoff-text="OFF"></i>Name</label>
                                 </div>
                             </section>
                             <section class="col col-6">
@@ -201,28 +201,72 @@
         
         return {lng:lng, lat:lat}
     }
+    function OncheckBox(index){
+        if(index.id == 'Name'){
+            if($('#' + index.id).is(':checked')) {
+                map.setLayoutProperty('beacon_name_layer', 'visibility', 'visible' );
+            }else{
+                map.setLayoutProperty('beacon_name_layer', 'visibility', 'none' );
+            }
+        }else if(index.id == 'Rssi'){    
+                      
+            if($('#' + index.id).is(':checked')) {
+                map.setLayoutProperty('beacon_rssi_layer', 'visibility', 'visible' );
+            }else{
+                map.setLayoutProperty('beacon_rssi_layer', 'visibility', 'none' );
+            }
+        }else if(index.id == 'Status'){
+            if($('#' + index.id).is(':checked')) {
+                map.setLayoutProperty('beacon_list_layer', 'visibility', 'visible' );
+            }else{
+                map.setLayoutProperty('beacon_list_layer', 'visibility', 'none' );
+            }
+            
+        }
+    }
+    site_beacons();
+    function site_beacons(){
+        var rssi;
+        $.get("get_beacon_status_mapbox/" + <?= $site_info->site ?>, '', function(result){
+            var lastest_beacon =  JSON.parse(result);        
+            <?php foreach($site_beacons as $beacon_item){ ?>
+                var temp = new Array();
+                var obj;
+                var tempLatLng = new Array();
+                rssi = '';
+                obj = mappingklb(<?= $beacon_item->x?>, <?= $beacon_item->y?>);
+                temp.push(obj.lng);
+                temp.push(obj.lat);
 
-    <?php foreach($site_beacons as $beacon_item){ ?>
-        var temp = new Array();
-        var obj;
-        var tempLatLng = new Array();
-        obj = mappingklb(<?= $beacon_item->x?>, <?= $beacon_item->y?>);
-        temp.push(obj.lng);
-        temp.push(obj.lat);
+                tempLatLng.push(map.unproject(temp)['lng']);
+                tempLatLng.push(map.unproject(temp)['lat']);
 
-        tempLatLng.push(map.unproject(temp)['lng']);
-        tempLatLng.push(map.unproject(temp)['lat']);
-        var aaa = {
-                "type": "Feature",
-                "properties": {},
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": tempLatLng
-                }
-        };
-        coordinate.push(aaa);
-    <?php } ?>
-    
+                for(var beacon_name in lastest_beacon){
+                    if(<?= $beacon_item->major.$beacon_item->minor?> == beacon_name){
+                        rssi = lastest_beacon[beacon_name]['rssi'];
+                        break;
+                    }else{
+                        rssi = '';
+                    }  
+                }  
+                var aaa = {
+                        "type": "Feature",
+                        "properties": {    
+                            'beacon_name': <?= $beacon_item->minor?>,
+                            'rssi': rssi,
+                        },
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": tempLatLng
+                        }
+                };
+                coordinate.push(aaa);
+            <?php } ?>
+            
+        });
+            
+    }
+      
     map.on('load', function() {
         map.addImage('pulsing-dot', pulsingDot, { pixelRatio: 2 });
         map.addSource('site_map', {
@@ -236,6 +280,19 @@
                 "features": coordinate
             }
         });
+        map.addLayer({
+            'id': 'site_map_layer',
+            'type': 'line',
+            'source': 'site_map',
+            'layout': {
+                'line-join': 'round',
+                'line-cap': 'round'
+            },
+            'paint': {
+                'line-color': '#BF93E4',
+                'line-width': 2
+            }
+        });
         map.addSource('dots', {
             'type': 'geojson',
             'data':{
@@ -243,29 +300,50 @@
                 'features': []
                 }
         });
-        map.addLayer({
-            'id': 'site_map_layer',
-            'type': 'line',
-            'source': 'site_map',
-            'layout': {
-            'line-join': 'round',
-            'line-cap': 'round'
-            },
-            'paint': {
-            'line-color': '#BF93E4',
-            'line-width': 2
-            }
-        });
 
         map.addLayer({
             'id': 'beacon_list_layer',
             'type': 'circle',
             'source': 'beacon_list',
             'paint': {
-            'circle-radius': 6,
-            'circle-color': '#85C1E9'
+                'circle-radius': 6,
+                'circle-color': '#85C1E9'
+            },
+            'layout': {
+                'visibility': 'visible'
             },
             'filter': ['==', '$type', 'Point']
+        });
+        map.addLayer({
+            id: 'beacon_name_layer',
+            type: 'symbol',
+            source: 'beacon_list',
+            layout: {
+                'text-field': ['get', 'beacon_name'],
+                'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                'text-size': 12,
+                'text-offset': [0, 0.3],
+                'text-anchor': 'top',  
+                'visibility': 'none'
+            }
+        });
+        map.addLayer({
+            id: 'beacon_rssi_layer',
+            type: 'symbol',
+            source: 'beacon_list',
+            layout: {
+                'text-field': ['get', 'rssi'],
+                'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                'text-size': 12,
+                'text-offset': [0, 2.5],
+                'text-anchor': 'top',  
+                'visibility': 'none'
+
+            },
+            'paint': {
+                'text-color': 'red',
+                'text-halo-width': 2
+            },
         });
         map.addLayer({
             'id': 'dots_layer',
@@ -354,7 +432,7 @@
                             };
                             // console.log('--setData 1');
                             map.getSource('dots').setData(stepper);
-                            // console.log('--setData 2');
+                            // console.log(stepper);
                             count = count + 1;
                             AniID = requestAnimationFrame(step_dot);
                             if (count > 60) {
@@ -368,11 +446,6 @@
             });
         }
     });
-    var sleep = function(time) {
-        var startTime = new Date().getTime() + parseInt(time, 10);
-        while(new Date().getTime() < startTime) {}
-    };
-
 
     // switch style change
 	$('input[name="checkbox-style"]').change(function() {

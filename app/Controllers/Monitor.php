@@ -10,6 +10,15 @@ class Monitor extends Controller
         // parent::__construct();
         $this->model = new SiteModel();
 
+        $this->beacon_status = 
+        [
+            'beacon_name' => '',
+            'mac' => '',
+            'rssi' => 0,
+            'sensor_ble_mac' => '',
+            'ts' => '',
+            'vm' => 0,
+        ];
         $this->sensor_status = 
         [
             'sensor' => '',
@@ -60,7 +69,12 @@ class Monitor extends Controller
 		{
             $site = $params[0];
 			return $this->get_sensor_status_mapbox($site);
-		}else
+        }elseif ($method == 'get_beacon_status_mapbox')
+		{
+            $site = $params[0];
+			return $this->get_beacon_status_mapbox($site);
+		}
+        else
 		{
             $site_name = $method;
 			return $this->monitor($site_name);
@@ -139,7 +153,7 @@ class Monitor extends Controller
         $sensor_status_all = array();
         try {
             $raw_sensor_status = json_decode(file_get_contents('http://192.168.10.148:8080/latest_sensor_status'));
-            // print_r($raw_sensor_status);
+            // print_r($raw_beacon_status);
             foreach ($raw_sensor_status as $sensor => $sensor_each) {
                 // init sensor status structure
                 $sensor_status = $this->sensor_status;
@@ -223,6 +237,17 @@ class Monitor extends Controller
             $res[$sensor_status['sensor']] = $coordinate;
         }
         echo json_encode($res);
+    }
+
+    public function get_beacon_status_mapbox($site)
+    {
+        try {
+            $raw_beacon_status = file_get_contents('http://192.168.10.148:8080/latest_beacon_status');
+            echo $raw_beacon_status;
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+        
     }
 
     public function get_sensor_status_dashboard()

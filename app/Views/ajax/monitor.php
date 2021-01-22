@@ -1,3 +1,46 @@
+<style>
+    #menu {
+        background: #fff;
+        position: absolute;
+        z-index: 1;
+        top: 10px;
+        right: 10px;
+        border-radius: 3px;
+        width: 120px;
+        border: 1px solid rgba(0, 0, 0, 0.4);
+        font-family: 'Open Sans', sans-serif;
+    }
+    
+    #menu a {
+        font-size: 13px;
+        color: #404040;
+        display: block;
+        margin: 0;
+        padding: 0;
+        padding: 10px;
+        text-decoration: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+        text-align: center;
+    }
+    
+    #menu a:last-child {
+        border: none;
+    }
+    
+    #menu a:hover {
+        background-color: #f8f8f8;
+        color: #404040;
+    }
+    
+    #menu a.active {
+        background-color: #3887be;
+        color: #ffffff;
+    }
+    
+    #menu a.active:hover {
+        background: #3074a4;
+    }
+</style>
 <!-- widget grid -->
 <section id="widget-grid" class="">
 
@@ -78,6 +121,7 @@
 				<div>
 					<!-- widget content -->
 					<div class="widget-body no-padding" style="height:500px;">
+                        <nav id="menu"></nav>
                     	<div id="map"></div>
 					</div>
 					<!-- end widget content -->
@@ -304,6 +348,38 @@
                 'text-halo-width': 2
             },
         });
+        //for test
+        map.addLayer({
+            id: '1F',
+            type: 'symbol',
+            source: 'beacon_list',
+            layout: {
+                'text-field': ['get', 'beacon_name'],
+                'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                'text-size': 12,
+                'text-offset': [0, 0.3],
+                'text-anchor': 'top',  
+                'visibility': 'visible'
+            }
+        });
+        map.addLayer({
+            id: '2F',
+            type: 'symbol',
+            source: 'beacon_list',
+            layout: {
+                'text-field': ['get', 'rssi'],
+                'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                'text-size': 12,
+                'text-offset': [0, 2.5],
+                'text-anchor': 'top',  
+                'visibility': 'none'
+
+            },
+            'paint': {
+                'text-color': 'red',
+                'text-halo-width': 2
+            },
+        });
         map.addLayer({
             'id': 'dots_layer',
             'source': 'dots',
@@ -375,6 +451,43 @@
                 map.getSource('beacon_list').setData(stepper);
             });
             setTimeout(site_beacons, 3000);
+        }
+        // enumerate ids of the layers
+        var toggleableLayerIds = ['1F', '2F'];
+   
+        // set up the corresponding toggle button for each layer
+        for (var i = 0; i < toggleableLayerIds.length; i++) {
+            var id = toggleableLayerIds[i];
+            
+            var link = document.createElement('a');
+            link.href = '#';
+            if(i == 0){
+                link.className = 'active';
+            }else{
+                link.className = '';
+            }
+            link.textContent = id;
+            
+            link.onclick = function (e) {
+                var clickedLayer = this.textContent;
+                e.preventDefault();
+                e.stopPropagation();
+                
+                var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+
+                $('a').removeClass('active');
+                    this.className = 'active';
+                    map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+                    
+                    for (var i = 0; i < toggleableLayerIds.length; i++) {                    
+                        if(clickedLayer != toggleableLayerIds[i]){
+                            map.setLayoutProperty(toggleableLayerIds[i], 'visibility', 'none');                           
+                        }
+                    }
+            };
+            
+            var layers = document.getElementById('menu');
+            layers.appendChild(link);
         }
         var data_pre;
         var stepper_info_temp = {};

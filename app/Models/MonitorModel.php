@@ -2,7 +2,7 @@
 
 use CodeIgniter\Model;
 
-class SiteModel extends Model
+class MonitorModel extends Model
 {	
     function __construct()
     {
@@ -41,14 +41,25 @@ class SiteModel extends Model
         $query = $builder->get();
         return $query->getResult();
     }
-    public function get_site_geojson($site, $floor)
+
+    // public function get_site_geojson($site, $floor)
+    // {
+    //     // get site geojson data
+    //     $builder = $this->db->table('site');
+    //     $builder->where('site', $site);
+    //     $builder->where('floor', $floor);
+    //     $query = $builder->get();
+    //     return $query->getResult()[0]->geojson;
+    // }
+
+    public function get_site_geojson($site)
     {
         // get site geojson data
         $builder = $this->db->table('site');
         $builder->where('site', $site);
-        $builder->where('floor', $floor);
         $query = $builder->get();
-        return $query->getResult()[0]->geojson;
+        $builder->orderBy('floor', 'ASC');
+        return $query->getResult();
     }
 
 }

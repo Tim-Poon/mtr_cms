@@ -1,7 +1,7 @@
 <?php namespace App\Controllers;
 
 use App\Models\DashboardModel;
-use App\Models\SiteModel;
+use App\Models\MonitorModel;
 use CodeIgniter\Controller;
 use CodeIgniter\I18n\Time;
 
@@ -22,7 +22,7 @@ class Dashboard extends Controller
 										 "error" => array("event", "bg-color-red"));
 
 		$this->model = new DashboardModel();
-		$this->model_site = new SiteModel();
+		$this->model_site = new MonitorModel();
 
 		$this->valid_src_type = array('sensor', 'server', 'report');
 		$this->request = \Config\Services::request();

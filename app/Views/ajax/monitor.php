@@ -1,4 +1,5 @@
 <style>
+    /* style for switching floor */
     #menu {
         background: #fff;
         position: absolute;
@@ -41,6 +42,7 @@
         background: #3074a4;
     }
 </style>
+
 <!-- widget grid -->
 <section id="widget-grid" class="">
 
@@ -64,6 +66,7 @@
 
 				</header>
                 <div class="widget-body">
+                    <!-- switch box -->
                     <form class="smart-form">
                         <div class="row">
                             <section class="col col-6">
@@ -130,11 +133,12 @@
 			</div>
 			<!-- end widget -->
         </artivle>
-        
     </div>
 </section>
 <!-- end widget grid -->
+
 <?php if ($site_geojson) { ?>
+
 <script type="text/javascript">
     var coordinate = new Array();
     mapboxgl.accessToken = '<?=$mapbox_key?>';
@@ -150,6 +154,7 @@
     var alarm = 0;
     var alarm_ = [];
     var alarm_count = 0;
+    var floor_cur = <?= $site_geojson[0]->floor?>;
 
     var pulsingDot = {
         width: size,
@@ -158,7 +163,6 @@
         
         // get rendering context for the map canvas when layer is added to the map
         onAdd: function () {
-            
             var canvas = document.createElement('canvas');
             canvas.width = this.width;
             canvas.height = this.height;
@@ -228,10 +232,11 @@
             return true;
         }
     };
+
+    // todo: inster database
     //A = beacon 10032 and B = beacon 10060
     var coorA = [114.21400184074332,22.323663536861147];
     var coorB = [114.21419888819668,22.3226334019689];
-    
     var mA = {x: -0.1097, y: 0};
     var mB = {x: 115.6502, y: 11.2451};
 
@@ -265,24 +270,37 @@
             }else{
                 map.setLayoutProperty('beacon_list_layer', 'visibility', 'none' );
             }
-            
         }
     }
-    
       
     map.on('load', function() {
         map.addImage('pulsing-dot', pulsingDot, { pixelRatio: 2 });
+
+        // Source: map
         map.addSource('site_map', {
             'type': 'geojson',
-            'data': <?= $site_geojson?>                                
+            'data': <?= $site_geojson[0]->geojson?>
         });
+
+        // Source: beacon list
         map.addSource('beacon_list', {
-            type: 'geojson',
-            data: {
+            'type': 'geojson',
+            'data': {
                 "type": "FeatureCollection",
                 "features": []
             }
         });
+
+        // Source: dots
+        map.addSource('dots', {
+            'type': 'geojson',
+            'data':{
+                'type': 'FeatureCollection',
+                'features': []
+            }
+        });
+
+        // Layer: show map
         map.addLayer({
             'id': 'site_map_layer',
             'type': 'line',
@@ -296,14 +314,8 @@
                 'line-width': 2
             }
         });
-        map.addSource('dots', {
-            'type': 'geojson',
-            'data':{
-                'type': 'FeatureCollection',
-                'features': []
-                }
-        });
 
+        // Layer: beacon dots
         map.addLayer({
             'id': 'beacon_list_layer',
             'type': 'circle',
@@ -315,46 +327,23 @@
             'layout': {
                 'visibility': 'visible'
             },
-            'filter': ['==', '$type', 'Point']
+            // 'filter': ['==', '$type', 'Point']
         });
-        map.addLayer({
-            id: 'beacon_name_layer',
-            type: 'symbol',
-            source: 'beacon_list',
-            layout: {
-                'text-field': ['get', 'beacon_name'],
-                'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-                'text-size': 12,
-                'text-offset': [0, 0.3],
-                'text-anchor': 'top',  
-                'visibility': 'none'
-            }
-        });
-        map.addLayer({
-            id: 'beacon_rssi_layer',
-            type: 'symbol',
-            source: 'beacon_list',
-            layout: {
-                'text-field': ['get', 'rssi'],
-                'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-                'text-size': 12,
-                'text-offset': [0, 2.5],
-                'text-anchor': 'top',  
-                'visibility': 'none'
 
-            },
-            'paint': {
-                'text-color': 'red',
-                'text-halo-width': 2
-            },
-        });
-        //for test
+        // Layer: beacon info (name & coor)
         map.addLayer({
-            id: '1F',
-            type: 'symbol',
-            source: 'beacon_list',
-            layout: {
-                'text-field': ['get', 'beacon_name'],
+            'id': 'beacon_info_layer',
+            'type': 'symbol',
+            'source': 'beacon_list',
+            'layout': {
+                "text-field": ["format", ["get", "beacon_name"], {
+                    "text-color": '#424949',
+                },
+                "\n", {},
+                ["get", "beacon_name"], {
+                    "text-color": '#145A32',
+                },
+                "\n", {}],
                 'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
                 'text-size': 12,
                 'text-offset': [0, 0.3],
@@ -362,24 +351,26 @@
                 'visibility': 'visible'
             }
         });
+
+        // Layer: beacon rssi (realtime value)
         map.addLayer({
-            id: '2F',
+            id: 'beacon_rssi_layer',
             type: 'symbol',
             source: 'beacon_list',
             layout: {
                 'text-field': ['get', 'rssi'],
                 'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-                'text-size': 12,
-                'text-offset': [0, 2.5],
-                'text-anchor': 'top',  
-                'visibility': 'none'
-
+                'text-size': 15,
+                'text-offset': [0, -2],
+                'visibility': 'visible'
             },
             'paint': {
-                'text-color': 'red',
+                'text-color': '#E74C3C',
                 'text-halo-width': 2
             },
         });
+        
+        // Layer: dots (realtime coor)
         map.addLayer({
             'id': 'dots_layer',
             'source': 'dots',
@@ -403,15 +394,45 @@
             },
         });
 
+        // floor switcher
+        var toggleableLayerIds = ['1F', '2F'];
+   
+        // set up the corresponding toggle button for each layer
+        // for (var i = 0; i < toggleableLayerIds.length; i++) {
+        <?php foreach ($site_geojson as $idx => $site_geojson_item) { ?>
+            
+            var link = document.createElement('a');
+            link.href = '#';
+            if (!<?= $idx?>) {
+                link.className = 'active';
+            }
+            link.textContent = <?= $site_geojson_item->floor?>;
+            
+            link.onclick = function (e) {
+                var clickedLayer = this.textContent;
+                e.preventDefault();
+                e.stopPropagation();
+                $('a').removeClass('active');
+                this.className = 'active';
+                floor_cur = <?= $site_geojson_item->floor?>;
+                map.getSource('site_map').setData(<?= $site_geojson_item->geojson?>);
+            };
+            var layers = document.getElementById('menu');
+            layers.appendChild(link);
+        <?php } ?>
+
+
+
+        // flash beacon status
         site_beacons();
         function site_beacons(){
             var rssi;
             $.get("get_beacon_status_mapbox/" + <?= $site_info->site ?>, '', function(result){
                 var lastest_beacon =  JSON.parse(result);
                 
-                var stepper = {};
-                stepper['type'] = 'FeatureCollection';
-                stepper['features'] = new Array;   
+                var beacon_list = {};
+                beacon_list['type'] = 'FeatureCollection';
+                beacon_list['features'] = new Array;   
                 <?php foreach($site_beacons as $beacon_item){ ?>
                     var temp = new Array();
                     var obj;
@@ -431,7 +452,7 @@
                         }else{
                             rssi = '';
                         }  
-                    } 
+                    }
 
                     var aaa = {
                             "type": "Feature",
@@ -445,50 +466,16 @@
                             }
                     };
                     coordinate.push(aaa);
-                    stepper['features'].push(aaa);
-                    
+                    if (<?= $beacon_item->major % 10 ?> == floor_cur) {
+                        beacon_list['features'].push(aaa);
+                    }
                 <?php } ?>
-                map.getSource('beacon_list').setData(stepper);
+                map.getSource('beacon_list').setData(beacon_list);
             });
             setTimeout(site_beacons, 3000);
         }
-        // enumerate ids of the layers
-        var toggleableLayerIds = ['1F', '2F'];
-   
-        // set up the corresponding toggle button for each layer
-        for (var i = 0; i < toggleableLayerIds.length; i++) {
-            var id = toggleableLayerIds[i];
-            
-            var link = document.createElement('a');
-            link.href = '#';
-            if(i == 0){
-                link.className = 'active';
-            }else{
-                link.className = '';
-            }
-            link.textContent = id;
-            
-            link.onclick = function (e) {
-                var clickedLayer = this.textContent;
-                e.preventDefault();
-                e.stopPropagation();
-                
-                var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
-
-                $('a').removeClass('active');
-                    this.className = 'active';
-                    map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
-                    
-                    for (var i = 0; i < toggleableLayerIds.length; i++) {                    
-                        if(clickedLayer != toggleableLayerIds[i]){
-                            map.setLayoutProperty(toggleableLayerIds[i], 'visibility', 'none');                           
-                        }
-                    }
-            };
-            
-            var layers = document.getElementById('menu');
-            layers.appendChild(link);
-        }
+        
+        // flash dots status
         var data_pre;
         var stepper_info_temp = {};
         animateMarker();
@@ -506,25 +493,23 @@
                         // alarm = [];
                         // alarm_count = 0;
                         for(var sensor in data_cur){
-                            // console.log(data_cur['00:00:00:00:00:00']['loc_x']);
                             // 1. 对比data_pre, 找到需要移动的点 todo
                             // alarm.push(data_cur[sensor]['alarm_flag']);
+                            if (data_cur[sensor]['loc_z'] == floor_cur) {
+                                var coor_mapping_cur = mappingklb(data_cur[sensor]['loc_x'], data_cur[sensor]['loc_y']);
+                                var coor_latlng_cur = map.unproject([coor_mapping_cur.lng, coor_mapping_cur.lat]);
 
-                            var coor_mapping_cur = mappingklb(data_cur[sensor]['loc_x'], data_cur[sensor]['loc_y']);
-                            var coor_latlng_cur = map.unproject([coor_mapping_cur.lng, coor_mapping_cur.lat]);
+                                var coor_mapping_pre = mappingklb(data_pre[sensor]['loc_x'], data_pre[sensor]['loc_y']);
+                                var coor_latlng_pre = map.unproject([coor_mapping_pre.lng, coor_mapping_pre.lat]);
 
-                            var coor_mapping_pre = mappingklb(data_pre[sensor]['loc_x'], data_pre[sensor]['loc_y']);
-                            var coor_latlng_pre = map.unproject([coor_mapping_pre.lng, coor_mapping_pre.lat]);
-
-                            var stepper_info_temp_ = {
-                                'step_lng': (coor_latlng_cur['lng'] - coor_latlng_pre['lng']) / 60,
-                                'step_lat': (coor_latlng_cur['lat'] - coor_latlng_pre['lat']) / 60,
-                                'start_lng': coor_latlng_pre['lng'],
-                                'start_lat': coor_latlng_pre['lat'],
-                            };
-                            stepper_info_temp[data_cur[sensor]['label']] = stepper_info_temp_;
-                            // console.log(stepper_info_temp);
-                            // break;
+                                var stepper_info_temp_ = {
+                                    'step_lng': (coor_latlng_cur['lng'] - coor_latlng_pre['lng']) / 60,
+                                    'step_lat': (coor_latlng_cur['lat'] - coor_latlng_pre['lat']) / 60,
+                                    'start_lng': coor_latlng_pre['lng'],
+                                    'start_lat': coor_latlng_pre['lat'],
+                                };
+                                stepper_info_temp[data_cur[sensor]['label']] = stepper_info_temp_;
+                            }
                         }
                         
                         step_dot();
@@ -568,22 +553,9 @@
             });
         }
     });
+    // -- mapbox end
 
-    // switch style change
-	$('input[name="checkbox-style"]').change(function() {
-		//alert($(this).val())
-		$this = $(this);
-
-		if ($this.attr('value') === "switch-1") {
-			$("#switch-1").show();
-			$("#switch-2").hide();
-		} else if ($this.attr('value') === "switch-2") {
-			$("#switch-1").hide();
-			$("#switch-2").show();
-		}
-
-	});
-    
+    // flash sensor status
     load_sensor_status();
 	function load_sensor_status() {
 		$.get("get_sensor_status_monitor/" + <?= $site_info->site ?>, '', function(result){
@@ -637,6 +609,21 @@
             }
 			setTimeout(load_sensor_status, 1000);
 		});
-	}
+    }
+    // switch style change
+	$('input[name="checkbox-style"]').change(function() {
+		//alert($(this).val())
+		$this = $(this);
+		if ($this.attr('value') === "switch-1") {
+			$("#switch-1").show();
+			$("#switch-2").hide();
+		} else if ($this.attr('value') === "switch-2") {
+			$("#switch-1").hide();
+			$("#switch-2").show();
+		}
+
+    });
 </script>
+
+<!-- if ($site_geojson) {  -->
 <?php } ?>

@@ -1,6 +1,6 @@
 <?php namespace App\Controllers;
 
-use App\Models\SiteModel;
+use App\Models\MonitorModel;
 use CodeIgniter\Controller;
 
 class Monitor extends Controller
@@ -8,7 +8,7 @@ class Monitor extends Controller
     public function __construct()
     {
         // parent::__construct();
-        $this->model = new SiteModel();
+        $this->model = new MonitorModel();
 
         $this->beacon_status = 
         [
@@ -116,12 +116,13 @@ class Monitor extends Controller
             'site_names' => $this->get_site_names(),
             'site_info' => $site_info,
             // todo multi floor
-            'site_geojson' => $this->model->get_site_geojson($site_info->site, 1),
+            'site_geojson' => $this->model->get_site_geojson($site_info->site),
             'mapbox_key' => config('ApiServer_')->mapbox['key'],
             'site_beacons' => $this->model->get_site_beacons($site_info->site, 1),
             'site_sensors' => $this->model->get_site_sensors($site_info->site),
             'default_sensor_status' => json_encode([0, 0, 1, 1, 1, 2, 2, 3, 3, 2, 2, 2]),
         ];
+        // print_r($data['site_geojson']);
         echo view('head', $data);
 		echo view('js');
 		echo view('ajax/monitor', $data);

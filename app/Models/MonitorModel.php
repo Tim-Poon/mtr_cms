@@ -34,10 +34,17 @@ class MonitorModel extends Model
         return $query->getResult();
     }
 
-    public function get_site_beacons($site, $floor)
+    public function get_site_beacons($site)
     {
+        $builder = $this->db->table('site');
+        $builder->select('floor');
+        $builder->where('site', $site);
+        $floors = $builder->get()->getResult();
+
         $builder = $this->db->table('beacon');
-        $builder->where('major', $site.$floor);
+        foreach ($floors as $floor) {
+            $builder->orWhere('major', $site.$floor->floor);
+        }
         $query = $builder->get();
         return $query->getResult();
     }

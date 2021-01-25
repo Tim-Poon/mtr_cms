@@ -118,11 +118,11 @@ class Monitor extends Controller
             // todo multi floor
             'site_geojson' => $this->model->get_site_geojson($site_info->site),
             'mapbox_key' => config('ApiServer_')->mapbox['key'],
-            'site_beacons' => $this->model->get_site_beacons($site_info->site, 1),
+            'site_beacons' => $this->model->get_site_beacons($site_info->site),
             'site_sensors' => $this->model->get_site_sensors($site_info->site),
             'default_sensor_status' => json_encode([0, 0, 1, 1, 1, 2, 2, 3, 3, 2, 2, 2]),
         ];
-        // print_r($data['site_geojson']);
+        // print_r($data['site_beacons']);
         echo view('head', $data);
 		echo view('js');
 		echo view('ajax/monitor', $data);

@@ -104,31 +104,31 @@ class Monitor extends Controller
 
     public function monitor($site_name)
     {
-        // find site infor by $site
         $site_info = $this->get_site_info($site_name);
-        // print_r($this->model->get_site_beacon($site_info->site, 1));
-
         $data = 
         [  
+            // header
             'icon' => 'fa-desktop',
             'title' => 'Monitor',
-            'sub_title' => ' > '. $site_info->site_name,
+            'sub_title' => ' > '. $site_info['site_name'],
             'site_names' => $this->get_site_names(),
+            // site page
             'site_info' => $site_info,
-            // todo multi floor
-            'site_geojson' => $this->model->get_site_geojson($site_info->site),
             'mapbox_key' => config('ApiServer_')->mapbox['key'],
-            'site_beacons' => $this->model->get_site_beacons($site_info->site),
-            'site_sensors' => $this->model->get_site_sensors($site_info->site),
+            'site_beacons' => $this->model->get_site_beacons($site_info['site']),
+            'site_sensors' => $this->model->get_site_sensors($site_info['site']),
             'default_sensor_status' => json_encode([0, 0, 1, 1, 1, 2, 2, 3, 3, 2, 2, 2]),
         ];
-        // print_r($data['site_beacons']);
+        // print_r($data['site_sensors']);
         echo view('head', $data);
 		echo view('js');
 		echo view('ajax/monitor', $data);
         echo view('foot');
+
+        // print_r($site_info['floors'][0]['geojson']);
     }
 
+    // for header
     private function get_site_names()
     {
         $site_names = array();
@@ -140,13 +140,41 @@ class Monitor extends Controller
         return $site_names;
     }
 
+    // for site page
     private function get_site_info($site_name)
     {
+        $res = 
+        [
+            'site' => '',
+            'site_name' => '',
+            'floors' => [],
+            'mapbox_style' => '',
+            'mapbox_center_lng' => '',
+            'mapbox_center_lat' => '',
+            'mapbox_zoom' => '',
+            'mapbox_bearing' => '',
+        ];
         foreach ($this->site_info_all as $site_info_item) {
             if ($site_name == $site_info_item->site_name) {
-                return $site_info_item;
+                $res['site'] = $site_info_item->site;
+                $res['site_name'] = $site_info_item->site_name;
+                $res['mapbox_style'] = $site_info_item->mapbox_style;
+                $res['mapbox_center_lng'] = $site_info_item->mapbox_center_lng;
+                $res['mapbox_center_lat'] = $site_info_item->mapbox_center_lat;
+                $res['mapbox_zoom'] = $site_info_item->mapbox_zoom;
+                $res['mapbox_bearing'] = $site_info_item->mapbox_bearing;
+
+                $floor = 
+                [
+                    'floor' => $site_info_item->floor,
+                    'floor_name' => $site_info_item->floor_name,
+                    'geojson' => $site_info_item->geojson,
+                    'dot_mapping' => $site_info_item->dot_mapping,
+                ];
+                array_push($res['floors'], $floor);
             }
         }
+        return $res;
     }
 
     private function init_status_result()
@@ -279,6 +307,5 @@ class Monitor extends Controller
             $res[$sensor_status['sensor']] = $sensor_status;
         }
         echo json_encode($res);
-	}
-
+    }
 }

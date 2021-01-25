@@ -13,6 +13,7 @@ class MonitorModel extends Model
     {
         // get all sensor
         $builder = $this->db->table('site');
+        $builder->orderBy('floor, site', 'ASC');
         $query = $builder->get();
         return $query;
     }
@@ -68,5 +69,15 @@ class MonitorModel extends Model
         $builder->orderBy('floor', 'ASC');
         return $query->getResult();
     }
+
+    // public function get_site_dot_mapping($site)
+    // {
+    //     // get site geojson data
+    //     $builder = $this->db->table('site');
+    //     $builder->where('site', $site);
+    //     $query = $builder->get();
+    //     $builder->orderBy('floor', 'ASC');
+    //     return $query->getResult();
+    // }
 
 }

@@ -322,7 +322,7 @@
             'source': 'beacon_list',
             'paint': {
                 'circle-radius': 6,
-                'circle-color': '#85C1E9'
+                'circle-color': ['get', 'color']
             },
             'layout': {
                 'visibility': 'visible'
@@ -438,6 +438,7 @@
                     var obj;
                     var tempLatLng = new Array();
                     rssi = '';
+                    color = '#85C1E9';
                     obj = mappingklb(<?= $beacon_item->x?>, <?= $beacon_item->y?>);
                     temp.push(obj.lng);
                     temp.push(obj.lat);
@@ -448,6 +449,7 @@
                     for(var beacon_name in lastest_beacon){
                         if(<?= $beacon_item->major.$beacon_item->minor?> == beacon_name){
                             rssi = lastest_beacon[beacon_name]['rssi'];
+                            color = 'green';
                             break;
                         }else{
                             rssi = '';
@@ -459,6 +461,7 @@
                             "properties": {    
                                 'beacon_name': <?= $beacon_item->minor?>,
                                 'rssi': rssi,
+                                'color': color,
                             },
                             "geometry": {
                                 "type": "Point",

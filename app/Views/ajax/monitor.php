@@ -126,6 +126,7 @@
 					<div class="widget-body no-padding" style="height:500px;">
                         <nav id="menu"></nav>
                     	<div id="map"></div>
+                        <!-- <pre id='info'></pre> -->
 					</div>
 					<!-- end widget content -->
 				</div>
@@ -138,24 +139,24 @@
 <!-- end widget grid -->
 
 <?php if ($site_info) { ?>
-
 <script type="text/javascript">
     var coordinate = new Array();
     mapboxgl.accessToken = '<?=$mapbox_key?>';
-    var map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/light-v10',
-        center: [114.21402, 22.3235],
-        zoom: 19,
-        bearing: 85
-    });
-
     // map initial
     var alarm = 0;
     var alarm_ = [];
     var alarm_count = 0;
     var floor_cur = <?= $site_info['floors'][0]['floor']?>;
     var dot_mapping = <?= $site_info['floors'][0]['dot_mapping']?>;
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/light-v10',
+        center: [<?= $site_info['mapbox_center_lng']?>, <?= $site_info['mapbox_center_lat']?>],   
+        zoom: <?= $site_info['mapbox_zoom']?>,
+        bearing: <?= $site_info['mapbox_bearing']?> 
+    });
+
+   
 
     // dots
     var size = 200;
@@ -238,9 +239,6 @@
 
     // todo: inster database
     //A = beacon 10032 and B = beacon 10060
-    
-
-    console.log(dot_mapping[0]['x']);
 
     function get_floor_dot_mapping() {
         <?php foreach ($site_info['floors'] as $site_floor_item) { ?>
@@ -266,7 +264,11 @@
         lat = (y - mA.y) * (pB.y - pA.y) / (mB.y - mA.y) + pA.y;
         return {lng:lng, lat:lat}
     }
-
+    // map.on('mousedown', function (e) {
+    //     document.getElementById('info').innerHTML = JSON.stringify(e.point) + '<br />' + JSON.stringify(e.lngLat);
+    //     console.log(JSON.stringify(e.lngLat));
+    // });
+    
     // function OncheckBox(index){
     //     if(index.id == 'Name'){
     //         if($('#' + index.id).is(':checked')) {

@@ -146,14 +146,14 @@
     var alarm = 0;
     var alarm_ = [];
     var alarm_count = 0;
-    var floor_cur = <?= $site_info['floors'][0]['floor']?>;
-    var dot_mapping = <?= $site_info['floors'][0]['dot_mapping']?>;
+    var floor_cur = <?= $site_info[0]['floor']?>;
+    var dot_mapping = <?= $site_info[0]['dot_mapping']?>;
     var map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/light-v10',
-        center: [<?= $site_info['mapbox_center_lng']?>, <?= $site_info['mapbox_center_lat']?>],   
-        zoom: <?= $site_info['mapbox_zoom']?>,
-        bearing: <?= $site_info['mapbox_bearing']?> 
+        center: [<?= $site_info[0]['mapbox_center_lng']?>, <?= $site_info[0]['mapbox_center_lat']?>],   
+        zoom: <?= $site_info[0]['mapbox_zoom']?>,
+        bearing: <?= $site_info[0]['mapbox_bearing']?> 
     });
 
    
@@ -241,7 +241,7 @@
     //A = beacon 10032 and B = beacon 10060
 
     function get_floor_dot_mapping() {
-        <?php foreach ($site_info['floors'] as $site_floor_item) { ?>
+        <?php foreach ($site_info as $site_floor_item) { ?>
             if (floor_cur == <?= $site_floor_item['floor'] ?>) {
                 dot_mapping = <?= $site_floor_item['dot_mapping'] ?>;
             }
@@ -298,7 +298,7 @@
         // Source: map
         map.addSource('site_map', {
             'type': 'geojson',
-            'data': <?= $site_info['floors'][0]['geojson']?>
+            'data': <?= $site_info[0]['geojson']?>
         });
 
         // Source: beacon list
@@ -414,7 +414,7 @@
         });
 
         // floor switcher
-        <?php foreach ($site_info['floors'] as $idx => $site_floor_item) { ?>
+        <?php foreach ($site_info as $idx => $site_floor_item) { ?>
             
             var link = document.createElement('a');
             link.href = '#';
@@ -440,7 +440,7 @@
         site_beacons();
         function site_beacons(){
             var rssi;
-            $.get("get_beacon_status_mapbox/" + <?= $site_info['site'] ?>, '', function(result){
+            $.get("get_beacon_status_mapbox/" + <?= $site_info[0]['site'] ?>, '', function(result){
                 var lastest_beacon =  JSON.parse(result);
                 
                 var beacon_list = {};
@@ -497,7 +497,7 @@
         var stepper_info_temp = {};
         animateMarker();
         function animateMarker() {
-            $.get("get_sensor_status_mapbox/" + <?= $site_info['site'] ?>, '', function(result){
+            $.get("get_sensor_status_mapbox/" + <?= $site_info[0]['site'] ?>, '', function(result){
                 if (result != 0) {
                     // console.log('---request');
                     data_cur = JSON.parse(result);
@@ -573,7 +573,7 @@
     // flash sensor status
     load_sensor_status();
 	function load_sensor_status() {
-		$.get("get_sensor_status_monitor/" + <?= $site_info['site'] ?>, '', function(result){
+		$.get("get_sensor_status_monitor/" + <?= $site_info[0]['site'] ?>, '', function(result){
             if (result != 0) {
                 data = JSON.parse(result);       
                 <?php foreach ($site_sensors as $site_sensor_item) { ?>

@@ -41,7 +41,6 @@ class Monitor extends Controller
         ];
 
         $this->sensor_info_all = $this->model->get_sensor_info_all()->getResult();
-		$this->site_info_all = $this->model->get_site_info_all()->getResult();
     }
 
     public function _remap($method, ...$params)
@@ -104,77 +103,26 @@ class Monitor extends Controller
 
     public function monitor($site_name)
     {
-        $site_info = $this->get_site_info($site_name);
+        $site_info = $this->model->get_site_info_by_name($site_name);
         $data = 
         [  
             // header
             'icon' => 'fa-desktop',
             'title' => 'Monitor',
-            'sub_title' => ' > '. $site_info['site_name'],
-            'site_names' => $this->get_site_names(),
+            'sub_title' => ' > '. $site_info[0]['site_name'],
+            'site_names' => $this->model->get_site_name_all(),
             // site page
             'site_info' => $site_info,
             'mapbox_key' => config('ApiServer_')->mapbox['key'],
-            'site_beacons' => $this->model->get_site_beacons($site_info['site']),
-            'site_sensors' => $this->model->get_site_sensors($site_info['site']),
+            'site_beacons' => $this->model->get_site_beacons($site_info[0]['site']),
+            'site_sensors' => $this->model->get_site_sensors($site_info[0]['site']),
             'default_sensor_status' => json_encode([0, 0, 1, 1, 1, 2, 2, 3, 3, 2, 2, 2]),
         ];
-        // print_r($data['site_sensors']);
+        // print_r($this->model->get_site_name_all());
         echo view('head', $data);
 		echo view('js');
 		echo view('ajax/monitor', $data);
         echo view('foot');
-
-        // print_r($site_info['floors'][0]['geojson']);
-    }
-
-    // for header
-    private function get_site_names()
-    {
-        $site_names = array();
-        foreach ($this->site_info_all as $site_info_item) {
-            if (!in_array($site_info_item->site_name, $site_names)) {
-                array_push($site_names, $site_info_item->site_name);
-            }
-        }
-        return $site_names;
-    }
-
-    // for site page
-    private function get_site_info($site_name)
-    {
-        $res = 
-        [
-            'site' => '',
-            'site_name' => '',
-            'floors' => [],
-            'mapbox_style' => '',
-            'mapbox_center_lng' => '',
-            'mapbox_center_lat' => '',
-            'mapbox_zoom' => '',
-            'mapbox_bearing' => '',
-        ];
-        foreach ($this->site_info_all as $site_info_item) {
-            if ($site_name == $site_info_item->site_name) {
-                $res['site'] = $site_info_item->site;
-                $res['site_name'] = $site_info_item->site_name;
-                $res['mapbox_style'] = $site_info_item->mapbox_style;
-                $res['mapbox_center_lng'] = $site_info_item->mapbox_center_lng;
-                $res['mapbox_center_lat'] = $site_info_item->mapbox_center_lat;
-                $res['mapbox_zoom'] = $site_info_item->mapbox_zoom;
-                $res['mapbox_bearing'] = $site_info_item->mapbox_bearing;
-
-                $floor = 
-                [
-                    'floor' => $site_info_item->floor,
-                    'floor_name' => $site_info_item->floor_name,
-                    'geojson' => $site_info_item->geojson,
-                    'dot_mapping' => $site_info_item->dot_mapping,
-                ];
-                array_push($res['floors'], $floor);
-            }
-        }
-        return $res;
     }
 
     private function init_status_result()

@@ -106,7 +106,7 @@
 					<li class=""><a href="#" title="Monitor"><i class="fa fa-lg fa-fw fa-desktop"></i>  <span class="menu-item-parent">Monitor</span></a>
 						<ul>
 							<?php foreach($site_names as $site_name){?>
-							<li><a href="<?=base_url('Monitor').'/'.$site_name?>"><?= $site_name?></a></li>
+							<li><a href="<?=base_url('Monitor').'/'.$site_name['site_name']?>"><?= $site_name['site_name']?></a></li>
 							<?php } ?>
 						</ul>
 					</li>

@@ -1,7 +1,7 @@
 <?php namespace App\Controllers;
 
 use App\Models\PolygonModel;
-use App\Models\SiteModel;
+use App\Models\MonitorModel;
 use CodeIgniter\Controller;
 use CodeIgniter\I18n\Time;
 
@@ -9,16 +9,16 @@ class Polygon extends Controller
 {
 	public function __construct(){
 		$this->model = new PolygonModel();
-		$this->model_site = new SiteModel();
+		$this->model_monitor = new MonitorModel();
 	}
 
 	public function _remap($method, ...$params)
 	{
-		if ($method === 'add')
+		if ($method === 'save')
 		{
 			$site = $params[0];
 			$floor = $params[1];
-			$this->add_polygons($site, $floor);
+			$this->save_polygons($site, $floor);
 		}
 		elseif($method === 'import')
 		{
@@ -29,16 +29,14 @@ class Polygon extends Controller
 		elseif($method === 'export')
 		{
 			$site = $params[0];
-			$floor = $params[1];
-			$ts_create = $params[2];
-			$this->export_polygons($site, $floor, $ts_create);
+			$ts_create = $params[1];
+			$this->export_polygons($site, $ts_create);
 		}
 		elseif($method === 'del')
 		{
 			$site = $params[0];
-			$floor = $params[1];
-			$ts_create = $params[2];
-			$this->del_polygon($site, $floor, $ts_create);
+			$ts_create = $params[1];
+			$this->del_polygon($site, $ts_create);
 		}
 		elseif ($method === 'index')
 		{
@@ -46,23 +44,23 @@ class Polygon extends Controller
 		}
 		else
 		{
-			$site = $method;
-			$floor = $params[0];
-			$ts_create = $params[1];
-			return $this->view_polygon($site, $floor, $ts_create);
+			$site_name = $method;
+			$ts_create = $params[0];
+			return $this->view_polygon($site_name, $ts_create);
 		}
 	}
 
 	private function index()
-	{
+	{	
+		$site_info = $this->model_monitor->get_site_info_by_name($site_name);
 		$data = 
 		[
 			'icon' => 'fa-map-marker',
 			'title' => 'Polygon',
 			'sub_title' => '',
-			'site_names' => $this->model_site->get_site_names(),
-			'site_all' => $this->model_site->get_site_all(),
+			'site_names' => $this->model_monitor->get_site_name_all(),
 
+			'site_info' => $site_info,
 			'site_polygons' => $this->model->get_lastest_polygon(1001, 1),
 			'site_ts_create' => $this->model->get_ts_create($site, $floor),
 			'mapbox_key' => config('ApiServer_')->mapbox['key'],
@@ -74,31 +72,34 @@ class Polygon extends Controller
 		echo view('foot');
 	}
 
-	private function view_polygon($site, $floor, $ts_create)
+	private function view_polygon($site_name, $ts_create)
 	{
+		$site_info = $this->model_monitor->get_site_info_by_name($site_name);
+
 		if($ts_create){
-			$site_polygons = $this->model->get_polygon($site, $floor, $ts_create);
+			// $site_polygons = $this->model->get_polygon($site, $site_info[0]['floor'], $ts_create);
+			$site_polygons = $this->model->get_polygon($site_info[0]['site'], $ts_create);
 		}else{
 			// $site_polygons = $this->model->get_lastest_polygon($site, $floor);
-			$site_polygons = "";
+			$site_polygons = 0;
 		}
-		$site_item = $this->model_site->get_site_item($site, $floor)[0];
-		$site_ts_create = $this->model->get_ts_create($site, $floor);
+		$site_ts_create = $this->model->get_ts_create($site_info[0]['site']);
 
 		$data = 
 		[
 			'icon' => 'fa-map-marker',
 			'title' => 'Polygon',
-			'sub_title' => '> ' . $site_item->site_name . ' ' . $site_item->floor_name,
-			'site_names' => $this->model_site->get_site_names(),
-			'site_all' => $this->model_site->get_site_all(),
+			'sub_title' => ' > '. $site_info[0]['site_name'],
+			'site_names' => $this->model_monitor->get_site_name_all(),
+
+			'site_info' => $site_info,
+
 			'site_polygons' => $site_polygons,
-			'site_item' => $site_item,
 			'site_ts_create' => $site_ts_create,
 			'mapbox_key' => config('ApiServer_')->mapbox['key'],
 		];
 
-		// print_r($site_item);
+		// print_r($site_info);
 		echo view('head', $data);
 		echo view('js');
 		echo view('ajax/polygon', $data);
@@ -142,7 +143,7 @@ class Polygon extends Controller
 		}	
 	}
 
-	private function add_polygons($site, $floor)
+	private function save_polygons($site, $floor)
 	{
 		$raw_polygons = $this->request->getPost(['raw_polygons']);
 		if ($raw_polygons['raw_polygons']['features']) {
@@ -171,14 +172,14 @@ class Polygon extends Controller
 		}	
 	}
 
-	private function del_polygon($site, $floor, $ts_create){
-		$result = $this->model->del_polygon($site, $floor, $ts_create);
-		$this->view_polygon($site, $floor, $ts_create);
+	private function del_polygon($site, $ts_create){
+		$result = $this->model->del_polygon($site, $ts_create);
+		$this->view_polygon($site, '');
 	}
 
-	private function export_polygons($site, $floor, $ts_create)
+	private function export_polygons($site, $ts_create)
 	{
-		$result = $this->model->get_polygon($site, $floor, $ts_create);
+		$result = $this->model->get_polygon($site, $ts_create);
 		header('Content-Type: application/vnd.ms-excel;charset=UTF-8');
 		header('Content-Type: application/force-download');
 		header('Content-Disposition: attachment;filename=polygon.txt');

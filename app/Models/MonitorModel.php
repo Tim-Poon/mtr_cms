@@ -22,22 +22,8 @@ class MonitorModel extends Model
     public function get_site_name_all()
     {
         // get all sensor
-        $builder = $this->db->table('site');
-        $builder->select('site_name');
-        $builder->distinct();
-        // $builder->orderBy('id', 'ASC');
-        // $builder->groupBy('id, site_name');
-        $query = $builder->get();
+        $query = $this->db->query("SELECT max(id), site, site_name FROM site GROUP BY site, site_name ORDER BY max(id) ASC");
         return $query->getResult('array');
-    }
-
-    public function get_site_info_all()
-    {
-        // get all sensor
-        $builder = $this->db->table('site');
-        $builder->orderBy('floor, site', 'ASC');
-        $query = $builder->get();
-        return $query;
     }
 
     public function get_sensor_info_all()
@@ -45,7 +31,7 @@ class MonitorModel extends Model
         // get all sensor
         $builder = $this->db->table('sensor');
         $query = $builder->get();
-        return $query;
+        return $query->getResult();
     }
 
     public function get_site_sensors($site)
@@ -72,16 +58,6 @@ class MonitorModel extends Model
         return $query->getResult();
     }
 
-    // public function get_site_geojson($site, $floor)
-    // {
-    //     // get site geojson data
-    //     $builder = $this->db->table('site');
-    //     $builder->where('site', $site);
-    //     $builder->where('floor', $floor);
-    //     $query = $builder->get();
-    //     return $query->getResult()[0]->geojson;
-    // }
-
     public function get_site_geojson($site)
     {
         // get site geojson data
@@ -91,15 +67,5 @@ class MonitorModel extends Model
         $builder->orderBy('floor', 'ASC');
         return $query->getResult();
     }
-
-    // public function get_site_dot_mapping($site)
-    // {
-    //     // get site geojson data
-    //     $builder = $this->db->table('site');
-    //     $builder->where('site', $site);
-    //     $query = $builder->get();
-    //     $builder->orderBy('floor', 'ASC');
-    //     return $query->getResult();
-    // }
 
 }

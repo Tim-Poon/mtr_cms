@@ -98,7 +98,7 @@
                     <div class="show-stat-microcharts">
                         <?php foreach ($site_sensors as $site_sensor_item) {?>
                         <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
-                            <span class="sensor-status-title"> <?= $site_info['site_name'].' - '.$site_sensor_item->label?>  </span>
+                            <span class="sensor-status-title"> <?= $site_info[0]['site_name'].' - '.$site_sensor_item->label?>  </span>
                             
                             <ul class="smaller-stat hidden-sm pull-right">
                                 <li>
@@ -123,7 +123,7 @@
 				<!-- widget div-->
 				<div>
 					<!-- widget content -->
-					<div class="widget-body no-padding" style="height:500px;">
+					<div class="widget-body no-padding" style="height:600px;">
                         <nav id="menu"></nav>
                     	<div id="map"></div>
                         <!-- <pre id='info'></pre> -->

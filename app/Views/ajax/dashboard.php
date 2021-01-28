@@ -37,11 +37,11 @@
 						<table id="datatable_sensor" class="table table-striped table-hover">
 							<thead>
 								<tr>
-									<th width='15%'>Site</th>
-									<th width='5%'>ID</th>
-									<th width='30%'>Sensor</th>
-									<th width='35%'>HCI</th>
-									<th width='15%'>VM</th>
+									<th class="text-align-center" width='15%'>Site</th>
+									<th class="text-align-center" width='5%'>ID</th>
+									<th class="text-align-center" width='30%'>Sensor</th>
+									<th class="text-align-center" width='35%'>HCI</th>
+									<th class="text-align-center" width='15%'>VM</th>
 								</tr>
 							</thead>
 							<tbody id='statusbody'>

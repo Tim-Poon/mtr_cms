@@ -97,7 +97,7 @@
 			<nav>
 				<ul>
 					<li class=""><a href="<?=base_url()?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i>  <span class="menu-item-parent">Dashboard</span></a></li>
-					<li><a href="<?=base_url('todos')?>">
+					<li><a href="<?=base_url('Maintenance')?>">
 						<i class="fa fa-lg fa-fw fa-check-circle-o"></i>  
 						<span class="menu-item-parent">Maintenance</span>
 						<span class="badge pull-right inbox-badge"><?= $num_of_todos ?></span></a>

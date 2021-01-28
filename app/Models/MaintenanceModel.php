@@ -2,7 +2,7 @@
 
 use CodeIgniter\Model;
 
-class TodosModel extends Model
+class MaintenanceModel extends Model
 {
     function __construct()
     {

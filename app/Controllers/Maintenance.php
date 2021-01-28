@@ -1,17 +1,17 @@
 <?php namespace App\Controllers;
 
-use App\Models\TodosModel;
-use App\Models\SiteModel;
+use App\Models\MaintenanceModel;
+use App\Models\MonitorModel;
 use CodeIgniter\Controller;
 use CodeIgniter\I18n\Time;
 
-class Todos extends Controller
+class Maintenance extends Controller
 {
     public function __construct()
     {
         // parent::__construct();
-        $this->model = new TodosModel();
-        $this->model_site = new SiteModel();
+        $this->model = new MaintenanceModel();
+        $this->model_monitor = new MonitorModel();
         $this->request = \Config\Services::request();
     }
 
@@ -23,7 +23,7 @@ class Todos extends Controller
             'icon' => 'fa-check-circle-o',
             'title' => 'Todos',
             'sub_title' => '',
-            'site_names' => $this->model_site->get_site_names(),
+            'site_names' => $this->model_monitor->get_site_name_all(),
         ];
 
         # echo todos page head

@@ -19,6 +19,7 @@ class Monitor extends Controller
             'ts' => '',
             'vm' => 0,
         ];
+        
         $this->sensor_status = 
         [
             'sensor' => '',
@@ -39,8 +40,9 @@ class Monitor extends Controller
             'faster_flag' => 0,
             'history_vel' => '',
         ];
-
-        $this->sensor_info_all = $this->model->get_sensor_info_all()->getResult();
+        // init_status_result
+        $this->sensor_info_all = $this->model->get_sensor_info_all();
+        $this->site_name_all = $this->model->get_site_name_all();
     }
 
     public function _remap($method, ...$params)
@@ -80,26 +82,26 @@ class Monitor extends Controller
 		}
     }
 
-    public function index()
-    {
+    // public function index()
+    // {
         // todo: show site's beacon table with vm
         // todo: show site's polygon with vm
         // todo: show site's configuration with vm
-        $data = 
-        [  
-            'icon' => 'fa-desktop',
-            'title' => 'Monitor',
-            'sub_title' => '',
-            'site_info' => $this->site_info,
-            'site_all' => $this->model->get_site_all(),
-            'mapbox_key' => config('ApiServer_')->mapbox['key'],
+        // $data = 
+        // [  
+        //     'icon' => 'fa-desktop',
+        //     'title' => 'Monitor',
+        //     'sub_title' => '',
+        //     'site_info' => $this->site_info,
+        //     'site_all' => $this->model->get_site_all(),
+        //     'mapbox_key' => config('ApiServer_')->mapbox['key'],
 
-        ];
+        // ];
         // echo view('head', $data);
 		// echo view('js');
 		// echo view('ajax/site', $data);
 		// echo view('foot');
-    }
+    // }
 
     public function monitor($site_name)
     {
@@ -110,7 +112,7 @@ class Monitor extends Controller
             'icon' => 'fa-desktop',
             'title' => 'Monitor',
             'sub_title' => ' > '. $site_info[0]['site_name'],
-            'site_names' => $this->model->get_site_name_all(),
+            'site_names' => $this->site_name_all,
             // site page
             'site_info' => $site_info,
             'mapbox_key' => config('ApiServer_')->mapbox['key'],
@@ -145,11 +147,10 @@ class Monitor extends Controller
                     }
                 }
                 // search if sensor site existed
-                foreach ($this->site_info_all as $site_info_item) {
-                    if ($sensor_status['site'] == $site_info_item->site) {
+                foreach ($this->site_name_all as $site_info_item) {
+                    if ($sensor_status['site'] == $site_info_item['site']) {
                         // existed!
-                        $sensor_status['site'] = $site_info_item->site;
-                        $sensor_status['site_name'] = $site_info_item->site_name;
+                        $sensor_status['site_name'] = $site_info_item['site_name'];
                         break;
                     }
                 }
@@ -224,10 +225,9 @@ class Monitor extends Controller
         } catch (\Throwable $th) {
             //throw $th;
         }
-        
     }
 
-    public function get_sensor_status_dashboard()
+    private function get_sensor_status_dashboard()
     {
         $dashboard_statue = ($this->init_status_result());
         if ($dashboard_statue == 0) {
@@ -235,7 +235,7 @@ class Monitor extends Controller
         }
         foreach ($dashboard_statue as $sensor_status) {
             echo "<tr>
-            <td class=\"text-align-center\"><a href=\"site/".$sensor_status['site_name']."\">".$sensor_status['site_name']."</a></td>
+            <td class=\"text-align-center\"><a href=\"Monitor/".$sensor_status['site_name']."\">".$sensor_status['site_name']."</a></td>
             <td class=\"text-align-center\">".$sensor_status['label']."</td>
             <td class=\"text-align-center\">".$sensor_status['sensor']."</td>
             <td class=\"text-align-center\">".$sensor_status['hci_status']."</td>
@@ -244,7 +244,7 @@ class Monitor extends Controller
         }
     }
     
-    public function get_sensor_status_monitor($site)
+    private function get_sensor_status_monitor($site)
     {
         $monitor_statue = ($this->init_status_result());
         if ($monitor_statue == 0) {

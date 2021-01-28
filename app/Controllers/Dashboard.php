@@ -22,13 +22,13 @@ class Dashboard extends Controller
 										 "error" => array("event", "bg-color-red"));
 
 		$this->model = new DashboardModel();
-		$this->model_site = new MonitorModel();
+		$this->model_monitor = new MonitorModel();
 
 		$this->valid_src_type = array('sensor', 'server', 'report');
 		$this->request = \Config\Services::request();
 
 		$this->sensor_info = $this->model->get_sensor_info()->getResult();
-		$this->site_info = $this->model->get_site_info()->getResult();
+		
 	}
 
 	public function index()
@@ -38,7 +38,7 @@ class Dashboard extends Controller
 			'icon' => 'fa-home',
 			'title' => 'Dashboard',
 			'sub_title' => '',
-			'site_names' => $this->model_site->get_site_names(),
+			'site_names' => $this->model_monitor->get_site_name_all(),
 			'logs'   => $this->logs(),
 			'num_of_todos' => 0,
 			'todos' => $this->todos()

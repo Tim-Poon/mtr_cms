@@ -211,6 +211,52 @@
 			'data': site_map_geojson
 		});
 
+		// Source: beacon list
+        map.addSource('beacon_list', {
+            'type': 'geojson',
+            'data': {
+                "type": "FeatureCollection",
+                "features": []
+            }
+        });
+
+		// Layer: beacon dots
+        map.addLayer({
+            'id': 'beacon_list_layer',
+            'type': 'circle',
+            'source': 'beacon_list',
+            'paint': {
+                'circle-radius': 6,
+                'circle-color': ['get', 'color']
+            },
+            'layout': {
+                'visibility': 'visible'
+            },
+            // 'filter': ['==', '$type', 'Point']
+        });
+
+		// Layer: beacon info (name & coor)
+        map.addLayer({
+            'id': 'beacon_info_layer',
+            'type': 'symbol',
+            'source': 'beacon_list',
+            'layout': {
+                "text-field": ["format", ["get", "beacon_name"], {
+                    "text-color": '#424949',
+                },
+                "\n", {},
+                ["get", "beacon_coor"], {
+                    "text-color": '#F39C12',
+                },
+                "\n", {}],
+                'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                'text-size': 12,
+                'text-offset': [0, 0.3],
+                'text-anchor': 'top',  
+                'visibility': 'visible'
+            }
+        });
+
 		map.addLayer({
             'id': 'site_map_layer',
             'type': 'line',
@@ -224,7 +270,49 @@
                 'line-width': 2
             }
         });
+
+		site_beacons();
+		
 	});
+
+	function site_beacons(){
+		var beacon_list = {};
+		beacon_list['type'] = 'FeatureCollection';
+		beacon_list['features'] = new Array;   
+		<?php foreach($site_beacons as $beacon_item){ ?>
+			if (<?= $beacon_item->major % 10 ?> == floor_cur) {
+				color = '#85C1E9';
+				lnglat = xy2latlng(<?= $beacon_item->x?>, <?= $beacon_item->y?>);
+
+				var beacon_dot = {
+						"type": "Feature",
+						"properties": {    
+							'beacon_name': <?= $beacon_item->minor?>,
+							'beacon_coor': '[<?= number_format($beacon_item->x, 1).', '.number_format($beacon_item->y, 1)?>]',
+							'color': color,
+						},
+						"geometry": {
+							"type": "Point",
+							"coordinates": [lnglat['lng'], lnglat['lat']]
+						}
+				};
+				beacon_list['features'].push(beacon_dot);
+			}
+		<?php } ?>
+		map.getSource('beacon_list').setData(beacon_list);
+		}
+
+	function xy2latlng(x, y){
+        var mA = {x: dot_mapping[0]['x'], y: dot_mapping[0]['y']};
+        var mB = {x: dot_mapping[1]['x'], y: dot_mapping[1]['y']};
+        var pA = map.project([dot_mapping[0]['lng'], dot_mapping[0]['lat']]);
+        var pB = map.project([dot_mapping[1]['lng'], dot_mapping[1]['lat']]);
+
+        var cx = (x - mA.x) * (pB.x - pA.x) / (mB.x - mA.x) + pA.x;
+        var cy = (y - mA.y) * (pB.y - pA.y) / (mB.y - mA.y) + pA.y;
+
+        return map.unproject([cx, cy]);
+    }
 
 	var draw = new MapboxDraw({
 		displayControlsDefault: false,
@@ -257,9 +345,9 @@
 			if (<?= $site_ts_create_item->floor ?> == floor_cur) {
 				ts_create_floor += '<tr><td class="text-align-center">';
 				ts_create_floor += '<a href="<?= base_url('polygon/'.$site_info[0]['site_name'].'/'.$site_ts_create_item->ts_create)?>"><strong><?= date('m/d H:i', $site_ts_create_item->ts_create)?></strong></a>';
-				ts_create_floor += '<?php if ($key == 0) {?><span class="label label-warning">New!</span><?php }?></td>';
+				ts_create_floor += '<?php if ($key == 0) {?>&nbsp&nbsp<span class="label label-warning">New!</span><?php }?></td>';
 				ts_create_floor += '<td class="text-align-center">';
-				ts_create_floor += '<a href="<?= base_url('polygon/del/'.$site_info[0]['site'].'/'.$site_ts_create_item->ts_create)?>"><i class="fa fa-trash-o"></i></a>&nbsp';
+				ts_create_floor += '<a href="<?= base_url('polygon/del/'.$site_info[0]['site'].'/'.$site_ts_create_item->ts_create)?>"><i class="fa fa-trash-o"></i></a>&nbsp&nbsp&nbsp&nbsp';
 				ts_create_floor += '<a href="<?= base_url('polygon/export/'.$site_info[0]['site'].'/'.$site_ts_create_item->ts_create)?>"><i class="fa fa-download"></i></a></td></tr>';	
 			}
 		<?php } ?>
@@ -282,14 +370,12 @@
 			e.stopPropagation();
 			$('a').removeClass('active');
 			this.className = 'active';
-			//todo:
 			if (<?= $site_floor_item['floor'] ?> == floor_cur) {
 				draw.deleteAll().getAll();
 			}
-
 			floor_cur = <?= $site_floor_item['floor']?>;
-
-			get_floor_dot_mapping();
+			dot_mapping = <?= $site_info[$site_floor_item['floor'] - 1]['dot_mapping']?>;
+			site_beacons();
 			map.getSource('site_map').setData(<?= $site_floor_item['geojson']?>);
 			$('#ts_create_content').html(get_floor_ts_create());
 		};

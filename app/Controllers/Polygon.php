@@ -93,6 +93,7 @@ class Polygon extends Controller
 			'site_names' => $this->model_monitor->get_site_name_all(),
 
 			'site_info' => $site_info,
+			'site_beacons' => $this->model_monitor->get_site_beacons($site_info[0]['site']),
 
 			'site_polygons' => $site_polygons,
 			'site_ts_create' => $site_ts_create,
@@ -178,9 +179,11 @@ class Polygon extends Controller
 	{
 		// 1: [[-58, 7, 0], [-58, 10, 0], [-51, 10, 0], [-51, 7, 0]]
 		$vertex = [];
-		foreach ($xy as $xy_item) {
-			$vertex_item = [floatval(sprintf("%.1f", $xy_item[0])), floatval(sprintf("%.1f", $xy_item[1])), intval($floor)];
-			array_push($vertex, $vertex_item);
+		foreach ($xy as $idx => $xy_item) {
+			if ($idx < 4) {
+				$vertex_item = [floatval(sprintf("%.1f", $xy_item[0])), floatval(sprintf("%.1f", $xy_item[1])), intval($floor)];
+				array_push($vertex, $vertex_item);
+			}
 		}
 		return $poly.': '.json_encode($vertex);
 
@@ -194,6 +197,8 @@ class Polygon extends Controller
 
 	private function export_polygons($site, $ts_create)
 	{
+		// get floor
+		// $this->model->get_polygon($site_info[0]['site'], $ts_create);
 		$polygons = $this->model->get_polygon($site, $ts_create);
 		$vertex = '{';
 		foreach ($polygons as $polygon_item) {

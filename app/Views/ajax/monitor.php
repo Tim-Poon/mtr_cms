@@ -140,7 +140,6 @@
 
 <?php if ($site_info) { ?>
 <script type="text/javascript">
-    var coordinate = new Array();
     mapboxgl.accessToken = '<?=$mapbox_key?>';
     // map initial
     var alarm = 0;
@@ -236,33 +235,17 @@
             return true;
         }
     };
-
-    // todo: inster database
-    //A = beacon 10032 and B = beacon 10060
-
-    function get_floor_dot_mapping() {
-        <?php foreach ($site_info as $site_floor_item) { ?>
-            if (floor_cur == <?= $site_floor_item['floor'] ?>) {
-                dot_mapping = <?= $site_floor_item['dot_mapping'] ?>;
-            }
-        <?php } ?>
-    }
     
-
     function xy2latlng(x, y){
-        // floor_cur
-        var coorA = [dot_mapping[0]['lng'], dot_mapping[0]['lat']];
-        var coorB = [dot_mapping[1]['lng'], dot_mapping[1]['lat']];
         var mA = {x: dot_mapping[0]['x'], y: dot_mapping[0]['y']};
         var mB = {x: dot_mapping[1]['x'], y: dot_mapping[1]['y']};
-        
-        var pA = map.project(coorA);
-        var pB = map.project(coorB);
-        var lng;
-        var lat;
-        lng = (x - mA.x) * (pB.x - pA.x) / (mB.x - mA.x) + pA.x;
-        lat = (y - mA.y) * (pB.y - pA.y) / (mB.y - mA.y) + pA.y;
-        return {lng:lng, lat:lat}
+        var pA = map.project([dot_mapping[0]['lng'], dot_mapping[0]['lat']]);
+        var pB = map.project([dot_mapping[1]['lng'], dot_mapping[1]['lat']]);
+
+        var cx = (x - mA.x) * (pB.x - pA.x) / (mB.x - mA.x) + pA.x;
+        var cy = (y - mA.y) * (pB.y - pA.y) / (mB.y - mA.y) + pA.y;
+
+        return map.unproject([cx, cy]);
     }
     // map.on('mousedown', function (e) {
     //     document.getElementById('info').innerHTML = JSON.stringify(e.point) + '<br />' + JSON.stringify(e.lngLat);
@@ -429,7 +412,7 @@
                 $('a').removeClass('active');
                 this.className = 'active';
                 floor_cur = <?= $site_floor_item['floor']?>;
-                get_floor_dot_mapping();
+                dot_mapping = <?= $site_info[$site_floor_item['floor'] - 1]['dot_mapping']?>;
                 map.getSource('site_map').setData(<?= $site_floor_item['geojson']?>);
             };
             var layers = document.getElementById('menu');
@@ -447,44 +430,35 @@
                 beacon_list['type'] = 'FeatureCollection';
                 beacon_list['features'] = new Array;   
                 <?php foreach($site_beacons as $beacon_item){ ?>
-                    var temp = new Array();
-                    var obj;
-                    var tempLatLng = new Array();
-                    rssi = '';
-                    color = '#85C1E9';
-                    obj = xy2latlng(<?= $beacon_item->x?>, <?= $beacon_item->y?>);
-                    temp.push(obj.lng);
-                    temp.push(obj.lat);
-
-                    tempLatLng.push(map.unproject(temp)['lng']);
-                    tempLatLng.push(map.unproject(temp)['lat']);
-
-                    for(var beacon_name in lastest_beacon){
-                        if(<?= $beacon_item->major.$beacon_item->minor?> == beacon_name){
-                            rssi = lastest_beacon[beacon_name]['rssi'];
-                            color = '#2ECC71';
-                            break;
-                        }else{
-                            rssi = '';
-                        }  
-                    }
-
-                    var aaa = {
-                            "type": "Feature",
-                            "properties": {    
-                                'beacon_name': <?= $beacon_item->minor?>,
-                                'beacon_coor': '[<?= number_format($beacon_item->x, 1).', '.number_format($beacon_item->y, 1)?>]',
-                                'rssi': rssi,
-                                'color': color,
-                            },
-                            "geometry": {
-                                "type": "Point",
-                                "coordinates": tempLatLng
-                            }
-                    };
-                    coordinate.push(aaa);
                     if (<?= $beacon_item->major % 10 ?> == floor_cur) {
-                        beacon_list['features'].push(aaa);
+                        rssi = '';
+                        color = '#85C1E9';
+                        lnglat = xy2latlng(<?= $beacon_item->x?>, <?= $beacon_item->y?>);
+
+                        for(var beacon_name in lastest_beacon){
+                            if(<?= $beacon_item->major.$beacon_item->minor?> == beacon_name){
+                                rssi = lastest_beacon[beacon_name]['rssi'];
+                                color = '#2ECC71';
+                                break;
+                            }else{
+                                rssi = '';
+                            }  
+                        }
+
+                        var beacon_dot = {
+                                "type": "Feature",
+                                "properties": {    
+                                    'beacon_name': <?= $beacon_item->minor?>,
+                                    'beacon_coor': '[<?= number_format($beacon_item->x, 1).', '.number_format($beacon_item->y, 1)?>]',
+                                    'rssi': rssi,
+                                    'color': color,
+                                },
+                                "geometry": {
+                                    "type": "Point",
+                                    "coordinates": [lnglat['lng'], lnglat['lat']]
+                                }
+                        };
+                        beacon_list['features'].push(beacon_dot);
                     }
                 <?php } ?>
                 map.getSource('beacon_list').setData(beacon_list);
@@ -499,7 +473,6 @@
         function animateMarker() {
             $.get("get_sensor_status_mapbox/" + <?= $site_info[0]['site'] ?>, '', function(result){
                 if (result != 0) {
-                    // console.log('---request');
                     data_cur = JSON.parse(result);
                     if (data_pre == undefined) {
                         data_pre = data_cur;
@@ -513,10 +486,8 @@
                             // 1. 对比data_pre, 找到需要移动的点 todo
                             // alarm.push(data_cur[sensor]['alarm_flag']);
                             if (data_cur[sensor]['loc_z'] == floor_cur) {
-                                var coor_mapping_cur = xy2latlng(data_cur[sensor]['loc_x'], data_cur[sensor]['loc_y']);
-                                var coor_latlng_cur = map.unproject([coor_mapping_cur.lng, coor_mapping_cur.lat]);
-                                var coor_mapping_pre = xy2latlng(data_pre[sensor]['loc_x'], data_pre[sensor]['loc_y']);
-                                var coor_latlng_pre = map.unproject([coor_mapping_pre.lng, coor_mapping_pre.lat]);
+                                var coor_latlng_cur = xy2latlng(data_cur[sensor]['loc_x'], data_cur[sensor]['loc_y']);
+                                var coor_latlng_pre = xy2latlng(data_pre[sensor]['loc_x'], data_pre[sensor]['loc_y']);
 
                                 var stepper_info_temp_ = {
                                     'step_lng': (coor_latlng_cur['lng'] - coor_latlng_pre['lng']) / 60,

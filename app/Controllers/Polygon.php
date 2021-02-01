@@ -186,9 +186,10 @@ class Polygon extends Controller
 
 	}
 
-	private function del_polygon($site, $ts_create){
+	private function del_polygon($site, $ts_create)
+	{
 		$result = $this->model->del_polygon($site, $ts_create);
-		$this->view_polygon($site, '');
+		echo '<Strong style="color:red">Delete polygon:'.$site.' '.$ts_create.' SUCCESS!</Strong>';
 	}
 
 	private function export_polygons($site, $ts_create)
@@ -200,7 +201,7 @@ class Polygon extends Controller
 		}
 		$vertex = $vertex.'}';
 		
-		$file_name = 'Polygon_'.$site.'_'.$ts_create;
+		$file_name = 'Polygon_'.$site.'_'.$ts_create.'.txt';
 		// echo $vertex;
 
 		header('Content-Type: application/vnd.ms-excel;charset=UTF-8');

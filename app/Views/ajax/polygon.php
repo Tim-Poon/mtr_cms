@@ -83,7 +83,7 @@
 									<!-- <button type="submit" id="export_polygon" class="btn btn-success">Export</button> -->
 								</div>
 								<hr class="simple">
-								<form id="import-form" class="smart-form">
+								<!-- <form id="import-form" class="smart-form">
 									<fieldset>
 										<div class="row">
 											<section class="col col-9">
@@ -96,10 +96,10 @@
 											</section>
 										</div>
 									</fieldset>
-								</form>
-								<hr class="simple">
+								</form> -->
+								<!-- <hr class="simple"> -->
 								<h4>HISTORY</h4>
-								<table id="dt_basic" class="table table-striped table-bordered table-hover">
+								<table id="datatable_tscreate" class="table table-striped table-bordered table-hover">
 									<thead>
 										<tr>
 											<th class="text-align-center">TS CREATE</th>
@@ -152,8 +152,7 @@
 
 	function runDataTables() {
 
-		$('#dt_basic').dataTable({
-
+		var table = $('#datatable_tscreate').dataTable({
 			sPaginationType : "full_numbers",
 			dom : "<'dt-row dt-top-row'><'clear'>r<'dt-wrapper't><'dt-row dt-bottom-row'ip>",
 			order: [[0, "desc"]],
@@ -240,6 +239,9 @@
 	// map.on('draw.delete', updateArea);
 	// map.on('draw.update', updateArea);
 
+	// function updateArea(e) {
+	// 	var data = draw.getAll();
+	// }
 	<?php if($site_polygons){ ?>
 		<?php foreach($site_polygons as $site_polygon_item){?>
 			if (<?= $site_polygon_item->floor ?> == floor_cur) {
@@ -247,16 +249,13 @@
 			}
 	<?php }}?>
 
-	function updateArea(e) {
-		var data = draw.getAll();
-	}
 
 	function get_floor_ts_create() {
 		var ts_create_floor = '';
 		<?php foreach ($site_ts_create as $key=>$site_ts_create_item) {?>
 			if (<?= $site_ts_create_item->floor ?> == floor_cur) {
 				ts_create_floor += '<tr><td class="text-align-center">';
-				ts_create_floor += '<a href="<?= base_url('polygon/'.$site_info[0]['site_name'].'/'.$site_ts_create_item->ts_create)?>"><strong><?= $site_ts_create_item->ts_create?></strong></a>';
+				ts_create_floor += '<a href="<?= base_url('polygon/'.$site_info[0]['site_name'].'/'.$site_ts_create_item->ts_create)?>"><strong><?= date('m/d H:i', $site_ts_create_item->ts_create)?></strong></a>';
 				ts_create_floor += '<?php if ($key == 0) {?><span class="label label-warning">New!</span><?php }?></td>';
 				ts_create_floor += '<td class="text-align-center">';
 				ts_create_floor += '<a href="<?= base_url('polygon/del/'.$site_info[0]['site'].'/'.$site_ts_create_item->ts_create)?>"><i class="fa fa-trash-o"></i></a>&nbsp';
@@ -300,7 +299,6 @@
 	$('#save_polygon').click(function(){
 		// extract GeoJson from featureGroup
 		var data = draw.getAll();
-		// console.log(data);
 		if(data.features.length > 0){
 			for(var i = 0; i < data['features'].length; i++){
 				data['features'][i]['geometry']['xy'] = [[]];
@@ -309,9 +307,7 @@
 				});
 			}
 
-			// console.log(data);
 			$.post( "<?=base_url('polygon/save/'.$site_info[0]['site'])?>/" + floor_cur, {raw_polygons: data}).done(function(data) {
-				// alert("Save Successfully!");
 				link = "<?= base_url('polygon/'.$site_info[0]['site_name'])?>" + "/" + data;
 				window.location.href= link;
 			});
@@ -326,7 +322,6 @@
             if(data == '0'){
                 alert('error format, please fill again.');
 			}else{
-				// alert("Save Successfully!");
 				link = "<?= base_url('polygon/'.$site_item->site.'/'.$site_item->floor)?>" + "/" + data;
 				window.location.href= link;
             }

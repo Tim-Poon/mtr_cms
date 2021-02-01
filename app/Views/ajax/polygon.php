@@ -181,10 +181,10 @@
             }
         <?php } ?>
     }
-    
 
-    function xy2latlng(x, y){
+	function latlng2xy(lng, lat){
         // floor_cur
+		var pixel_mapbox = map.project([lng, lat]);
         var coorA = [dot_mapping[0]['lng'], dot_mapping[0]['lat']];
         var coorB = [dot_mapping[1]['lng'], dot_mapping[1]['lat']];
         var mA = {x: dot_mapping[0]['x'], y: dot_mapping[0]['y']};
@@ -192,11 +192,10 @@
         
         var pA = map.project(coorA);
         var pB = map.project(coorB);
-        var lng;
-        var lat;
-        lng = (x - mA.x) * (pB.x - pA.x) / (mB.x - mA.x) + pA.x;
-        lat = (y - mA.y) * (pB.y - pA.y) / (mB.y - mA.y) + pA.y;
-        return {lng:lng, lat:lat}
+
+		x = (pixel_mapbox.x - pA.x) * (mB.x - mA.x) / (pB.x - pA.x) + mA.x;
+		y = (pixel_mapbox.y - pA.y) * (mB.y - mA.y) / (pB.y - pA.y) + mA.y;
+        return {x:x, y:y}
 	}
 	
 	var site_map_geojson;

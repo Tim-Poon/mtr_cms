@@ -153,12 +153,14 @@ class Polygon extends Controller
 			$ts_create = $this->get_timestamp();
 			foreach ($raw_polygons['raw_polygons']['features'] as $polygon_item) {
 				if (count($polygon_item['geometry']['coordinates'][0]) == (4 + 1)) {
+					//todo vertex
 					$polygon_data = 
 					[
 						'site' => $site,
 						'floor' => $floor,
 						'poly' => $poly,
 						'geojson' => str_replace('"', '', json_encode($polygon_item['geometry']['coordinates'])),
+						'vertex' => $this->xy2vertex(($polygon_item['geometry']['xy'][0]), $poly, $floor),
 						'ts_create' => $ts_create,
 						'flag' => 1
 					];
@@ -172,6 +174,18 @@ class Polygon extends Controller
 		}	
 	}
 
+	private function xy2vertex($xy, $poly, $floor)
+	{
+		// 1: [[-58, 7, 0], [-58, 10, 0], [-51, 10, 0], [-51, 7, 0]]
+		$vertex = [];
+		foreach ($xy as $xy_item) {
+			$vertex_item = [floatval(sprintf("%.1f", $xy_item[0])), floatval(sprintf("%.1f", $xy_item[1])), intval($floor)];
+			array_push($vertex, $vertex_item);
+		}
+		return $poly.': '.json_encode($vertex);
+
+	}
+
 	private function del_polygon($site, $ts_create){
 		$result = $this->model->del_polygon($site, $ts_create);
 		$this->view_polygon($site, '');
@@ -179,12 +193,21 @@ class Polygon extends Controller
 
 	private function export_polygons($site, $ts_create)
 	{
-		$result = $this->model->get_polygon($site, $ts_create);
+		$polygons = $this->model->get_polygon($site, $ts_create);
+		$vertex = '{';
+		foreach ($polygons as $polygon_item) {
+			$vertex = $vertex.$polygon_item->vertex.',';
+		}
+		$vertex = $vertex.'}';
+		
+		$file_name = 'Polygon_'.$site.'_'.$ts_create;
+		// echo $vertex;
+
 		header('Content-Type: application/vnd.ms-excel;charset=UTF-8');
 		header('Content-Type: application/force-download');
-		header('Content-Disposition: attachment;filename=polygon.txt');
+		header('Content-Disposition: attachment;filename='.$file_name);
 		$fp = fopen('php://output', 'w');
-		fwrite($fp, json_encode($result));
+		fwrite($fp, json_encode($vertex));
 		fclose($fp);
 	}
 

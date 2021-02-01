@@ -195,7 +195,7 @@
 
 		x = (pixel_mapbox.x - pA.x) * (mB.x - mA.x) / (pB.x - pA.x) + mA.x;
 		y = (pixel_mapbox.y - pA.y) * (mB.y - mA.y) / (pB.y - pA.y) + mA.y;
-        return {x:x, y:y}
+        return [x,y]
 	}
 	
 	var site_map_geojson;
@@ -248,7 +248,6 @@
 	<?php }}?>
 
 	function updateArea(e) {
-		console.log('a');
 		var data = draw.getAll();
 	}
 
@@ -290,14 +289,9 @@
 
 			floor_cur = <?= $site_floor_item['floor']?>;
 
-
 			get_floor_dot_mapping();
 			map.getSource('site_map').setData(<?= $site_floor_item['geojson']?>);
 			$('#ts_create_content').html(get_floor_ts_create());
-
-
-
-			
 		};
 		var layers = document.getElementById('menu');
 		layers.appendChild(link);
@@ -306,12 +300,16 @@
 	$('#save_polygon').click(function(){
 		// extract GeoJson from featureGroup
 		var data = draw.getAll();
+		// console.log(data);
 		if(data.features.length > 0){
-			// Stringify the GeoJson
-			var convertedData = 'text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data))
-			// download polygon
-			// document.getElementById('export').setAttribute('href', 'data:' + convertedData);
-			// document.getElementById('export').setAttribute('download', 'data.geojson');
+			for(var i = 0; i < data['features'].length; i++){
+				data['features'][i]['geometry']['xy'] = [[]];
+				data['features'][i]['geometry']['coordinates'][0].forEach(lnglat => {
+					data['features'][i]['geometry']['xy'][0].push(latlng2xy(lnglat[0], lnglat[1]));
+				});
+			}
+
+			// console.log(data);
 			$.post( "<?=base_url('polygon/save/'.$site_info[0]['site'])?>/" + floor_cur, {raw_polygons: data}).done(function(data) {
 				// alert("Save Successfully!");
 				link = "<?= base_url('polygon/'.$site_info[0]['site_name'])?>" + "/" + data;

@@ -33,7 +33,6 @@ class PolygonModel extends Model
         // get selected ts_create polygons
         $builder = $this->db->table('polygon');
         $builder->where('site', $site);
-        
         $builder->where('ts_create', $ts_create);
         $query = $builder->get()->getResult();
         return $query;

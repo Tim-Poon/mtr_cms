@@ -52,7 +52,7 @@ class Polygon extends Controller
 
 	private function index()
 	{	
-		$site_info = $this->model_monitor->get_site_info_by_name($site_name);
+		$site_info = 0;
 		$data = 
 		[
 			'icon' => 'fa-map-marker',

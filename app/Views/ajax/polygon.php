@@ -160,6 +160,7 @@
 	}
 </script>
 
+<?php if ($site_info){?>
 <script>
 	mapboxgl.accessToken = '<?=$mapbox_key?>';
 	var dot_mapping = <?= $site_info[0]['dot_mapping']?>;
@@ -329,3 +330,4 @@
 		return false;
 	});
 </script>
+<?php } ?>

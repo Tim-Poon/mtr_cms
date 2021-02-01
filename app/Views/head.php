@@ -47,7 +47,8 @@
 
                     <!-- PLACE YOUR LOGO HERE -->
                     <span id="logo">
-                        <img src="<?= base_url('/public/img/logo.png')?>" alt="SmartAdmin">
+						<!-- <img src="" alt="SmartAdmin"> -->
+						<Strong>MTR CMS (beta)</strong>
                     </span>
                     <!-- END LOGO PLACEHOLDER -->
 
@@ -70,7 +71,7 @@
 				<!-- logout button -->
 				<div id="logout" class="btn-header transparent pull-right">
 					<span>
-						<a href="login.html" title="Sign Out"><i class="fa fa-sign-out"></i></a>
+						<a href="#" title="Sign Out"><i class="fa fa-sign-out"></i></a>
 					</span>
 				</div>
 				<!-- end logout button -->
@@ -89,8 +90,8 @@
 			<div class="login-info">
 				<span>
 					<!-- User image size is adjusted inside CSS, it should stay as it --> 
-					<img src="<?= base_url('/public/img/avatars/sunny.png')?>" alt="me" class="online" />	
-					<a href="javascript:void(0);" id="show-shortcut">Welcome: Admin <i class="fa fa-angle-down"></i></a>
+					<!-- <img src="" alt="me" class="online" /> -->
+					<a href="javascript:void(0);">Welcome: Admin</a>
 				</span>
 			</div>
 			<!-- end user info -->
@@ -113,8 +114,8 @@
 					<li><a href="#"><i class="fa fa-lg fa-fw fa-gear"></i>  <span class="menu-item-parent">Tools</span></a>
 						<ul>
 							<li><a href="<?=base_url('polygon')?>">Polygon</a></li>
-							<li><a href="<?=base_url('survey')?>">Survey</a></li>
-							<li><a href="<?=base_url('register')?>">Register</a></li>
+							<li><a href="#">Survey</a></li>
+							<li><a href="#">Register</a></li>
 						</ul>
 					</li>
 					

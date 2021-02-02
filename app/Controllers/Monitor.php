@@ -82,26 +82,10 @@ class Monitor extends Controller
 		}
     }
 
-    // public function index()
-    // {
-        // todo: show site's beacon table with vm
-        // todo: show site's polygon with vm
-        // todo: show site's configuration with vm
-        // $data = 
-        // [  
-        //     'icon' => 'fa-desktop',
-        //     'title' => 'Monitor',
-        //     'sub_title' => '',
-        //     'site_info' => $this->site_info,
-        //     'site_all' => $this->model->get_site_all(),
-        //     'mapbox_key' => config('ApiServer_')->mapbox['key'],
-
-        // ];
-        // echo view('head', $data);
-		// echo view('js');
-		// echo view('ajax/site', $data);
-		// echo view('foot');
-    // }
+    public function index()
+    {
+        return redirect()->to(base_url()); 
+    }
 
     public function monitor($site_name)
     {

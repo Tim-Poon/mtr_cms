@@ -97,8 +97,8 @@
 			<!-- end user info -->
 			<nav>
 				<ul>
-					<li class=""><a href="<?=base_url()?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i>  <span class="menu-item-parent">Dashboard</span></a></li>
-					<li><a href="<?=base_url('Maintenance')?>">
+					<li class=""><a href="<?=base_url()?>" title="dashboard"><i class="fa fa-lg fa-fw fa-home"></i>  <span class="menu-item-parent">Dashboard</span></a></li>
+					<li><a href="<?=base_url('maintenance')?>">
 						<i class="fa fa-lg fa-fw fa-check-circle-o"></i>  
 						<span class="menu-item-parent">Maintenance</span>
 						<span class="badge pull-right inbox-badge"><?= $num_of_todos ?></span></a>
@@ -107,7 +107,7 @@
 					<li class=""><a href="#" title="Monitor"><i class="fa fa-lg fa-fw fa-desktop"></i>  <span class="menu-item-parent">Monitor</span></a>
 						<ul>
 							<?php foreach($site_names as $site_name){?>
-							<li><a href="<?=base_url('Monitor').'/'.$site_name['site_name']?>"><?= $site_name['site_name']?></a></li>
+							<li><a href="<?=base_url('monitor').'/'.$site_name['site_name']?>"><?= $site_name['site_name']?></a></li>
 							<?php } ?>
 						</ul>
 					</li>

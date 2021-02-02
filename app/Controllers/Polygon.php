@@ -20,12 +20,12 @@ class Polygon extends Controller
 			$floor = $params[1];
 			$this->save_polygons($site, $floor);
 		}
-		elseif($method === 'import')
-		{
-			$site = $params[0];
-			$floor = $params[1];
-			$this->import_polygons($site, $floor);
-		}
+		// elseif($method === 'import')
+		// {
+		// 	$site = $params[0];
+		// 	$floor = $params[1];
+		// 	$this->import_polygons($site, $floor);
+		// }
 		elseif($method === 'export')
 		{
 			$site = $params[0];
@@ -77,10 +77,8 @@ class Polygon extends Controller
 		$site_info = $this->model_monitor->get_site_info_by_name($site_name);
 
 		if($ts_create){
-			// $site_polygons = $this->model->get_polygon($site, $site_info[0]['floor'], $ts_create);
 			$site_polygons = $this->model->get_polygon($site_info[0]['site'], $ts_create);
 		}else{
-			// $site_polygons = $this->model->get_lastest_polygon($site, $floor);
 			$site_polygons = 0;
 		}
 		$site_ts_create = $this->model->get_ts_create($site_info[0]['site']);
@@ -100,49 +98,48 @@ class Polygon extends Controller
 			'mapbox_key' => config('ApiServer_')->mapbox['key'],
 		];
 
-		// print_r($site_info);
 		echo view('head', $data);
 		echo view('js');
 		echo view('ajax/polygon', $data);
 		echo view('foot');
 	}
 
-	private function import_polygons($site, $floor)
-	{
-		$import_polygons = $this->request->getPost(['import']);
-		$raw_polygons = json_decode($import_polygons['import']);
-		if($raw_polygons){
-			$poly = 1;
-			$ts_create = $this->get_timestamp();
-			foreach($raw_polygons as $raw_polygon_item){
-				if(count($raw_polygon_item) == 4){
-					foreach($raw_polygon_item as $raw_polygon_item_coor){
-						//conversion formula 
-						//$raw_polygon_item_coor[0] == longitude
-						//$raw_polygon_item_coor[1] == latitude
-					}
-					array_push($raw_polygon_item, $raw_polygon_item[0]);
-					$polygon_data = 
-					[
-						'site' => $site,
-						'floor' => $floor,
-						'poly' => $poly,
-						'geojson' => '['.json_encode($raw_polygon_item).']',
-						'ts_create' => $ts_create,
-						'flag' => 1
-					];
-					$this->model->set_polygons($polygon_data);
-		 			$poly += 1;
-					// print_r($polygon_data);				
-				}else{
-					echo 0;
-				}				
-			}
-			echo $ts_create;
-		}else{
-			echo 0;
-		}	
-	}
+	// private function import_polygons($site, $floor)
+	// {
+	// 	$import_polygons = $this->request->getPost(['import']);
+	// 	$raw_polygons = json_decode($import_polygons['import']);
+	// 	if($raw_polygons){
+	// 		$poly = 1;
+	// 		$ts_create = $this->get_timestamp();
+	// 		foreach($raw_polygons as $raw_polygon_item){
+	// 			if(count($raw_polygon_item) == 4){
+	// 				foreach($raw_polygon_item as $raw_polygon_item_coor){
+	// 					//conversion formula 
+	// 					//$raw_polygon_item_coor[0] == longitude
+	// 					//$raw_polygon_item_coor[1] == latitude
+	// 				}
+	// 				array_push($raw_polygon_item, $raw_polygon_item[0]);
+	// 				$polygon_data = 
+	// 				[
+	// 					'site' => $site,
+	// 					'floor' => $floor,
+	// 					'poly' => $poly,
+	// 					'geojson' => '['.json_encode($raw_polygon_item).']',
+	// 					'ts_create' => $ts_create,
+	// 					'flag' => 1
+	// 				];
+	// 				$this->model->set_polygons($polygon_data);
+	// 	 			$poly += 1;
+	// 				// print_r($polygon_data);				
+	// 			}else{
+	// 				echo 0;
+	// 			}				
+	// 		}
+	// 		echo $ts_create;
+	// 	}else{
+	// 		echo 0;
+	// 	}	
+	// }
 
 	private function save_polygons($site, $floor)
 	{
@@ -177,7 +174,6 @@ class Polygon extends Controller
 
 	private function xy2vertex($xy, $poly, $floor)
 	{
-		// 1: [[-58, 7, 0], [-58, 10, 0], [-51, 10, 0], [-51, 7, 0]]
 		$vertex = [];
 		foreach ($xy as $idx => $xy_item) {
 			if ($idx < 4) {
@@ -186,7 +182,6 @@ class Polygon extends Controller
 			}
 		}
 		return $poly.': '.json_encode($vertex);
-
 	}
 
 	private function del_polygon($site, $ts_create)
@@ -198,7 +193,6 @@ class Polygon extends Controller
 	private function export_polygons($site, $ts_create)
 	{
 		// get floor
-		// $this->model->get_polygon($site_info[0]['site'], $ts_create);
 		$polygons = $this->model->get_polygon($site, $ts_create);
 		$vertex = '{';
 		foreach ($polygons as $polygon_item) {

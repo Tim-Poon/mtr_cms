@@ -17,21 +17,20 @@ class Maintenance extends Controller
 
     public function index()
     {
-        # page data
         $data = 
         [
             'icon' => 'fa-check-circle-o',
             'title' => 'Todos',
             'sub_title' => '',
             'site_names' => $this->model_monitor->get_site_name_all(),
+
+            'tabletodos' => $this->tabletodos(),
         ];
 
         # echo todos page head
         echo view('head', $data);
         echo view('js');
-
-        $this->set_data();
-
+        echo view('ajax/todos', $data);
         echo view('foot');
     }
 

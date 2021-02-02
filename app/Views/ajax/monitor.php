@@ -72,7 +72,7 @@
                             <section class="col col-6">
                                 <div class="note note-success">Beacon</div>
                                 <div class="col col-3">
-                                    <label class="toggle state-success"><input type="checkbox" name="checkbox-toggle" id="Status" onclick="OncheckBox(this)" checked><i data-swchon-text="ON" data-swchoff-text="OFF"></i>Status</label>
+                                    <label class="toggle state-success"><input type="checkbox" name="checkbox-toggle" id="Status" onclick="OncheckBox(this)" ><i data-swchon-text="ON" data-swchoff-text="OFF"></i>Status</label>
                                 </div>
                                 <div class="col col-3">
                                     <label class="toggle state-success"><input type="checkbox" name="checkbox-toggle" id="Rssi" onclick="OncheckBox(this)"><i data-swchon-text="ON" data-swchoff-text="OFF"></i>Rssi</label>
@@ -411,12 +411,13 @@
                 e.stopPropagation();
                 $('a').removeClass('active');
                 this.className = 'active';
+                // check floor cur
                 floor_cur = <?= $site_floor_item['floor']?>;
                 dot_mapping = <?= $site_info[$site_floor_item['floor'] - 1]['dot_mapping']?>;
+                // set data
                 map.getSource('site_map').setData(<?= $site_floor_item['geojson']?>);
             };
-            var layers = document.getElementById('menu');
-            layers.appendChild(link);
+            document.getElementById('menu').appendChild(link);
         <?php } ?>
 
         // flash beacon status

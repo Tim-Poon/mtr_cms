@@ -102,7 +102,7 @@
 								<table id="datatable_tscreate" class="table table-striped table-bordered table-hover">
 									<thead>
 										<tr>
-											<th class="text-align-center">TS CREATE</th>
+											<th class="text-align-center">Polygons <?= $site_info[0]['site_name']?></th>
 											<th class="text-align-center"></th>
 										</tr>
 									</thead>
@@ -174,30 +174,6 @@
         bearing: <?= $site_info[0]['mapbox_bearing']?> 
 	});
 
-	function get_floor_dot_mapping() {
-        <?php foreach ($site_info as $site_floor_item) { ?>
-            if (floor_cur == <?= $site_floor_item['floor'] ?>) {
-                dot_mapping = <?= $site_floor_item['dot_mapping'] ?>;
-            }
-        <?php } ?>
-    }
-
-	function latlng2xy(lng, lat){
-        // floor_cur
-		var pixel_mapbox = map.project([lng, lat]);
-        var coorA = [dot_mapping[0]['lng'], dot_mapping[0]['lat']];
-        var coorB = [dot_mapping[1]['lng'], dot_mapping[1]['lat']];
-        var mA = {x: dot_mapping[0]['x'], y: dot_mapping[0]['y']};
-        var mB = {x: dot_mapping[1]['x'], y: dot_mapping[1]['y']};
-        
-        var pA = map.project(coorA);
-        var pB = map.project(coorB);
-
-		x = (pixel_mapbox.x - pA.x) * (mB.x - mA.x) / (pB.x - pA.x) + mA.x;
-		y = (pixel_mapbox.y - pA.y) * (mB.y - mA.y) / (pB.y - pA.y) + mA.y;
-        return [x,y]
-	}
-	
 	var site_map_geojson;
 	<?php foreach ($site_info as $site_info_item) { ?>
 		if (<?= $site_info_item['floor']?> == floor_cur) {
@@ -272,7 +248,6 @@
         });
 
 		site_beacons();
-		
 	});
 
 	function site_beacons(){
@@ -300,7 +275,21 @@
 			}
 		<?php } ?>
 		map.getSource('beacon_list').setData(beacon_list);
-		}
+	}
+
+	function latlng2xy(lng, lat){
+        // floor_cur
+		var pixel_mapbox = map.project([lng, lat]);
+        var mA = {x: dot_mapping[0]['x'], y: dot_mapping[0]['y']};
+        var mB = {x: dot_mapping[1]['x'], y: dot_mapping[1]['y']};
+        var pA = map.project([dot_mapping[0]['lng'], dot_mapping[0]['lat']]);
+        var pB = map.project([dot_mapping[1]['lng'], dot_mapping[1]['lat']]);
+
+		x = (pixel_mapbox.x - pA.x) * (mB.x - mA.x) / (pB.x - pA.x) + mA.x;
+		y = (pixel_mapbox.y - pA.y) * (mB.y - mA.y) / (pB.y - pA.y) + mA.y;
+
+		return [x, y]
+	}
 
 	function xy2latlng(x, y){
         var mA = {x: dot_mapping[0]['x'], y: dot_mapping[0]['y']};
@@ -338,7 +327,6 @@
 			}
 	<?php }}?>
 
-
 	function get_floor_ts_create() {
 		var ts_create_floor = '';
 		<?php foreach ($site_ts_create as $key=>$site_ts_create_item) {?>
@@ -373,14 +361,15 @@
 			if (<?= $site_floor_item['floor'] ?> == floor_cur) {
 				draw.deleteAll().getAll();
 			}
+			// check floor cur
 			floor_cur = <?= $site_floor_item['floor']?>;
 			dot_mapping = <?= $site_info[$site_floor_item['floor'] - 1]['dot_mapping']?>;
 			site_beacons();
+			// set data
 			map.getSource('site_map').setData(<?= $site_floor_item['geojson']?>);
 			$('#ts_create_content').html(get_floor_ts_create());
 		};
-		var layers = document.getElementById('menu');
-		layers.appendChild(link);
+		document.getElementById('menu').appendChild(link);
 	<?php } ?>
 
 	$('#save_polygon').click(function(){

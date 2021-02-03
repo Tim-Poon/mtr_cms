@@ -68,34 +68,26 @@
 
 <script type="text/javascript">
 
-	loadDataTableScripts();
-	function loadDataTableScripts() {
+	loadScript("<?= base_url('public/js/plugin/datatables/datatables.min.js')?>", dt_2);
 
-		loadScript("public/js/plugin/datatables/datatables.min.js", dt_2);
+	function dt_2() {
+		loadScript("<?= base_url('public/js/plugin/datatables/ColReorder-1.5.2/js/dataTables.colReorder.min.js')?>", dt_3);
+	}
 
-		function dt_2() {
-			loadScript("public/js/plugin/datatables/ColReorder-1.5.2/js/dataTables.colReorder.min.js", dt_3);
-		}
+	function dt_3() {
+		loadScript("<?= base_url('public/js/plugin/datatables/FixedColumns-3.3.1/js/dataTables.fixedColumns.min.js')?>", dt_4);
+	}
 
-		function dt_3() {
-			loadScript("public/js/plugin/datatables/FixedColumns-3.3.1/js/dataTables.fixedColumns.min.js", dt_4);
-		}
+	function dt_4() {
+		loadScript("<?= base_url('public/js/plugin/datatables/dataTables.colVis.js')?>", dt_6);
+	}
 
-		function dt_4() {
-			loadScript("public/js/plugin/datatables/dataTables.colVis.js", dt_6);
-		}
+	function dt_6() {
+		loadScript("<?= base_url('public/js/plugin/datatables/dataTables.tableTools.min.js')?>", dt_7);
+	}
 
-		// function dt_5() {
-		// 	loadScript("public/js/plugin/datatables/ZeroClipboard.js", dt_6);
-		// }
-
-		function dt_6() {
-			loadScript("public/js/plugin/datatables/dataTables.tableTools.min.js", dt_7);
-		}
-
-		function dt_7() {
-			loadScript("public/js/plugin/datatables/DataTables-1.10.22/js/dataTables.bootstrap4.min.js", runDataTables);
-		}
+	function dt_7() {
+		loadScript("<?= base_url('public/js/plugin/datatables/DataTables-1.10.22/js/dataTables.bootstrap4.min.js')?>", runDataTables);
 	}
 
 	function runDataTables() {

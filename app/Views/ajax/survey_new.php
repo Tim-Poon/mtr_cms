@@ -88,5 +88,4 @@
 		});
 		return false;
 	});
-
 </script>

@@ -1,7 +1,7 @@
 <?php namespace App\Controllers;
 
 use App\Models\SurveyModel;
-use App\Models\SiteModel;
+use App\Models\MonitorModel;
 use CodeIgniter\Controller;
 use CodeIgniter\I18n\Time;
 
@@ -11,8 +11,10 @@ class Survey extends Controller
     {
 		// parent::__construct();
 		$this->model = new SurveyModel();
-		$this->model_site = new SiteModel();
+		$this->model_monitor = new MonitorModel();
 		$this->source = array('survey_beacon', 'survey_wifi', 'survey_imu', 'survey_uwb_loc', 'survey_uwb_dist');
+
+		$this->model_monitor = new MonitorModel();
 	}
 
 	public function _remap($method, ...$params)
@@ -44,7 +46,7 @@ class Survey extends Controller
 			'icon' => 'fa-truck',
 			'title' => 'Survey',
 			'sub_title' => '',
-			'site_names' => $this->model_site->get_site_names(),
+			'site_names' => $this->model_monitor->get_site_name_all(),
 			'event_all' => $event_all,
 		];
         echo view('head', $data);
@@ -61,7 +63,7 @@ class Survey extends Controller
 			'icon' => 'fa-truck',
 			'title' => 'Survey',
 			'sub_title' => '> New Event',
-			'site_names' => $this->model_site->get_site_names(),
+			'site_names' => $this->model_monitor->get_site_name_all(),
 			'date' => $time->toLocalizedString('yyyy-MM-dd'),
 			'ts'   => $time->getTimestamp(),
 		];
@@ -90,7 +92,7 @@ class Survey extends Controller
 					'icon' => 'fa-truck',
 					'title' => 'Survey',
 					'sub_title' => '> Event #'.$event,
-					'site_names' => $this->model_site->get_site_names(),
+					'site_names' => $this->model_monitor->get_site_name_all(),
 					'event_item' => $event_item[0],
 					'data_beacon' => $event_beacon_data,
 					'data_wifi' => $event_wifi_data,

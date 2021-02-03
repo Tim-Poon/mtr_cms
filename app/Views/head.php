@@ -13,10 +13,10 @@
 		<meta name="MobileOptimized" content="320">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 		
-		<!-- Basic Styles -->
+		<!-- Basic Styles -->	
 		<link rel="stylesheet" type="text/css" media="screen" href="<?= base_url('/public/css/bootstrap.min.css')?>">	
 		<link rel="stylesheet" type="text/css" media="screen" href="<?= base_url('/public/css/font-awesome.min.css')?>">
-
+	
 		<!-- SmartAdmin Styles : Please note (smartadmin-production.css) was created using LESS variables -->
 		<link rel="stylesheet" type="text/css" media="screen" href="<?= base_url('/public/css/smartadmin-production.css')?>">
 		<link rel="stylesheet" type="text/css" media="screen" href="<?= base_url('/public/css/smartadmin-skins.css')?>">	
@@ -37,7 +37,7 @@
 		<!-- MAPBOX -->
 		<link href="<?= base_url('/public/css/mapbox/mapbox-gl.css')?>" rel="stylesheet" />
 		<link href="<?= base_url('/public/css/mapbox/mapbox-gl-app.css')?>" rel="stylesheet" />
-	
+		<link rel="stylesheet" type="text/css" href="<?=base_url('public/css/DataTables-1.10.22/css/dataTables.bootstrap.min.css')?>"/>
 	</head>
 	<body class=""> <!-- possible classes: minified, fixed-ribbon, fixed-header, fixed-width-->
 		
@@ -114,8 +114,8 @@
 					<li><a href="#"><i class="fa fa-lg fa-fw fa-gear"></i>  <span class="menu-item-parent">Tools</span></a>
 						<ul>
 							<li><a href="<?=base_url('polygon')?>">Polygon</a></li>
-							<li><a href="#">Survey</a></li>
-							<li><a href="#">Register</a></li>
+							<li><a href="<?=base_url('survey')?>">Survey</a></li>
+							<li><a href="<?=base_url('register')?>">Register</a></li>
 						</ul>
 					</li>
 					

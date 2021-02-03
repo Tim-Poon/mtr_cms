@@ -38,7 +38,7 @@
 							<thead>
 								<tr>
 									<th class="text-align-center" width='15%'>Site</th>
-									<th class="text-align-center" width='5%'>ID</th>
+									<th class="text-align-center" width='5%'>Label</th>
 									<th class="text-align-center" width='30%'>Sensor</th>
 									<th class="text-align-center" width='35%'>HCI</th>
 									<th class="text-align-center" width='15%'>VM</th>

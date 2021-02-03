@@ -10,6 +10,8 @@ class Monitor extends Controller
         // parent::__construct();
         $this->model = new MonitorModel();
 
+        $this->hci_color = ['bg-color-orange', 'bg-color-blueLight', 'bg-color-yellow', 'bg-color-blue', 'bg-color-greenLight', 'bg-color-redLight'];
+
         $this->beacon_status = 
         [
             'beacon_name' => '',
@@ -23,9 +25,10 @@ class Monitor extends Controller
         $this->sensor_status = 
         [
             'sensor' => '',
-            'label' => 'unregistered',
+            'register' => 0,
+            'label' => NULL,
             'site' => '',
-            'site_name' => '',
+            'site_name' => NULL,
             'alarm_flag' => 0,
             'hci_status' => '',
             'heartbeat_ts' => '',
@@ -127,6 +130,7 @@ class Monitor extends Controller
                         // registered!
                         $sensor_status['label'] = $sensor_info_item->label;
                         $sensor_status['site'] = $sensor_info_item->site;
+                        $sensor_status['register'] = 1;
                         break;
                     }
                 }
@@ -139,13 +143,13 @@ class Monitor extends Controller
                     }
                 }
                 // load hci data
-                foreach ($sensor_each->hci_status as $hci_status_item) {
+                foreach ($sensor_each->hci_status as $idx => $hci_status_item) {
 					if($hci_status_item){
-						$hci_lable = 'success';
+						$hci_lable = $this->hci_color[$idx];
 					}else {
 						$hci_lable = 'default';
 					}
-					$sensor_status['hci_status'] = $sensor_status['hci_status']."<span class=\"label label-$hci_lable\">$hci_status_item</span> ";
+					$sensor_status['hci_status'] = $sensor_status['hci_status']."<span class=\"label $hci_lable\">&nbsp&nbsp</span> ";
 				}
                 // load realtime data
                 try {
@@ -218,8 +222,17 @@ class Monitor extends Controller
             return 0;
         }
         foreach ($dashboard_statue as $sensor_status) {
+            $register_site_url = base_url().'/'.'register/'.$sensor_status['sensor'];
+            $register_site_name = '<div style="color:#E74C3C">unregister</div>';
+            if ($sensor_status['register']){
+                $register_site_url = base_url().'/'.'monitor/'.$sensor_status['site_name'];
+                $register_site_name = $sensor_status['site_name'];
+                if ($sensor_status['site_name'] == NULL) {
+                    $register_site_name = '<div style="color:#F39C12">null</div>';
+                } 
+            }
             echo "<tr>
-            <td class=\"text-align-center\"><a href=\"Monitor/".$sensor_status['site_name']."\">".$sensor_status['site_name']."</a></td>
+            <td class=\"text-align-center\"><Strong><a href=\"".$register_site_url."\">".$register_site_name."</a></Strong></td>
             <td class=\"text-align-center\">".$sensor_status['label']."</td>
             <td class=\"text-align-center\">".$sensor_status['sensor']."</td>
             <td class=\"text-align-center\">".$sensor_status['hci_status']."</td>

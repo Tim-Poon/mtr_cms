@@ -72,25 +72,19 @@
                             <section class="col col-6">
                                 <div class="note note-success">Beacon</div>
                                 <div class="col col-3">
-                                    <label class="toggle state-success"><input type="checkbox" name="checkbox-toggle" id="Status" onclick="OncheckBox(this)" ><i data-swchon-text="ON" data-swchoff-text="OFF"></i>Status</label>
+                                    <label class="toggle state-info"><input type="checkbox" name="checkbox-toggle" id="Status" onclick="OncheckBox(this)" ><i data-swchon-text="ON" data-swchoff-text="OFF"></i>Dots</label>
                                 </div>
                                 <div class="col col-3">
-                                    <label class="toggle state-success"><input type="checkbox" name="checkbox-toggle" id="Rssi" onclick="OncheckBox(this)"><i data-swchon-text="ON" data-swchoff-text="OFF"></i>Rssi</label>
+                                    <label class="toggle state-info"><input type="checkbox" name="checkbox-toggle" id="Name" onclick="OncheckBox(this)"><i data-swchon-text="ON" data-swchoff-text="OFF"></i>Name</label>
                                 </div>
                                 <div class="col col-3">
-                                    <label class="toggle state-success"><input type="checkbox" name="checkbox-toggle" id="Name" onclick="OncheckBox(this)"><i data-swchon-text="ON" data-swchoff-text="OFF"></i>Name</label>
+                                    <label class="toggle state-info"><input type="checkbox" name="checkbox-toggle" id="Rssi" onclick="OncheckBox(this)"><i data-swchon-text="ON" data-swchoff-text="OFF"></i>RSSI</label>
                                 </div>
                             </section>
                             <section class="col col-6">
-                                <div class="note note-success">Filter</div>
+                                <div class="note note-success">Switcher</div>
                                 <div class="col col-3">
-                                    <label class="toggle state-success"><input type="checkbox" name="checkbox-toggle"><i data-swchon-text="ON" data-swchoff-text="OFF"></i>Polygon</label>
-                                </div>
-                                <div class="col col-3">
-                                    <label class="toggle state-success"><input type="checkbox" name="checkbox-toggle"><i data-swchon-text="ON" data-swchoff-text="OFF"></i>#</label>
-                                </div>
-                                <div class="col col-3">
-                                    <label class="toggle state-success"><input type="checkbox" name="checkbox-toggle"><i data-swchon-text="ON" data-swchoff-text="OFF"></i>#</label>
+                                    <label class="toggle state-info"><input type="checkbox" name="checkbox-toggle"><i data-swchon-text="ON" data-swchoff-text="OFF"></i>Polygon</label>
                                 </div>
                             </section>
                         </div>
@@ -98,7 +92,9 @@
                     <div class="show-stat-microcharts">
                         <?php foreach ($site_sensors as $site_sensor_item) {?>
                         <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
-                            <span class="sensor-status-title"> <?= $site_info[0]['site_name'].' - '.$site_sensor_item->label?>  </span>
+                            <span class="sensor-status-title">
+                                <strong style="color:#707b7c"> <?= $site_info[0]['site_name'].' - '.$site_sensor_item->label?></strong>
+                            </span>
                             
                             <ul class="smaller-stat hidden-sm pull-right">
                                 <li>
@@ -123,7 +119,7 @@
 				<!-- widget div-->
 				<div>
 					<!-- widget content -->
-					<div class="widget-body no-padding" style="height:600px;">
+					<div class="widget-body no-padding" style="height:650px;">
                         <nav id="menu"></nav>
                     	<div id="map"></div>
                         <!-- <pre id='info'></pre> -->
@@ -154,8 +150,6 @@
         zoom: <?= $site_info[0]['mapbox_zoom']?>,
         bearing: <?= $site_info[0]['mapbox_bearing']?> 
     });
-
-   
 
     // dots
     var size = 200;
@@ -252,28 +246,28 @@
     //     console.log(JSON.stringify(e.lngLat));
     // });
     
-    // function OncheckBox(index){
-    //     if(index.id == 'Name'){
-    //         if($('#' + index.id).is(':checked')) {
-    //             map.setLayoutProperty('beacon_name_layer', 'visibility', 'visible' );
-    //         }else{
-    //             map.setLayoutProperty('beacon_name_layer', 'visibility', 'none' );
-    //         }
-    //     }else if(index.id == 'Rssi'){    
+    function OncheckBox(index){
+        if(index.id == 'Name'){
+            if($('#' + index.id).is(':checked')) {
+                map.setLayoutProperty('beacon_info_layer', 'visibility', 'visible' );
+            }else{
+                map.setLayoutProperty('beacon_info_layer', 'visibility', 'none' );
+            }
+        }else if(index.id == 'Rssi'){    
                       
-    //         if($('#' + index.id).is(':checked')) {
-    //             map.setLayoutProperty('beacon_rssi_layer', 'visibility', 'visible' );
-    //         }else{
-    //             map.setLayoutProperty('beacon_rssi_layer', 'visibility', 'none' );
-    //         }
-    //     }else if(index.id == 'Status'){
-    //         if($('#' + index.id).is(':checked')) {
-    //             map.setLayoutProperty('beacon_list_layer', 'visibility', 'visible' );
-    //         }else{
-    //             map.setLayoutProperty('beacon_list_layer', 'visibility', 'none' );
-    //         }
-    //     }
-    // }
+            if($('#' + index.id).is(':checked')) {
+                map.setLayoutProperty('beacon_rssi_layer', 'visibility', 'visible' );
+            }else{
+                map.setLayoutProperty('beacon_rssi_layer', 'visibility', 'none' );
+            }
+        }else if(index.id == 'Status'){
+            if($('#' + index.id).is(':checked')) {
+                map.setLayoutProperty('beacon_list_layer', 'visibility', 'visible' );
+            }else{
+                map.setLayoutProperty('beacon_list_layer', 'visibility', 'none' );
+            }
+        }
+    }
       
     map.on('load', function() {
         map.addImage('pulsing-dot', pulsingDot, { pixelRatio: 2 });
@@ -327,7 +321,7 @@
                 'circle-color': ['get', 'color']
             },
             'layout': {
-                'visibility': 'visible'
+                'visibility': 'none'
             },
             // 'filter': ['==', '$type', 'Point']
         });
@@ -350,7 +344,7 @@
                 'text-size': 12,
                 'text-offset': [0, 0.3],
                 'text-anchor': 'top',  
-                'visibility': 'visible'
+                'visibility': 'none'
             }
         });
 
@@ -364,7 +358,7 @@
                 'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
                 'text-size': 15,
                 'text-offset': [0, -2],
-                'visibility': 'visible'
+                'visibility': 'none'
             },
             'paint': {
                 'text-color': '#E74C3C',

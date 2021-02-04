@@ -226,7 +226,7 @@
 				
 				eventClick: function (arg) {
 					// window.location.href = arg.title;
-					window.location.href = 'todos';
+					window.location.href = 'maintenance';
 					// console.log(arg);
 				},
 

@@ -72,7 +72,7 @@ class Dashboard extends Controller
 				$todo_status['level'] = $todo->level;
 				
 				// link to todos page
-				$todo_status['url'] = "todos?stype=$todo->src_type&id=$todo->id";
+				$todo_status['url'] = "maintenance/todos/".$todo_status['src_type']."/".$todo->id;
                 array_push($res, $todo_status);
 			}
 

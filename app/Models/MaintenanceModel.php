@@ -67,11 +67,10 @@ class MaintenanceModel extends Model
 
     public function get_log($id)
     {
-        $query = $this->db->query("SELECT id, ts, src_type, content, level, todo, solve_message FROM daily_log WHERE id = {$id}");
-        $rows = $query->getResult();
-//         print_r($rows);
-//         print_r($rows[0]);
-        return $rows[0];
+        $builder = $this->db->table('daily_log');
+        $builder->where('id', $id);
+        $query = $builder->get();
+        return $query->getResult('array')[0];
     }
 
     public function get_todos($minutes)
@@ -85,17 +84,16 @@ class MaintenanceModel extends Model
         }
     }
 
-    public function update_todos($id, $msg)
+    public function update_todos($id, $solve_msg)
     {
-        $data = ['solve_message' => $msg, 'todo' => 1];
+        $data = 
+        [
+            'solve_msg' => $solve_msg, 
+            'todo' => 1
+        ];
         $builder = $this->db->table('daily_log');
         $builder->where('id', $id);
         $builder->update($data);
-//         try:
-  #      $query = $this->db->query("UPDATE msg FROM daily_log WHERE id = {$id}");  // todo
-  #      $results = $query->getResult();
-//         except:
-//             return 0;
         return 1;
     }
 

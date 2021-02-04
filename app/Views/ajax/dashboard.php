@@ -77,6 +77,7 @@
 									<th> <i class="fa fa-building"></i> date</th>
 									<th> <i class="fa fa-calendar"></i> s-type</th>
 									<th> <i class="glyphicon glyphicon-send"></i> content</th>
+									<th> <i class="glyphicon glyphicon-send"></i> sloved</th>
 								</tr>
 								<tr class="second">
 									<td>
@@ -87,6 +88,11 @@
 									<td>
 										<label class="input">
 											<input type="text" name="search_src_type" placeholder="Filter source type" class="search_init">
+										</label>	
+									</td>
+									<td>
+										<label class="input">
+											<input type="text" name="search_content" placeholder="Filter content" class="search_init">
 										</label>	
 									</td>
 									<td>

@@ -64,6 +64,7 @@ class Dashboard extends Controller
 				  <td> $ts </td>
 				  <td> $log->src_type </td>
 				  <td> $content </td>
+				  <td> $log->todo </td>
 			  	  </tr>";
 		}
 		return $res;

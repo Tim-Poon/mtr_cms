@@ -1,38 +1,4 @@
 <div id="done"> </div>
-<div class="row">
-	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-		<h1 class="page-title txt-color-blueDark">
-			<i class="fa fa-check-circle-o fa-fw "></i> 
-				<a href="todos" style="color:#696969; cursor:pointer"><strong>Todos</strong></a> 
-			<span><strong style="color:#696969">> </strong>
-                <strong style="color:#496949">Todo # </strong>
-			</span>
-		</h1>
-	</div>
-	<div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
-		<ul id="sparks" class="">
-			<li class="sparks-info">
-				<h5> My Income <span class="txt-color-blue">$47,171</span></h5>
-				<div class="sparkline txt-color-blue hidden-mobile hidden-md hidden-sm">
-					1300, 1877, 2500, 2577, 2000, 2100, 3000, 2700, 3631, 2471, 2700, 3631, 2471
-				</div>
-			</li>
-			<li class="sparks-info">
-				<h5> Site Traffic <span class="txt-color-purple"><i class="fa fa-arrow-circle-up" data-rel="bootstrap-tooltip" title="Increased"></i>&nbsp;45%</span></h5>
-				<div class="sparkline txt-color-purple hidden-mobile hidden-md hidden-sm">
-					110,150,300,130,400,240,220,310,220,300, 270, 210
-				</div>
-			</li>
-			<li class="sparks-info">
-				<h5> Site Orders <span class="txt-color-greenDark"><i class="fa fa-shopping-cart"></i>&nbsp;2447</span></h5>
-				<div class="sparkline txt-color-greenDark hidden-mobile hidden-md hidden-sm">
-					110,150,300,130,400,240,220,310,220,300, 270, 210
-				</div>
-			</li>
-		</ul>
-	</div>
-</div>
-
 <!-- widget grid -->
 <section id="widget-grid" class="">
 
@@ -40,31 +6,22 @@
 	<div class="row">
 
 		<!-- NEW WIDGET START -->
-		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
 
 			<!-- Widget ID (each widget will need unique ID)-->
-			<div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
-				<!-- widget options:
-				usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
-
-				data-widget-colorbutton="false"
+			<div class="jarviswidget jarviswidget-color-blueDark"
 				data-widget-editbutton="false"
-				data-widget-togglebutton="false"
+				data-widget-colorbutton="false"
 				data-widget-deletebutton="false"
-				data-widget-fullscreenbutton="false"
-				data-widget-custombutton="false"
-				data-widget-collapsed="true"
+				data-widget-togglebutton="false"
 				data-widget-sortable="false"
-
-				-->
+				data-widget-fullscreenbutton="false">
 				<header>
 					<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-					<h2>TODO</h2>
-
+					<h2>TODOS</h2>
 				</header>
-
 				<!-- widget div-->
-				<?php if($todo == '0'){; ?>
+				<?php if($todos_item['todo'] == '0'){; ?>
 				<div>
 					<div class="table-responsive">
 						<table class="table table-bordered hidden-mobile">
@@ -77,33 +34,33 @@
 							</thead>
 							<tbody>
 								<tr class="danger">
-									<td><?= $date ?></td>
+									<td><?= date('Y/m/d H:i:s', $todos_item['ts']/1000)?></td>
 									<td>
 										<code>
-											<?= $stype ?>
+											<?= $todos_item['src_type'] ?>
 										</code
 									></td>
-									<td><?= $content ?></td>
+									<td><?= $todos_item['content'] ?></td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
 					<div class="widget-body no-padding">
-						<form id="contact-form" class="smart-form">
+						<form id="updatetodo-form" class="smart-form">
 							<header>Check form</header>
 
 							<fieldset>
 								<section>
 									<label class="label">message</label>
 									<div class="note note-error">This is a required field.</div>
-									<input type="hidden" name="id" value="<?= $id ?>">
-									<label class="textarea state-error" >
-										<textarea rows="4" name="message" id="reporting_message" ></textarea>
+									<input type="hidden" name="id" value="<?= $todos_item['id'] ?>">
+									<label class="textarea state-success" >
+										<textarea rows="4" name="solve_msg" id="reporting_message" ></textarea>
 									</label>
 								</section>
 
 								<section>
-									<label class="checkbox"><input type="checkbox" name="copy" id="copy"><i></i>Send a copy to my e-mail address</label>
+									<label class="checkbox"><input type="checkbox" name="copy" id="checkbox" disabled><i></i>###</label>
 								</section>
 							</fieldset>
 
@@ -127,14 +84,14 @@
 							</thead>
 							<tbody>
 								<tr class="success">
-									<td><?= $date ?></td>
+									<td><?= date('Y/m/d H:i:s', $todos_item['ts']/1000)?></td>
 									<td>
 										<code>
-											<?= $stype ?>
+											<?= $todos_item['src_type'] ?>
 										</code
 									></td>
-									<td><?= $content ?></td>
-									<td><?= $solve_message ?></td>
+									<td><?= $todos_item['content'] ?></td>
+									<td><?= $todos_item['solve_msg'] ?></td>
 								</tr>
 							</tbody>
 						</table>
@@ -150,24 +107,16 @@
 		<!-- WIDGET END -->
 
 
-		<!-- NEW WIDGET START -->
-		<article class="col-sm-12 col-md-12 col-lg-12">
+		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
 
 			<!-- Widget ID (each widget will need unique ID)-->
-			<div class="jarviswidget jarviswidget-color-greenLight" id="wid-id-3" data-widget-editbutton="false">
-				<!-- widget options:
-				usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
-
-				data-widget-colorbutton="false"
+			<div class="jarviswidget jarviswidget-color-blueDark"
 				data-widget-editbutton="false"
-				data-widget-togglebutton="false"
+				data-widget-colorbutton="false"
 				data-widget-deletebutton="false"
-				data-widget-fullscreenbutton="false"
-				data-widget-custombutton="false"
-				data-widget-collapsed="true"
+				data-widget-togglebutton="false"
 				data-widget-sortable="false"
-
-				-->
+				data-widget-fullscreenbutton="false">
 				<header>
 					<span class="widget-icon"> <i class="fa fa-table"></i> </span>
 					<h2>Relate </h2>
@@ -256,11 +205,11 @@
 	pageSetUp();
 
 	// PAGE RELATED SCRIPTS
-	$('#contact-form').submit(function(e){
-		$.post( "todos/submit", $( "#contact-form" ).serialize())
-		.done(function(data) {
-// 			$('#done').html(data);
-            location.reload();
+	$('#updatetodo-form').submit(function(e){
+		$.post("<?= base_url('maintenance/update_todos') ?>", $("#updatetodo-form").serialize()).done(function(data) {
+			console.log(data);
+			// $('#done').html(data);
+			setTimeout(window.location.reload(), 3000);
 		});
 		return false;
 	});

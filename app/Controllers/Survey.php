@@ -43,7 +43,7 @@ class Survey extends Controller
 		// todo: online simply analysis
 		$data = 
 		[
-			'icon' => 'fa-truck',
+			'icon' => 'fa-gear',
 			'title' => 'Survey',
 			'sub_title' => '',
 			'site_names' => $this->model_monitor->get_site_name_all(),
@@ -60,7 +60,7 @@ class Survey extends Controller
 		$time = Time::now('Asia/Hong_Kong', 'en_US');
 		$data = 
 		[
-			'icon' => 'fa-truck',
+			'icon' => 'fa-gear',
 			'title' => 'Survey',
 			'sub_title' => '> New Event',
 			'site_names' => $this->model_monitor->get_site_name_all(),
@@ -89,7 +89,7 @@ class Survey extends Controller
 				// $event_uwb_dist_data = $this->model->get_uwb_dist_by_id($event_id)->getResult();
 				$data = 
 				[
-					'icon' => 'fa-truck',
+					'icon' => 'fa-gear',
 					'title' => 'Survey',
 					'sub_title' => '> Event #'.$event,
 					'site_names' => $this->model_monitor->get_site_name_all(),

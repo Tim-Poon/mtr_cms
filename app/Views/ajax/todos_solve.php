@@ -29,36 +29,42 @@
 								<tr>
 									<th>Date</th>
 									<th>scr_type</th>
-									<th>content</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr class="danger">
-									<td><?= date('Y/m/d H:i:s', $todos_item['ts']/1000)?></td>
-									<td>
+									<td><strong><?= date('Y/m/d H:i:s', $todos_item['ts']/1000)?></strong></td>
+									<td><strong>
 										<code>
 											<?= $todos_item['src_type'] ?>
-										</code
-									></td>
-									<td><?= $todos_item['content'] ?></td>
+										</code></strong>
+									</td>
 								</tr>
+							</tbody>
+						</table>
+						<h4>Content</h4>
+						<table class="table table-bordered hidden-mobile">
+							<tbody>
+								<?php foreach (json_decode($todos_item['content']) as $key => $value) { ?>
+									<tr class="warning">
+									<td><strong><?= $key ?></strong></td>
+									<td><?= $value ?></td>
+									</tr>
+								<?php }?>
 							</tbody>
 						</table>
 					</div>
 					<div class="widget-body no-padding">
 						<form id="updatetodo-form" class="smart-form">
-							<header>Check form</header>
-
 							<fieldset>
 								<section>
-									<label class="label">message</label>
-									<div class="note note-error">This is a required field.</div>
+									<h4>Solve Message</h4>
 									<input type="hidden" name="id" value="<?= $todos_item['id'] ?>">
 									<label class="textarea state-success" >
 										<textarea rows="4" name="solve_msg" id="reporting_message" ></textarea>
 									</label>
+									<div class="note note-error">This is a required field.</div>
 								</section>
-
 								<section>
 									<label class="checkbox"><input type="checkbox" name="copy" id="checkbox" disabled><i></i>###</label>
 								</section>

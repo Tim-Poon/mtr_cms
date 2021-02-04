@@ -18,7 +18,7 @@ class Reporting extends Controller
         $site_info = $this->model_monitor->get_site_info_by_name($site_name);
 		$data = 
 		[
-			'icon' => 'fa-map-marker',
+			'icon' => 'fa-file-text',
 			'title' => 'Reporting',
 			'sub_title' => '',
 			'site_names' => $this->model_monitor->get_site_name_all(),

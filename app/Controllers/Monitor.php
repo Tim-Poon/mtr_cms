@@ -227,11 +227,12 @@ class Monitor extends Controller
             $register_site_url = base_url().'/'.'register/'.$sensor_status['sensor'];
             $register_site_name = '<div style="color:#E74C3C">unregister</div>';
             if ($sensor_status['register']){
-                $register_site_url = base_url().'/'.'monitor/'.$sensor_status['site_name'];
-                $register_site_name = $sensor_status['site_name'];
                 if ($sensor_status['site_name'] == NULL) {
                     $register_site_name = '<div style="color:#F39C12">null</div>';
-                } 
+                }else{
+                    $register_site_url = base_url().'/'.'monitor/'.$sensor_status['site_name'];
+                    $register_site_name = $sensor_status['site_name'];
+                }
             }
             echo "<tr>
             <td class=\"text-align-center\"><Strong><a href=\"".$register_site_url."\">".$register_site_name."</a></Strong></td>

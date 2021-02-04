@@ -74,10 +74,10 @@
 						<table id="datatable_logger" class="table table-bordered smart-form">
 							<thead>
 								<tr>
-									<th> <i class="fa fa-building"></i> date</th>
-									<th> <i class="fa fa-calendar"></i> s-type</th>
-									<th> <i class="glyphicon glyphicon-send"></i> content</th>
-									<th> <i class="glyphicon glyphicon-send"></i> sloved</th>
+									<th class="text-align-center"> <i class="fa fa-building"></i> Date</th>
+									<th class="text-align-center"> <i class="fa fa-calendar"></i> S-Type</th>
+									<th class="text-align-center"> <i class="glyphicon glyphicon-send"></i> Content</th>
+									<th class="text-align-center"> <i class="glyphicon glyphicon-send"></i> Sloved</th>
 								</tr>
 								<tr class="second">
 									<td>
@@ -102,8 +102,15 @@
 									</td>
 								</tr>
 							</thead>
-							<tbody id='logsbody'>
-								<?= $logs ?>
+							<tbody>
+								<?php foreach($logs as $logs_item){ ?>
+									<tr class= "<?= $log_level_mapping[$logs_item['level']]?>">
+										<td class="text-align-center"><?= date('Y/m/d H:i:s', $logs_item['ts']/1000)?></td>
+										<td class="text-align-center"><code><?= $logs_item['src_type']?></code></td>
+										<td class="text-align-center"><?= $logs_item['content']?></td>
+										<td class="text-align-center"><?php if ($logs_item['todo']){echo '<i class="fa fa-check-circle">';}?></td>
+									</tr>
+								<?php } ?>
 							</tbody>
 						</table>
 

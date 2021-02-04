@@ -57,7 +57,7 @@ class DashboardModel extends Model
             // get lastest $minutes data
             $builder = $this->db->table('daily_log');
             $builder->orderBy('ts', 'DESC');
-            $query = $builder->get($minutes);
+            $query = $builder->get($minutes)->getResult('array');
             return $query;
         }
     }

@@ -39,7 +39,7 @@ class Register extends Controller
         $site_info = $this->model_monitor->get_site_info_by_name($site_name);
 		$data = 
 		[
-			'icon' => 'fa-map-marker',
+			'icon' => 'fa-gear',
 			'title' => 'Register',
 			'sub_title' => ' > Full Record',
             'site_names' => $this->model_monitor->get_site_name_all(),
@@ -58,7 +58,7 @@ class Register extends Controller
         $sensor_info = $this->model->get_sensor($sensor);
         $data = 
 		[
-			'icon' => 'fa-map-marker',
+			'icon' => 'fa-gear',
 			'title' => 'Register',
 			
             'site_names' => $this->model_monitor->get_site_name_all(),

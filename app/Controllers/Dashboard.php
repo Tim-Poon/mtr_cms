@@ -39,7 +39,8 @@ class Dashboard extends Controller
 			'title' => 'Dashboard',
 			'sub_title' => '',
 			'site_names' => $this->model_monitor->get_site_name_all(),
-			'logs'   => $this->logs(),
+			'logs' => $this->model->get_logs(30),
+			'log_level_mapping' => $this->log_level_mapping,
 			'num_of_todos' => 0,
 			'todos' => $this->todos()
 		];
@@ -48,26 +49,6 @@ class Dashboard extends Controller
 		echo view('js');
 		echo view('ajax/dashboard', $data);
 		echo view('foot');
-	}
-
-	public function logs()
-	{
-		$res = '';
-		$logs = $this->model->get_logs(30);
-
-		foreach($logs->getResult() as $log){
-			$ts = Time::createFromTimestamp($log->ts / 1000, 'Asia/Hong_Kong', 'en_US');
-			$level = $this->log_level_mapping[$log->level];
-			$content = $log->content;
-            $res = $res .
-                  "<tr class= \"$level\">
-				  <td> $ts </td>
-				  <td> $log->src_type </td>
-				  <td> $content </td>
-				  <td> $log->todo </td>
-			  	  </tr>";
-		}
-		return $res;
 	}
 
 	public function todos($src_type='all', $log_level='all')

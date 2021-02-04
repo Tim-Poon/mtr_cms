@@ -55,7 +55,7 @@ class Polygon extends Controller
 		$site_info = 0;
 		$data = 
 		[
-			'icon' => 'fa-map-marker',
+			'icon' => 'fa-gear',
 			'title' => 'Polygon',
 			'sub_title' => '',
 			'site_names' => $this->model_monitor->get_site_name_all(),
@@ -85,7 +85,7 @@ class Polygon extends Controller
 
 		$data = 
 		[
-			'icon' => 'fa-map-marker',
+			'icon' => 'fa-gear',
 			'title' => 'Polygon',
 			'sub_title' => ' > '. $site_info[0]['site_name'],
 			'site_names' => $this->model_monitor->get_site_name_all(),

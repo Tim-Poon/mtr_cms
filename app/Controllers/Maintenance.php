@@ -43,7 +43,7 @@ class Maintenance extends Controller
         $data = 
         [
             'icon' => 'fa-check-circle-o',
-            'title' => 'Todos',
+            'title' => 'Maintenance',
             'sub_title' => '',
             'site_names' => $this->model_monitor->get_site_name_all(),
 
@@ -59,16 +59,7 @@ class Maintenance extends Controller
 
     public function todos($src_type, $todo_id)
     {
-        $todo = $this->model->get_log($todo_id);
-        // $related_logs = $this->related_logs($src_type, $id);
-        $time = Time::createFromTimestamp($log->ts / 1000, 'Asia/Shanghai', 'en_US');
-        $seq = $this->retrieve_process_seq($log);
-
-        $todos_item = 
-        [
-
-        ];
-
+        // $seq = $this->retrieve_process_seq($log);
         $data = 
         [
             'icon' => 'fa-check-circle-o',
@@ -76,22 +67,11 @@ class Maintenance extends Controller
             'sub_title' => ' > '.$src_type.' #'.$todo_id,
             'site_names' => $this->model_monitor->get_site_name_all(),
 
-            'todos_item' => $todo,
-            // 'stype' => $param_from_url['stype'],
-            // 'id'   => $param_from_url['id'],
-            // 'seq' => $seq,
-            // 'content' => $log->content,
-            // 'date' => "{$time->getYear()}-{$time->getMonth()}-{$time->getDay()}-{$time->getHour()}-{$time->getMinute()}",
-            // // 'related_logs' => $related_logs,
-            // 'heading' => 'My Heading',
-            // 'solve_message' => $log->solve_message,
-            // 'todo' => $log->todo
+            'todos_item' => $this->model->get_log($todo_id),
         ];
-        // echo view('ajax/solve_todos', $data);
         echo view('head', $data);
         echo view('js');
         echo view('ajax/todos_solve', $data);
-        // print_r($todo);
         echo view('foot');
     }
 
@@ -128,8 +108,6 @@ class Maintenance extends Controller
             $data['id'] = $this->request->getPost()['id'];
             $this->model->update_todos($data['id'], $data['solve_msg']);
             // echo view('submit', $data);
-            // echo 1;
-            
         }
     }
 
@@ -148,12 +126,15 @@ class Maintenance extends Controller
                 $todo_date = "{$time->getYear()}-{$time->getMonth()}-{$time->getDay()}";
                 $todo_status['className'] = $this->loglevel2todo_mapping[$todo->level];
 
-
                 $id = $todo->id; //todo
                 $todo_status['ts'] = $time;
                 $src_type = $todo->src_type;
-                $content = $todo->content;
-				$level = $todo->level;
+                $content = '';
+                $level = $todo->level;
+                
+                foreach (json_decode($todo->content) as $key => $value) {
+                    $content = $content."<br>&nbsp&nbsp&nbsp&nbsp- <strong style=\"color:#F39C12\">$key : $value</strong>";
+                }
 
 				// link to reporting page
                 $url = "maintenance/todos/$src_type"."/".$todo->id;
@@ -161,13 +142,10 @@ class Maintenance extends Controller
                 $view_content = "<li>
                                     <span class=\"handle\"></span>
                                     <p>
-                                        <a href=\"{$url}\"><strong style=\"color:#935116\">{$src_type} #{$id}</strong> <strong style=\"color:#707b7c\">- {$content}</strong> </a>[<a href=\"{$url}\" class=\"font-xs\">SLOVED</a>]
-                                        <span class=\"text-muted\">I don't know what to place in here</span>
-                                        <span class=\"date\">{$todo_date}</span>
+                                        <a href=\"{$url}\"><strong style=\"color:#935116\">{$src_type} #{$id}</strong> <strong style=\"color:#707b7c\">- $todo_date.</strong></a>
+                                        $content
                                     </p>
                                 </li>";
-
-                                // <a href="survey" style="color:#696969; cursor:pointer"><strong>Survey</strong></a> 
                 if ($level == 'error')
                 {
                     $res_err = $res_err . $view_content;
@@ -180,9 +158,7 @@ class Maintenance extends Controller
                 {
                     $res_info = $res_info . $view_content;
                 }
-
             }
-
             return $res_err . "</ul>" . $res_warning . "</ul>" . $res_info . "</ul>";
 	}
 }

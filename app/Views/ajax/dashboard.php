@@ -211,7 +211,6 @@
 	        var d = date.getDate();
 	        var m = date.getMonth();
 	        var y = date.getFullYear();
-	
 	        var calendar = $('#calendar').fullCalendar({
 
 	            selectable: false,
@@ -226,7 +225,7 @@
 				
 				eventClick: function (arg) {
 					// window.location.href = arg.title;
-					window.location.href = 'maintenance';
+					// window.location.href = 'maintenance';
 					// console.log(arg);
 				},
 
@@ -239,8 +238,8 @@
 	                    element.find('.fc-event-title').append("<i class='air air-top-right fa " + event.icon +
 	                        " '></i>");
 	                }
-	            },
-				events: [<?php foreach($todos as $todo){echo json_encode($todo);};?>],
+				},
+				events: [<?php foreach($todos as $todo){echo json_encode($todo).',';}; foreach($reports as $report){echo json_encode($report).',';};?>],
 	        });
 	
 	    };
@@ -270,7 +269,7 @@
 	// sampling
 	// calendar month
 	$('#mt').click(function () {
-		$('#calendar').fullCalendar('changeView', 'agendaMonth');
+		$('#calendar').fullCalendar('changeView', 'month');
 	});
 	
 	// calendar agenda week

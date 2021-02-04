@@ -8,4 +8,13 @@ class ReportingModel extends Model
     {
         parent::__construct();
     }
+
+    public function get_report($delivery_date)
+    {
+        // get all delivery_date
+        $builder = $this->db->table('reporting');
+        $builder->where('delivery_date', $delivery_date);
+        $query = $builder->get()->getResult('array');
+        return $query;
+    }
 }

@@ -9,6 +9,16 @@ class DashboardModel extends Model
         parent::__construct();
     }
 
+    public function get_reporing_all_date()
+    {
+        // get all delivery_date
+        $builder = $this->db->table('reporting');
+        $builder->select('delivery_date');
+        $builder->groupBy('delivery_date');
+        $query = $builder->get()->getResult('array');
+        return $query;
+    }
+
     public function get_sensor_info()
     {
         // get all sensor

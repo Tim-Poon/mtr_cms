@@ -100,10 +100,9 @@
 					<li class=""><a href="<?=base_url()?>" title="dashboard"><i class="fa fa-lg fa-fw fa-home"></i>  <span class="menu-item-parent">Dashboard</span></a></li>
 					<li><a href="<?=base_url('maintenance')?>">
 						<i class="fa fa-lg fa-fw fa-check-circle-o"></i>  
-						<span class="menu-item-parent">Maintenance</span>
-						<span class="badge pull-right inbox-badge"><?= $num_of_todos ?></span></a>
+						<span class="menu-item-parent">Maintenance</span></a>
 					</li>
-					<li class=""><a href="<?=base_url('reporting')?>" title="Reporting"><i class="fa fa-lg fa-fw fa-file-text"></i>  <span class="menu-item-parent">Reporting</span></a></li>
+					<li class=""><a href="#" title="Analysis"><i class="fa fa-lg fa-fw fa-file-text"></i>  <span class="menu-item-parent">Analysis</span></a></li>
 					<li class=""><a href="#" title="Monitor"><i class="fa fa-lg fa-fw fa-desktop"></i>  <span class="menu-item-parent">Monitor</span></a>
 						<ul>
 							<?php foreach($site_names as $site_name){?>

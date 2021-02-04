@@ -39,7 +39,7 @@
                                 <section>
 									<label class="label">Site</label>
                                     <label class="select">
-                                        <select name="Label">
+                                        <select name="site">
                                         <option value=NULL></option>
                                             <?php foreach ($site_names as $site_name_item) {
                                                 echo "<option value=\"".$site_name_item['site']."\">".$site_name_item['site_name']."</option>";
@@ -49,7 +49,7 @@
                                 <section class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
                                     <label class="Label">Label</label>
                                     <label class="input"> <i class="icon-prepend fa  fa-calendar"></i>
-                                        <input name="site" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+                                        <input name="label" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
                                     </label>
                                 </section>
 							</fieldset>

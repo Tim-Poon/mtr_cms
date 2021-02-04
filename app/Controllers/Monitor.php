@@ -190,17 +190,19 @@ class Monitor extends Controller
         }
         $res = array();
         foreach ($maxbox_statue as $sensor_status) {
-            $coordinate = 
-            [
-                'label' => $sensor_status['label'],
-                'vel_x' => $sensor_status['vel_x'],
-                'vel_y' => $sensor_status['vel_y'],
-                'loc_x' => $sensor_status['loc_x'],
-                'loc_y' => $sensor_status['loc_y'],
-                'loc_z' => $sensor_status['loc_z'],
-                'alarm_flag' => $sensor_status['alarm_flag'],
-            ];
-            $res[$sensor_status['sensor']] = $coordinate;
+            if ($sensor_status['site'] == $site) {
+                $coordinate = 
+                [
+                    'label' => $sensor_status['label'],
+                    'vel_x' => $sensor_status['vel_x'],
+                    'vel_y' => $sensor_status['vel_y'],
+                    'loc_x' => $sensor_status['loc_x'],
+                    'loc_y' => $sensor_status['loc_y'],
+                    'loc_z' => $sensor_status['loc_z'],
+                    'alarm_flag' => $sensor_status['alarm_flag'],
+                ];
+                $res[$sensor_status['sensor']] = $coordinate;
+            }
         }
         echo json_encode($res);
     }
@@ -249,7 +251,9 @@ class Monitor extends Controller
         }
         $res = array();
         foreach ($monitor_statue as $sensor_status) {
-            $res[$sensor_status['sensor']] = $sensor_status;
+            if ($sensor_status['site'] == $site) {
+                $res[$sensor_status['sensor']] = $sensor_status;
+            }
         }
         echo json_encode($res);
     }

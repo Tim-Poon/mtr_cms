@@ -38,7 +38,7 @@
 									<label class="label">Site</label>
                                     <label class="select">
                                         <select name="site">
-                                        <option value=<?= $sensor_info['site'] ?> selected="selected" disabled="">
+                                        <option value=<?= $sensor_info['site'] ?> selected="selected" >
                                             <?php foreach ($site_names as $site_name_item) {
                                                 if ($sensor_info['site'] == $site_name_item['site']) {
                                                     echo $site_name_item['site_name'];
@@ -54,7 +54,7 @@
                                 <section class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
                                     <label class="Label">Label</label>
                                     <label class="input"> <i class="icon-prepend fa  fa-calendar"></i>
-                                        <input value="<?= $label ?>" name="label" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+                                        <input value="<?= $sensor_info['label'] ?>" name="label" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
                                     </label>
                                 </section>
 							</fieldset>

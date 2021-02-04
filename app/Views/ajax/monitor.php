@@ -547,7 +547,7 @@
 	function load_sensor_status() {
 		$.get("get_sensor_status_monitor/" + <?= $site_info[0]['site'] ?>, '', function(result){
             if (result != 0) {
-                data = JSON.parse(result);       
+                data = JSON.parse(result);
                 <?php foreach ($site_sensors as $site_sensor_item) { ?>
                 if (data['<?= $site_sensor_item->sensor?>'] == undefined) {
                     $('#vel_<?= $site_sensor_item->label?>').html('').css('color', '#D5D8DC');

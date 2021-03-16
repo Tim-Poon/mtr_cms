@@ -79,7 +79,7 @@
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-4 col-lg-3"> 
 								<div class="calculation-box">
-									<button type="submit" id="save_polygon" class="btn btn-primary">Save</button>
+									<button type="submit" id="save_polygon" class="btn btn-primary">Save Polygon & Source</button>
 									<!-- <button type="submit" id="export_polygon" class="btn btn-success">Export</button> -->
 								</div>
 								<hr class="simple">
@@ -98,7 +98,7 @@
 									</fieldset>
 								</form> -->
 								<!-- <hr class="simple"> -->
-								<h4>HISTORY</h4>
+								<header>HISTORY</header>
 								<table id="datatable_tscreate" class="table table-striped table-bordered table-hover">
 									<thead>
 										<tr>
@@ -110,6 +110,26 @@
 										
 									</tbody>
 								</table>
+
+								<form id="updatesource-form" class="smart-form">
+    								<header>Update Source</header>
+    									<section class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+    										<label class="Label">S_idx</label>
+    										<label class="input"> <i class="icon-prepend fa fa-barcode"></i>
+    											<input name="idx" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+    										</label>
+    									</section>
+    									<section class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+    										<label class="Label">S_name</label>
+    										<label class="input"> <i class="icon-prepend fa fa-text-width"></i>
+    											<input name="name">
+    										</label>
+    									</section>
+
+    								<footer>
+    									<button type="submit" class="btn btn-primary">Update to <?= $sub_title?></button>
+    								</footer>
+    							</form>
 							</div>
 						</div>
 					</div>
@@ -187,8 +207,8 @@
 			'data': site_map_geojson
 		});
 
-		// Source: beacon list
-        map.addSource('beacon_list', {
+		// Source: source list
+        map.addSource('source_list', {
             'type': 'geojson',
             'data': {
                 "type": "FeatureCollection",
@@ -196,11 +216,58 @@
             }
         });
 
-		// Layer: beacon dots
-        map.addLayer({
-            'id': 'beacon_list_layer',
+		// Source: site draw ploygons with ts_create
+		map.addSource('polygons', {
+			'type': 'geojson',
+			'data': {
+				'type': 'FeatureCollection',
+				'features': []
+			}
+		});
+
+		// Source: site draw ploygons with ts_create
+		map.addSource('polygons_idx', {
+			'type': 'geojson',
+			'data': {
+				'type': 'FeatureCollection',
+				'features': []
+			}
+		});
+
+		// Layer: site fix ploygons with ts_create
+		map.addLayer({
+			'id': 'polygons_layer',
+			'type': 'fill',
+			'source': 'polygons',
+			'layout': {
+                'visibility': 'visible'
+			},
+			'paint': {
+				'fill-color': '#58D68D',
+				'fill-opacity': 0.2
+			}
+		});
+
+		// todo Layer: site fix ploygons idx with ts_create
+		// map.addLayer({
+        //     'id': 'polygon_idx_layer',
+        //     'type': 'circle',
+        //     'source': 'polygons_idx',
+        //     'paint': {
+        //         'circle-radius': 6,
+        //         'circle-color': '#58D68D'
+        //     },
+        //     'layout': {
+		// 		'text-field': ['get', 'rssi'],
+        //         'visibility': 'visible'
+        //     },
+        //     // 'filter': ['==', '$type', 'Point']
+        // });
+
+		map.addLayer({
+            'id': 'source_list_layer',
             'type': 'circle',
-            'source': 'beacon_list',
+            'source': 'source_list',
             'paint': {
                 'circle-radius': 6,
                 'circle-color': ['get', 'color']
@@ -211,27 +278,28 @@
             // 'filter': ['==', '$type', 'Point']
         });
 
-		// Layer: beacon info (name & coor)
+		// Layer: source info (name & coor)
         map.addLayer({
-            'id': 'beacon_info_layer',
+            'id': 'source_info_layer',
             'type': 'symbol',
-            'source': 'beacon_list',
+            'source': 'source_list',
             'layout': {
-                "text-field": ["format", ["get", "beacon_name"], {
+                "text-field": ["format", ["get", "source_idx"], {
                     "text-color": '#424949',
                 },
                 "\n", {},
-                ["get", "beacon_coor"], {
+                ["get", "source_name"], {
                     "text-color": '#F39C12',
                 },
                 "\n", {}],
                 'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-                'text-size': 12,
+                'text-size': 20,
                 'text-offset': [0, 0.3],
                 'text-anchor': 'top',  
                 'visibility': 'visible'
             }
         });
+
 
 		map.addLayer({
             'id': 'site_map_layer',
@@ -247,35 +315,8 @@
             }
         });
 
-		site_beacons();
+		draw_point_and_polygons();
 	});
-
-	function site_beacons(){
-		var beacon_list = {};
-		beacon_list['type'] = 'FeatureCollection';
-		beacon_list['features'] = new Array;   
-		<?php foreach($site_beacons as $beacon_item){ ?>
-			if (<?= $beacon_item->major % 10 ?> == floor_cur) {
-				color = '#85C1E9';
-				lnglat = xy2latlng(<?= $beacon_item->x?>, <?= $beacon_item->y?>);
-
-				var beacon_dot = {
-						"type": "Feature",
-						"properties": {    
-							'beacon_name': <?= $beacon_item->minor?>,
-							'beacon_coor': '[<?= number_format($beacon_item->x, 1).', '.number_format($beacon_item->y, 1)?>]',
-							'color': color,
-						},
-						"geometry": {
-							"type": "Point",
-							"coordinates": [lnglat['lng'], lnglat['lat']]
-						}
-				};
-				beacon_list['features'].push(beacon_dot);
-			}
-		<?php } ?>
-		map.getSource('beacon_list').setData(beacon_list);
-	}
 
 	function latlng2xy(lng, lat){
         // floor_cur
@@ -306,9 +347,165 @@
 	var draw = new MapboxDraw({
 		displayControlsDefault: false,
 		controls: {
+			point: true,
+			// line_string: true,
 			polygon: true,
 			trash: true
-		}
+		},
+		// reference： https://github.com/mapbox/mapbox-gl-draw/blob/main/docs/EXAMPLES.md
+		styles: [
+			// points
+			{
+				'id': 'highlight-active-points',
+				'type': 'circle',
+				'filter': ['all',
+					['==', '$type', 'Point'],
+					['==', 'meta', 'feature'],
+					['==', 'active', 'true']],
+				'paint': {
+					'circle-radius': 10,
+					'circle-color': '#27AE60'
+				}
+				},
+				{
+				'id': 'points-are-blue',
+				'type': 'circle',
+				'filter': ['all',
+					['==', '$type', 'Point'],
+					['==', 'meta', 'feature'],
+					['==', 'active', 'false']],
+				'paint': {
+					'circle-radius': 8,
+					'circle-color': '#2980B9'
+				}
+			},
+
+			// polygons
+			{
+                'id': 'gl-draw-polygon-fill-inactive',
+                'type': 'fill',
+                'filter': ['all', ['==', 'active', 'false'],
+                    ['==', '$type', 'Polygon'],
+                    ['!=', 'mode', 'static']
+                ],
+                'paint': {
+                    'fill-color': '#3bb2d0',
+                    'fill-outline-color': '#3bb2d0',
+                    'fill-opacity': 0.1
+                }
+            },
+            {
+                'id': 'gl-draw-polygon-fill-active',
+                'type': 'fill',
+                'filter': ['all', ['==', 'active', 'true'],
+                    ['==', '$type', 'Polygon']
+                ],
+                'paint': {
+                    'fill-color': '#fbb03b',
+                    'fill-outline-color': '#fbb03b',
+                    'fill-opacity': 0.1
+                }
+            },
+            {
+                'id': 'gl-draw-polygon-midpoint',
+                'type': 'circle',
+                'filter': ['all', ['==', '$type', 'Point'],
+                    ['==', 'meta', 'midpoint']
+                ],
+                'paint': {
+                    'circle-radius': 3,
+                    'circle-color': '#fbb03b'
+                }
+            },
+            {
+                'id': 'gl-draw-polygon-stroke-inactive',
+                'type': 'line',
+                'filter': ['all', ['==', 'active', 'false'],
+                    ['==', '$type', 'Polygon'],
+                    ['!=', 'mode', 'static']
+                ],
+                'layout': {
+                    'line-cap': 'round',
+                    'line-join': 'round'
+                },
+                'paint': {
+                    'line-color': '#3bb2d0',
+                    'line-width': 2
+                }
+            },
+            {
+                'id': 'gl-draw-polygon-stroke-active',
+                'type': 'line',
+                'filter': ['all', ['==', 'active', 'true'],
+                    ['==', '$type', 'Polygon']
+                ],
+                'layout': {
+                    'line-cap': 'round',
+                    'line-join': 'round'
+                },
+                'paint': {
+                    'line-color': '#fbb03b',
+                    'line-dasharray': [0.2, 2],
+                    'line-width': 2
+                }
+            },
+			{
+                'id': 'gl-draw-line-inactive',
+                'type': 'line',
+                'filter': ['all', ['==', 'active', 'false'],
+                    ['==', '$type', 'LineString'],
+                    ['!=', 'mode', 'static']
+                ],
+                'layout': {
+                    'line-cap': 'round',
+                    'line-join': 'round'
+                },
+                'paint': {
+                    'line-color': '#3bb2d0',
+                    'line-width': 2
+                }
+            },
+            {
+                'id': 'gl-draw-line-active',
+                'type': 'line',
+                'filter': ['all', ['==', '$type', 'LineString'],
+                    ['==', 'active', 'true']
+                ],
+                'layout': {
+                    'line-cap': 'round',
+                    'line-join': 'round'
+                },
+                'paint': {
+                    'line-color': '#fbb03b',
+                    'line-dasharray': [0.2, 2],
+                    'line-width': 2
+                }
+            },
+            {
+                'id': 'gl-draw-polygon-and-line-vertex-stroke-inactive',
+                'type': 'circle',
+                'filter': ['all', ['==', 'meta', 'vertex'],
+                    ['==', '$type', 'Point'],
+                    ['!=', 'mode', 'static']
+                ],
+                'paint': {
+                    'circle-radius': 5,
+                    'circle-color': '#fff'
+                }
+            },
+            {
+                'id': 'gl-draw-polygon-and-line-vertex-inactive',
+                'type': 'circle',
+                'filter': ['all', ['==', 'meta', 'vertex'],
+                    ['==', '$type', 'Point'],
+                    ['!=', 'mode', 'static']
+                ],
+                'paint': {
+                    'circle-radius': 3,
+                    'circle-color': '#fbb03b'
+                }
+            },
+		]
 	});
 
 	map.addControl(draw);
@@ -320,12 +517,95 @@
 	// function updateArea(e) {
 	// 	var data = draw.getAll();
 	// }
-	<?php if($site_polygons){ ?>
-		<?php foreach($site_polygons as $site_polygon_item){?>
-			if (<?= $site_polygon_item->floor ?> == floor_cur) {
-				draw.add({type: 'Polygon', coordinates:  <?=$site_polygon_item->geojson?> });
-			}
-	<?php }}?>
+	function draw_point_and_polygons(){
+		// draw.deleteAll
+		<?php if($site_polygons){ ?>
+			var polygon_list = {};
+			polygon_list['type'] = 'FeatureCollection';
+			polygon_list['features'] = new Array;
+
+			var polygon_idx = {};
+			polygon_idx['type'] = 'FeatureCollection';
+			polygon_idx['features'] = new Array;   
+
+			<?php 
+				foreach($site_polygons as $site_polygon_item){?>
+					if (<?= $site_polygon_item->floor ?> == floor_cur) {
+						draw.add({
+							type: 'Polygon', 
+							coordinates:  <?=$site_polygon_item->geojson?>,
+							});
+
+						var polygon_poly = {
+							"type": "Feature",
+							"geometry": {
+								"type": "Polygon",
+								"coordinates": <?=$site_polygon_item->geojson?>
+							}
+						};
+
+						// todo show polygon id
+						// var polygon_idx = {
+						// 	"type": "Feature",
+						// 	"geometry": {
+						// 		"type": "Point",
+						// 		"coordinates": []
+						// 	},
+						// 	"properties": {    
+						// 		'polygon_idx':,
+						// 	},
+						// };
+
+						polygon_list['features'].push(polygon_poly);
+					}
+			<?php }?>
+			map.getSource('polygons').setData(polygon_list);
+		<?php }?>
+		
+		<?php if ($site_sources) { ?>
+			var source_list = {};
+			source_list['type'] = 'FeatureCollection';
+			source_list['features'] = new Array;
+			<?php
+				foreach($site_sources as $source_item){ ?>
+					if (<?= $source_item->floor ?> == floor_cur) {
+						<?php if ($source_item->name) { 
+							$source_name = $source_item->name;
+						}else{
+							$source_name = 'null';
+						}?>
+						
+						draw.add({
+							"type": "Feature",
+								"properties": {    
+									'source_idx': <?= $source_item->idx?>,
+									'source_name': '<?= $source_name?>',
+									'color': '#85C1E9',
+								},
+								"geometry": {
+									"type": "Point",
+									"coordinates": [<?= $source_item->lng?>, <?= $source_item->lat?>]
+								}
+							});
+
+						var source_dot = {
+								"type": "Feature",
+								"properties": {    
+									'source_idx': <?= $source_item->idx?>,
+									'source_name': '<?= $source_name?>',
+									'color': '#85C1E9',
+								},
+								"geometry": {
+									"type": "Point",
+									"coordinates": [<?= $source_item->lng?>, <?= $source_item->lat?>]
+								}
+						};
+						source_list['features'].push(source_dot);
+					}
+			<?php }?>
+			map.getSource('source_list').setData(source_list);
+		<?php }?>
+	}
 
 	function get_floor_ts_create() {
 		var ts_create_floor = '';
@@ -335,9 +615,10 @@
 				ts_create_floor += '<a href="<?= base_url('polygon/'.$site_info[0]['site_name'].'/'.$site_ts_create_item->ts_create)?>"><strong><?= date('m/d H:i', $site_ts_create_item->ts_create)?></strong></a>';
 				ts_create_floor += '<?php if ($key == 0) {?>&nbsp&nbsp<span class="label label-warning">New!</span><?php }?></td>';
 				ts_create_floor += '<td class="text-align-center">';
-				ts_create_floor += '<a href="<?= base_url('polygon/del/'.$site_info[0]['site'].'/'.$site_ts_create_item->ts_create)?>"><i class="fa fa-trash-o"></i></a>&nbsp&nbsp&nbsp&nbsp';
-				ts_create_floor += '<a href="<?= base_url('polygon/export/'.$site_info[0]['site'].'/'.$site_ts_create_item->ts_create)?>"><i class="fa fa-download"></i></a></td></tr>';	
-			}
+				ts_create_floor += '<a href="<?= base_url('polygon/export/'.$site_info[0]['site'].'/'.$site_ts_create_item->ts_create)?>"><i class="fa fa-download">G</i></a>&nbsp&nbsp';
+				ts_create_floor += '<a href="<?= base_url('polygon/export2/'.$site_info[0]['site'].'/'.$site_ts_create_item->ts_create)?>"><i class="fa fa-download">M</i></a>&nbsp&nbsp';
+				ts_create_floor += '<a href="<?= base_url('polygon/del/'.$site_info[0]['site'].'/'.$site_ts_create_item->ts_create)?>"><i class="fa fa-trash-o"></i></a></td></tr>';
+				}
 		<?php } ?>
 		return ts_create_floor;
 	}
@@ -364,7 +645,7 @@
 			// check floor cur
 			floor_cur = <?= $site_floor_item['floor']?>;
 			dot_mapping = <?= $site_info[$site_floor_item['floor'] - 1]['dot_mapping']?>;
-			site_beacons();
+			draw_point_and_polygons();
 			// set data
 			map.getSource('site_map').setData(<?= $site_floor_item['geojson']?>);
 			$('#ts_create_content').html(get_floor_ts_create());
@@ -376,13 +657,6 @@
 		// extract GeoJson from featureGroup
 		var data = draw.getAll();
 		if(data.features.length > 0){
-			for(var i = 0; i < data['features'].length; i++){
-				data['features'][i]['geometry']['xy'] = [[]];
-				data['features'][i]['geometry']['coordinates'][0].forEach(lnglat => {
-					data['features'][i]['geometry']['xy'][0].push(latlng2xy(lnglat[0], lnglat[1]));
-				});
-			}
-
 			$.post( "<?=base_url('polygon/save/'.$site_info[0]['site'])?>/" + floor_cur, {raw_polygons: data}).done(function(data) {
 				link = "<?= base_url('polygon/'.$site_info[0]['site_name'])?>" + "/" + data;
 				window.location.href= link;
@@ -404,5 +678,18 @@
 		});
 		return false;
 	});
+
+	$('#updatesource-form').submit(function(e){
+		$.post("<?=base_url('polygon/update_source/'.$ts_create)?>", $( "#updatesource-form" ).serialize()).done(function(data) {
+            if(data == '0'){
+                alert('please fill ');
+            }else{
+                link = "<?= base_url('polygon/'.$site_info[0]['site_name'])?>" + "/" + data;
+				window.location.href= link;
+            }
+		});
+		return false;
+	});
+
 </script>
 <?php } ?>

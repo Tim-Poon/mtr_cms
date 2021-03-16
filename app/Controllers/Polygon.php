@@ -38,6 +38,11 @@ class Polygon extends Controller
 			$ts_create = $params[1];
 			$this->del_polygon($site, $ts_create);
 		}
+		elseif($method === 'update_source')
+		{
+			$ts_create = $params[0];
+			$this->update_source($ts_create);
+		}
 		elseif ($method === 'index')
 		{
 			return $this->index();
@@ -78,8 +83,10 @@ class Polygon extends Controller
 
 		if($ts_create){
 			$site_polygons = $this->model->get_polygon($site_info[0]['site'], $ts_create);
+			$site_sources = $this->model->get_source($site_info[0]['site'], $ts_create);
 		}else{
 			$site_polygons = 0;
+			$site_sources = 0;
 		}
 		$site_ts_create = $this->model->get_ts_create($site_info[0]['site']);
 
@@ -87,12 +94,13 @@ class Polygon extends Controller
 		[
 			'icon' => 'fa-gear',
 			'title' => 'Polygon',
-			'sub_title' => ' > '. $site_info[0]['site_name'],
+			'sub_title' => ' > '. $site_info[0]['site_name'] . ' - ' . $ts_create,
 			'site_names' => $this->model_monitor->get_site_name_all(),
 
 			'site_info' => $site_info,
-			'site_beacons' => $this->model_monitor->get_site_beacons($site_info[0]['site']),
-
+			'ts_create' => $ts_create,
+			// 'site_beacons' => $this->model_monitor->get_site_beacons($site_info[0]['site']),
+			'site_sources' => $site_sources,
 			'site_polygons' => $site_polygons,
 			'site_ts_create' => $site_ts_create,
 			'mapbox_key' => config('ApiServer_')->mapbox['key'],
@@ -141,29 +149,96 @@ class Polygon extends Controller
 	// 	}	
 	// }
 
+	// private function save_polygons($site, $floor)
+	// {
+	// 	$raw_polygons = $this->request->getPost(['raw_polygons']);
+	// 	if ($raw_polygons['raw_polygons']['features']) {
+	// 		// get raw ploygons
+	// 		// geometry coordinates
+	// 		$poly = 1;
+	// 		$ts_create = $this->get_timestamp();
+	// 		foreach ($raw_polygons['raw_polygons']['features'] as $polygon_item) {
+	// 			if (count($polygon_item['geometry']['coordinates'][0]) == (4 + 1)) {
+	// 				//todo vertex
+	// 				$polygon_data = 
+	// 				[
+	// 					'site' => $site,
+	// 					'floor' => $floor,
+	// 					'poly' => $poly,
+	// 					'geojson' => str_replace('"', '', json_encode($polygon_item['geometry']['coordinates'])),
+	// 					'vertex' => $this->xy2vertex(($polygon_item['geometry']['xy'][0]), $poly, $floor),
+	// 					'ts_create' => $ts_create,
+	// 					'flag' => 1
+	// 				];
+	// 				$this->model->set_polygons($polygon_data);
+	// 				$poly += 1;
+	// 			}
+	// 		}
+	// 		echo $ts_create;
+	// 	}else {
+	// 		echo 0;
+	// 	}	
+	// }
+
+	// new function to combine polygon in geojson coordinate & source points
 	private function save_polygons($site, $floor)
 	{
 		$raw_polygons = $this->request->getPost(['raw_polygons']);
 		if ($raw_polygons['raw_polygons']['features']) {
 			// get raw ploygons
 			// geometry coordinates
-			$poly = 1;
+			$idx_poly = 1;
+			$idx_source = 1;
 			$ts_create = $this->get_timestamp();
+			// find idx source
 			foreach ($raw_polygons['raw_polygons']['features'] as $polygon_item) {
-				if (count($polygon_item['geometry']['coordinates'][0]) == (4 + 1)) {
-					//todo vertex
-					$polygon_data = 
+				if ($polygon_item['geometry']['type'] == 'Point') {
+					if ($polygon_item['properties']['source_idx']) {
+						if ($idx_source <= $polygon_item['properties']['source_idx']) {
+							$idx_source = $polygon_item['properties']['source_idx'] + 1;
+						}
+					}
+				}
+			}
+
+			foreach ($raw_polygons['raw_polygons']['features'] as $polygon_item) {
+				if ($polygon_item['geometry']['type'] == 'Polygon') {
+					if (count($polygon_item['geometry']['coordinates'][0]) == (4 + 1)) {
+						//todo vertex
+						$polygon_data = 
+						[
+							'site' => $site,
+							'floor' => $floor,
+							'poly' => $idx_poly,
+							'geojson' => str_replace('"', '', json_encode($polygon_item['geometry']['coordinates'])),
+							// 'vertex' => $this->xy2vertex(($polygon_item['geometry']['xy'][0]), $poly, $floor),
+							'ts_create' => $ts_create,
+							'flag' => 1
+						];
+						$this->model->set_polygons($polygon_data);
+						$idx_poly += 1;
+					}
+				}elseif ($polygon_item['geometry']['type'] == 'Point') {
+					$source_data = 
 					[
 						'site' => $site,
+						'lng' => floatval($polygon_item['geometry']['coordinates'][0]),
+						'lat' => floatval($polygon_item['geometry']['coordinates'][1]),
 						'floor' => $floor,
-						'poly' => $poly,
-						'geojson' => str_replace('"', '', json_encode($polygon_item['geometry']['coordinates'])),
-						'vertex' => $this->xy2vertex(($polygon_item['geometry']['xy'][0]), $poly, $floor),
 						'ts_create' => $ts_create,
-						'flag' => 1
+						'flag' => 1,
 					];
-					$this->model->set_polygons($polygon_data);
-					$poly += 1;
+					if ($polygon_item['properties']['source_idx']) {
+						$source_data['idx'] = $polygon_item['properties']['source_idx'];
+					}else {
+						$source_data['idx'] = $idx_source;
+						$idx_source += 1;
+					};
+					if ($polygon_item['properties']['source_name']) {
+						$source_data['name'] = $polygon_item['properties']['source_name'];
+					}
+					$this->model->set_sources($source_data);
+					
 				}
 			}
 			echo $ts_create;
@@ -209,6 +284,18 @@ class Polygon extends Controller
 		$fp = fopen('php://output', 'w');
 		fwrite($fp, json_encode($vertex));
 		fclose($fp);
+	}
+
+	private function update_source($ts_create)
+	{
+		$source_idx = $this->request->getPost(['idx']);
+		$source_name = $this->request->getPost(['name']);
+		$data = 
+		[
+			'name' => $source_name
+		];
+		$result = $this->model->update_source($ts_create, $source_idx, $data);
+		echo $ts_create;
 	}
 
 	private function get_timestamp()

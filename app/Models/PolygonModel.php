@@ -15,6 +15,12 @@ class PolygonModel extends Model
         $builder->insert($data);
     }
 
+    public function set_sources($data)
+    {
+        $builder = $this->db->table('source');
+        $builder->insert($data);
+    }
+
     public function get_ts_create($site)
     {
         // get site ts_create  
@@ -32,6 +38,16 @@ class PolygonModel extends Model
     {
         // get selected ts_create polygons
         $builder = $this->db->table('polygon');
+        $builder->where('site', $site);
+        $builder->where('ts_create', $ts_create);
+        $query = $builder->get()->getResult();
+        return $query;
+    }
+
+    public function get_source($site, $ts_create)
+    {
+        // get selected ts_create polygons
+        $builder = $this->db->table('source');
         $builder->where('site', $site);
         $builder->where('ts_create', $ts_create);
         $query = $builder->get()->getResult();
@@ -68,6 +84,16 @@ class PolygonModel extends Model
         {
             die($e->getMessage());
         }
+    }
+
+    public function update_source($ts_create, $idx, $data)
+    {
+        // update source
+        $builder = $this->db->table('source');
+        $builder->where('ts_create', $ts_create);
+        $builder->where('idx', $idx);
+        $builder->update($data);
+        return 1;
     }
 
 }

@@ -118,7 +118,7 @@ class Monitor extends Controller
     {
         $sensor_status_all = array();
         try {
-            $raw_sensor_status = json_decode(file_get_contents('http://192.168.10.148:8080/latest_sensor_status'));
+            $raw_sensor_status = json_decode(file_get_contents('http://192.168.10.123:8080/latest_sensor_status'));
             // print_r($raw_beacon_status);
             foreach ($raw_sensor_status as $sensor => $sensor_each) {
                 // init sensor status structure
@@ -210,7 +210,7 @@ class Monitor extends Controller
     public function get_beacon_status_mapbox($site)
     {
         try {
-            $raw_beacon_status = file_get_contents('http://192.168.10.148:8080/latest_beacon_status');
+            $raw_beacon_status = file_get_contents('http://192.168.10.123:8080/latest_beacon_status');
             echo $raw_beacon_status;
         } catch (\Throwable $th) {
             //throw $th;

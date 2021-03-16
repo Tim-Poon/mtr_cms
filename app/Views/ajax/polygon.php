@@ -248,21 +248,21 @@
 			}
 		});
 
-		// todo Layer: site fix ploygons idx with ts_create
-		// map.addLayer({
-        //     'id': 'polygon_idx_layer',
-        //     'type': 'circle',
-        //     'source': 'polygons_idx',
-        //     'paint': {
-        //         'circle-radius': 6,
-        //         'circle-color': '#58D68D'
-        //     },
-        //     'layout': {
-		// 		'text-field': ['get', 'rssi'],
-        //         'visibility': 'visible'
-        //     },
-        //     // 'filter': ['==', '$type', 'Point']
-        // });
+		// Layer: site fix ploygons idx with ts_create
+		map.addLayer({
+            'id': 'polygon_idx_layer',
+            'type': 'symbol',
+            'source': 'polygons_idx',
+            'layout': {
+				'text-field': ['get', 'polygon_idx'],
+				'text-size': 20,
+                'visibility': 'visible',
+            },
+			'paint': {
+                'text-color': '#21618C',
+            },
+            // 'filter': ['==', '$type', 'Point']
+        });
 
 		map.addLayer({
             'id': 'source_list_layer',
@@ -299,7 +299,6 @@
                 'visibility': 'visible'
             }
         });
-
 
 		map.addLayer({
             'id': 'site_map_layer',
@@ -524,9 +523,9 @@
 			polygon_list['type'] = 'FeatureCollection';
 			polygon_list['features'] = new Array;
 
-			var polygon_idx = {};
-			polygon_idx['type'] = 'FeatureCollection';
-			polygon_idx['features'] = new Array;   
+			var polygon_idx_list = {};
+			polygon_idx_list['type'] = 'FeatureCollection';
+			polygon_idx_list['features'] = new Array;   
 
 			<?php 
 				foreach($site_polygons as $site_polygon_item){?>
@@ -543,23 +542,31 @@
 								"coordinates": <?=$site_polygon_item->geojson?>
 							}
 						};
-
-						// todo show polygon id
-						// var polygon_idx = {
-						// 	"type": "Feature",
-						// 	"geometry": {
-						// 		"type": "Point",
-						// 		"coordinates": []
-						// 	},
-						// 	"properties": {    
-						// 		'polygon_idx':,
-						// 	},
-						// };
+						coors = <?= $site_polygon_item->geojson?>;
+						avg_lng = 0;
+						avg_lat = 0;
+						for (i=0; i < 4; i++) {
+							avg_lng = avg_lng + coors[0][i][0];
+							avg_lat = avg_lat + coors[0][i][1];
+							}
+						// show polygon id
+						var polygon_idx = {
+							"type": "Feature",
+							"geometry": {
+								"type": "Point",
+								"coordinates": [avg_lng/4, avg_lat/4]
+							},
+							"properties": {    
+								'polygon_idx': '#<?=$site_polygon_item->poly?>',
+							},
+						};
+						polygon_idx_list['features'].push(polygon_idx);
 
 						polygon_list['features'].push(polygon_poly);
 					}
 			<?php }?>
 			map.getSource('polygons').setData(polygon_list);
+			map.getSource('polygons_idx').setData(polygon_idx_list);
 		<?php }?>
 		
 		<?php if ($site_sources) { ?>

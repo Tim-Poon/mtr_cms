@@ -275,18 +275,18 @@ class Polygon extends Controller
 	{
 		// get floor
 		$polygons = $this->model->get_polygon($site, $ts_create);
-		$geojson_coor = 'MAP = {';
+		$geojson_coor = 'MAP = {'."\n";
 		foreach ($polygons as $polygon_item) {
 			$coor = json_decode($polygon_item->geojson);
 			unset($coor[0][4]);
 			for ($i=0; $i < 4; $i++) { 
 				array_push($coor[0][$i], intval($polygon_item->floor));
 			}
-			$geojson_coor = $geojson_coor . $polygon_item->floor. $polygon_item->poly . ':' . json_encode($coor[0]) . ',';
+			$geojson_coor = $geojson_coor . $polygon_item->floor. $polygon_item->poly . ':' . json_encode($coor[0]) . ','."\n";
 		}
 		$geojson_coor = $geojson_coor.'}'."\n\n";
 
-		$source_coor = 'SOURCE = [';
+		$source_coor = 'SOURCE = ['."\n";
 		$sources = $this->model->get_source($site, $ts_create);
 		
 		foreach ($sources as $source_item) {
@@ -311,7 +311,7 @@ class Polygon extends Controller
 		$geo2meter = 111194.926644;
 		// get floor
 		$polygons = $this->model->get_polygon($site, $ts_create);
-		$geojson_coor = 'MAP = {';
+		$geojson_coor = 'MAP = {'."\n";
 		foreach ($polygons as $polygon_item) {
 			$coor = json_decode($polygon_item->geojson);
 			unset($coor[0][4]);
@@ -320,11 +320,11 @@ class Polygon extends Controller
 				$coor[0][$i][1] = $coor[0][$i][1] * $geo2meter;
 				array_push($coor[0][$i], intval($polygon_item->floor));
 			}
-			$geojson_coor = $geojson_coor . $polygon_item->floor. $polygon_item->poly . ':' . json_encode($coor[0]) . ',';
+			$geojson_coor = $geojson_coor . $polygon_item->floor. $polygon_item->poly . ':' . json_encode($coor[0]) . ','."\n";
 		}
 		$geojson_coor = $geojson_coor.'}'."\n\n";
 
-		$source_coor = 'SOURCE = [';
+		$source_coor = 'SOURCE = ['."\n";
 		$sources = $this->model->get_source($site, $ts_create);
 		// 111194.926644
 		foreach ($sources as $source_item) {

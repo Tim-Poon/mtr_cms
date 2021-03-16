@@ -26,11 +26,17 @@ class Polygon extends Controller
 		// 	$floor = $params[1];
 		// 	$this->import_polygons($site, $floor);
 		// }
-		elseif($method === 'export')
+		elseif($method === 'export_geojson')
 		{
 			$site = $params[0];
 			$ts_create = $params[1];
-			$this->export_polygons($site, $ts_create);
+			$this->export_polygons_geojson($site, $ts_create);
+		}
+		elseif($method === 'export_meter')
+		{
+			$site = $params[0];
+			$ts_create = $params[1];
+			$this->export_polygons_meter($site, $ts_create);
 		}
 		elseif($method === 'del')
 		{
@@ -265,24 +271,76 @@ class Polygon extends Controller
 		echo '<Strong style="color:red">Delete polygon:'.$site.' '.$ts_create.' SUCCESS!</Strong>';
 	}
 
-	private function export_polygons($site, $ts_create)
+	private function export_polygons_geojson($site, $ts_create)
 	{
 		// get floor
 		$polygons = $this->model->get_polygon($site, $ts_create);
-		$vertex = '{';
+		$geojson_coor = 'MAP = {';
 		foreach ($polygons as $polygon_item) {
-			$vertex = $vertex.$polygon_item->vertex.',';
+			$coor = json_decode($polygon_item->geojson);
+			unset($coor[0][4]);
+			for ($i=0; $i < 4; $i++) { 
+				array_push($coor[0][$i], intval($polygon_item->floor));
+			}
+			$geojson_coor = $geojson_coor . $polygon_item->floor. $polygon_item->poly . ':' . json_encode($coor[0]) . ',';
 		}
-		$vertex = $vertex.'}';
-		
-		$file_name = 'Polygon_'.$site.'_'.$ts_create.'.txt';
-		// echo $vertex;
+		$geojson_coor = $geojson_coor.'}'."\n\n";
 
+		$source_coor = 'SOURCE = [';
+		$sources = $this->model->get_source($site, $ts_create);
+		
+		foreach ($sources as $source_item) {
+			$coor = "{'".$source_item->name."': SOURCE_INFO(source_identifier='".$source_item->name."', x=".$source_item->lng.", y=".$source_item->lat.", z=".$source_item->floor.", type='non-lon-lat', activated=True, addition_info={}), },"."\n";
+			$source_coor = $source_coor.$coor;
+		}
+		$source_coor = $source_coor."]";
+		// print_r($geojson_coor);
+		// print_r(($source_coor));
+		$file_name = 'PolygonAndSource_GEO_'.$site.'_'.$ts_create.'.txt';
 		header('Content-Type: application/vnd.ms-excel;charset=UTF-8');
 		header('Content-Type: application/force-download');
 		header('Content-Disposition: attachment;filename='.$file_name);
 		$fp = fopen('php://output', 'w');
-		fwrite($fp, json_encode($vertex));
+		fwrite($fp, $geojson_coor);
+		fwrite($fp, $source_coor);
+		fclose($fp);
+	}
+
+	private function export_polygons_meter($site, $ts_create)
+	{
+		$geo2meter = 111194.926644;
+		// get floor
+		$polygons = $this->model->get_polygon($site, $ts_create);
+		$geojson_coor = 'MAP = {';
+		foreach ($polygons as $polygon_item) {
+			$coor = json_decode($polygon_item->geojson);
+			unset($coor[0][4]);
+			for ($i=0; $i < 4; $i++) { 
+				$coor[0][$i][0] = $coor[0][$i][0] * $geo2meter;
+				$coor[0][$i][1] = $coor[0][$i][1] * $geo2meter;
+				array_push($coor[0][$i], intval($polygon_item->floor));
+			}
+			$geojson_coor = $geojson_coor . $polygon_item->floor. $polygon_item->poly . ':' . json_encode($coor[0]) . ',';
+		}
+		$geojson_coor = $geojson_coor.'}'."\n\n";
+
+		$source_coor = 'SOURCE = [';
+		$sources = $this->model->get_source($site, $ts_create);
+		// 111194.926644
+		foreach ($sources as $source_item) {
+			$coor = "{'".$source_item->name."': SOURCE_INFO(source_identifier='".$source_item->name."', x=".$source_item->lng * $geo2meter.", y=".$source_item->lat * $geo2meter.", z=".$source_item->floor.", type='non-lon-lat', activated=True, addition_info={}), },"."\n";
+			$source_coor = $source_coor.$coor;
+		}
+		$source_coor = $source_coor."]";
+		// print_r($geojson_coor);
+		// print_r(($source_coor));
+		$file_name = 'PolygonAndSource_METER_'.$site.'_'.$ts_create.'.txt';
+		header('Content-Type: application/vnd.ms-excel;charset=UTF-8');
+		header('Content-Type: application/force-download');
+		header('Content-Disposition: attachment;filename='.$file_name);
+		$fp = fopen('php://output', 'w');
+		fwrite($fp, $geojson_coor);
+		fwrite($fp, $source_coor);
 		fclose($fp);
 	}
 

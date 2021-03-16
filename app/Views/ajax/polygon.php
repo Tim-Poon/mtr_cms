@@ -615,8 +615,8 @@
 				ts_create_floor += '<a href="<?= base_url('polygon/'.$site_info[0]['site_name'].'/'.$site_ts_create_item->ts_create)?>"><strong><?= date('m/d H:i', $site_ts_create_item->ts_create)?></strong></a>';
 				ts_create_floor += '<?php if ($key == 0) {?>&nbsp&nbsp<span class="label label-warning">New!</span><?php }?></td>';
 				ts_create_floor += '<td class="text-align-center">';
-				ts_create_floor += '<a href="<?= base_url('polygon/export/'.$site_info[0]['site'].'/'.$site_ts_create_item->ts_create)?>"><i class="fa fa-download">G</i></a>&nbsp&nbsp';
-				ts_create_floor += '<a href="<?= base_url('polygon/export2/'.$site_info[0]['site'].'/'.$site_ts_create_item->ts_create)?>"><i class="fa fa-download">M</i></a>&nbsp&nbsp';
+				ts_create_floor += '<a href="<?= base_url('polygon/export_geojson/'.$site_info[0]['site'].'/'.$site_ts_create_item->ts_create)?>"><i class="fa fa-download">G</i></a>&nbsp';
+				ts_create_floor += '<a href="<?= base_url('polygon/export_meter/'.$site_info[0]['site'].'/'.$site_ts_create_item->ts_create)?>"><i class="fa fa-download">M</i></a>&nbsp';
 				ts_create_floor += '<a href="<?= base_url('polygon/del/'.$site_info[0]['site'].'/'.$site_ts_create_item->ts_create)?>"><i class="fa fa-trash-o"></i></a></td></tr>';
 				}
 		<?php } ?>

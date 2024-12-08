@@ -4,7 +4,7 @@
 	<!-- row -->
 	<div class="row">
 
-		<article class="col-sm-12 col-md-12 col-lg-6">
+		<article class="col-sm-12 col-md-12 col-lg-12">
 		<!-- new widget -->
 			<div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-1"
 				data-widget-editbutton="false"
@@ -37,11 +37,15 @@
 						<table id="datatable_sensor" class="table table-striped table-hover">
 							<thead>
 								<tr>
-									<th class="text-align-center" width='15%'>Site</th>
+									<th class="text-align-center" width='10%'>Site</th>
 									<th class="text-align-center" width='5%'>Label</th>
-									<th class="text-align-center" width='30%'>Sensor</th>
-									<th class="text-align-center" width='35%'>HCI</th>
-									<th class="text-align-center" width='15%'>VM</th>
+									<th class="text-align-center" width='8%'>Sensor</th>
+									<th class="text-align-center" width='20%'>HCI</th>
+									<th class="text-align-center" width='5%'>C_T</th>
+									<th class="text-align-center" width='5%'>C_U</th>
+									<th class="text-align-center" width='5%'>SD_U</th>
+									<th class="text-align-center" width='5%'>B_C</th>
+									<th class="text-align-center" width='10%'>Last_TS</th>
 								</tr>
 							</thead>
 							<tbody id='statusbody'>
@@ -53,80 +57,13 @@
 				<!-- end widget div -->
 			</div>
 			<!-- end widget -->
-
-			<!-- new widget -->
-			<div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-2" data-widget-colorbutton="false" 
-				data-widget-editbutton="false"
-				data-widget-colorbutton="false"
-				data-widget-deletebutton="false"
-				data-widget-togglebutton="false"
-				data-widget-sortable="false">
-
-				<header>
-					<span class="widget-icon"> <i class="fa fa-map-marker"></i> </span>
-					<h2>Logger</h2>
-				</header>
-
-				<!-- widget div-->
-				<div>
-					<div class="widget-body no-padding">
-						<!-- content goes here -->
-						<table id="datatable_logger" class="table table-bordered smart-form">
-							<thead>
-								<tr>
-									<th class="text-align-center"> <i class="fa fa-building"></i> Date</th>
-									<th class="text-align-center"> <i class="fa fa-calendar"></i> S-Type</th>
-									<th class="text-align-center"> <i class="glyphicon glyphicon-send"></i> Content</th>
-									<th class="text-align-center"> <i class="glyphicon glyphicon-send"></i> Sloved</th>
-								</tr>
-								<tr class="second">
-									<td>
-										<label class="input">
-											<input type="text" name="search_date" placeholder="Filter time" class="search_init">
-										</label>
-									</td>
-									<td>
-										<label class="input">
-											<input type="text" name="search_src_type" placeholder="Filter source type" class="search_init">
-										</label>	
-									</td>
-									<td>
-										<label class="input">
-											<input type="text" name="search_content" placeholder="Filter content" class="search_init">
-										</label>	
-									</td>
-									<td>
-										<label class="input">
-											<input type="text" name="search_content" placeholder="Filter content" class="search_init">
-										</label>	
-									</td>
-								</tr>
-							</thead>
-							<tbody>
-								<?php foreach($logs as $logs_item){ ?>
-									<tr class= "<?= $log_level_mapping[$logs_item['level']]?>">
-										<td class="text-align-center"><?= date('Y/m/d H:i:s', $logs_item['ts']/1000)?></td>
-										<td class="text-align-center"><code><?= $logs_item['src_type']?></code></td>
-										<td class="text-align-center"><?= $logs_item['content']?></td>
-										<td class="text-align-center"><?php if ($logs_item['todo']){echo '<i class="fa fa-check-circle">';}?></td>
-									</tr>
-								<?php } ?>
-							</tbody>
-						</table>
-
-						<!-- end content -->
-					</div>
-				</div>
-				<!-- end widget div -->
-			</div>
-			<!-- end widget -->
-
 		</article>
-
+	</div>
+	<div class="row">
 		<article class="col-sm-12 col-md-12 col-lg-6">
 
 			<!-- new widget -->
-			<div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-3" 
+			<div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-3"
 				data-widget-editbutton="false"
 				data-widget-colorbutton="false"
 				data-widget-deletebutton="false"
@@ -196,16 +133,16 @@
 <!-- end widget grid -->
 
 <script type="text/javascript">
-	
+
 	/*
 	 * FULL CALENDAR JS
 	 */
-	
+
 	// Load Calendar dependency then setup calendar
-	loadScript("public/js/plugin/fullcalendar/jquery.fullcalendar.min.js", setupCalendar);
-	
+	loadScript("<?= base_url('public/js/plugin/fullcalendar/jquery.fullcalendar.min.js')?>", setupCalendar);
+
 	function setupCalendar() {
-	
+
 	    if ($("#calendar").length) {
 	        var date = new Date();
 	        var d = date.getDate();
@@ -216,13 +153,13 @@
 	            selectable: false,
 	            unselectAuto: false,
 	            disableResizing: false,
-	
+
 	            header: {
 	                left: 'title', //,today
 	                center: 'prev, next, today',
 	                right: 'month, agendaWeek, agenDay' //month, agendaDay,
 				},
-				
+
 				eventClick: function (arg) {
 					// window.location.href = arg.title;
 					// window.location.href = 'maintenance';
@@ -239,11 +176,11 @@
 	                        " '></i>");
 	                }
 				},
-				events: [<?php foreach($todos as $todo){echo json_encode($todo).',';}; foreach($reports as $report){echo json_encode($report).',';};?>],
+				events: [<?php foreach($reports_date as $report){echo json_encode($report).',';};?>],
 	        });
-	
+
 	    };
-	
+
 	    /* hide default buttons */
 	    $('.fc-header-right, .fc-header-center').hide();
 	}
@@ -253,30 +190,30 @@
 	    $('.fc-button-prev').click();
 	    return false;
 	});
-	
+
 	// calendar next
 	$('#calendar-buttons #btn-next').click(function () {
 	    $('.fc-button-next').click();
 	    return false;
 	});
-	
+
 	// calendar today
 	$('#calendar-buttons #btn-today').click(function () {
 	    $('.fc-button-today').click();
 	    return false;
 	});
-	
+
 	// sampling
 	// calendar month
 	$('#mt').click(function () {
 		$('#calendar').fullCalendar('changeView', 'month');
 	});
-	
+
 	// calendar agenda week
 	$('#ag').click(function () {
 	    $('#calendar').fullCalendar('changeView', 'agendaWeek');
 	});
-	
+
 	// calendar agenda day
 	$('#td').click(function () {
 	    $('#calendar').fullCalendar('changeView', 'agendaDay');
@@ -327,7 +264,7 @@
 				this.className = "search_init";
 				this.value = this.initVal;
 			}
-		});		
+		});
 
 		var oTable = $('#datatable_logger').dataTable({
 			dom : "<'dt-top-row'><'dt-wrapper't><'dt-row dt-bottom-row'ip>",
@@ -346,7 +283,7 @@
 				"sSearch" : "Search all columns:"
 			},
 			"bSortCellsTop" : true,
-			order: [[0, "desc"]],
+			order: [[8, "desc"]],
 		});
 		/* END TABLE TOOLS */
 	}
@@ -357,7 +294,7 @@
 			// data = JSON.parse(result);
 			// console.log(result);
 			$('#statusbody').html(result).delay(100);
-			setTimeout(load_sensor_status, 1000);
+			setTimeout(load_sensor_status, 2000);
 		});
 		// $.ajax({
 		// 	type: "GET",

@@ -275,7 +275,7 @@ class Polygon extends Controller
 	{
 		// get floor
 		$polygons = $this->model->get_polygon($site, $ts_create);
-		$geojson_coor = 'MAP = {'."\n";
+		$geojson_coor = 'MAPS = {'."\n";
 		foreach ($polygons as $polygon_item) {
 			$coor = json_decode($polygon_item->geojson);
 			unset($coor[0][4]);
@@ -286,14 +286,14 @@ class Polygon extends Controller
 		}
 		$geojson_coor = $geojson_coor.'}'."\n\n";
 
-		$source_coor = 'SOURCE = ['."\n";
+		$source_coor = 'SOURCE_INFO_DICT = {'."\n";
 		$sources = $this->model->get_source($site, $ts_create);
 		
 		foreach ($sources as $source_item) {
-			$coor = "{'".$source_item->name."': SOURCE_INFO(source_identifier='".$source_item->name."', x=".$source_item->lng.", y=".$source_item->lat.", z=".$source_item->floor.", type='non-lon-lat', activated=True, addition_info={}), },"."\n";
+			$coor = "'".$source_item->name."': SOURCE_INFO(source_identifier='".$source_item->name."', x=".$source_item->lng.", y=".$source_item->lat.", z=".$source_item->floor.", type='non-lon-lat', activated=True, addition_info={}),"."\n";
 			$source_coor = $source_coor.$coor;
 		}
-		$source_coor = $source_coor."]";
+		$source_coor = $source_coor."}";
 		// print_r($geojson_coor);
 		// print_r(($source_coor));
 		$file_name = 'PolygonAndSource_GEO_'.$site.'_'.$ts_create.'.txt';
@@ -311,7 +311,7 @@ class Polygon extends Controller
 		$geo2meter = 111194.926644;
 		// get floor
 		$polygons = $this->model->get_polygon($site, $ts_create);
-		$geojson_coor = 'MAP = {'."\n";
+		$geojson_coor = 'MAPS = {'."\n";
 		foreach ($polygons as $polygon_item) {
 			$coor = json_decode($polygon_item->geojson);
 			unset($coor[0][4]);
@@ -324,14 +324,14 @@ class Polygon extends Controller
 		}
 		$geojson_coor = $geojson_coor.'}'."\n\n";
 
-		$source_coor = 'SOURCE = ['."\n";
+		$source_coor = 'SOURCE_INFO_DICT = {'."\n";
 		$sources = $this->model->get_source($site, $ts_create);
 		// 111194.926644
 		foreach ($sources as $source_item) {
-			$coor = "{'".$source_item->name."': SOURCE_INFO(source_identifier='".$source_item->name."', x=".$source_item->lng * $geo2meter.", y=".$source_item->lat * $geo2meter.", z=".$source_item->floor.", type='non-lon-lat', activated=True, addition_info={}), },"."\n";
+			$coor = "'".$source_item->name."': SOURCE_INFO(source_identifier='".$source_item->name."', x=".$source_item->lng * $geo2meter.", y=".$source_item->lat * $geo2meter.", z=".$source_item->floor.", type='non-lon-lat', activated=True, addition_info={}),"."\n";
 			$source_coor = $source_coor.$coor;
 		}
-		$source_coor = $source_coor."]";
+		$source_coor = $source_coor."}";
 		// print_r($geojson_coor);
 		// print_r(($source_coor));
 		$file_name = 'PolygonAndSource_METER_'.$site.'_'.$ts_create.'.txt';

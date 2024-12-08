@@ -45,12 +45,19 @@
 						<h4>Content</h4>
 						<table class="table table-bordered hidden-mobile">
 							<tbody>
-								<?php foreach (json_decode($todos_item['content']) as $key => $value) { ?>
+								<?php 
+									$todo_content = explode("#", $todos_item['content']);
+									if (count($todo_content) == 2) {
+									foreach (json_decode($todo_content[1]) as $key => $value) { ?>
 									<tr class="warning">
 									<td><strong><?= $key ?></strong></td>
 									<td><?= $value ?></td>
 									</tr>
-								<?php }?>
+								<?php }}else{?>
+									<tr class="warning">
+									<td><?= $todos_item['content'] ?></td>
+									</tr>
+									<?php }?>
 							</tbody>
 						</table>
 					</div>

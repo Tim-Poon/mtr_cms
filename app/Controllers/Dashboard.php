@@ -40,10 +40,10 @@ class Dashboard extends Controller
 			'sub_title' => '',
 			'site_names' => $this->model_monitor->get_site_name_all(),
 
-			'logs' => $this->model->get_logs(30),
-			'log_level_mapping' => $this->log_level_mapping,
-			'todos' => $this->todos(),
-			'reports' => $this->reports(),
+			// 'logs' => $this->model->get_logs(30),
+			// 'log_level_mapping' => $this->log_level_mapping,
+			// 'todos' => $this->todos(),
+			'reports_date' => $this->get_reports_date(),
 		];
 
 		echo view('head', $data);
@@ -58,7 +58,7 @@ class Dashboard extends Controller
 		// echo substr($this->model->get_reporing_all_date()[0]['delivery_date'],0,4);
 	}
 
-	public function reports()
+	public function get_reports_date()
 	{
 		$report_date = $this->model->get_reporing_all_date();
 		$res = array();
@@ -69,7 +69,7 @@ class Dashboard extends Controller
 			$report_status['start'] = substr($date['delivery_date'], 0, 4).'-'.substr($date['delivery_date'], 4, 2).'-'.substr($date['delivery_date'], 6, 2);
 			
 			// link to todos page
-			$report_status['url'] = "reporting/get_report/".$date['delivery_date'];
+			$report_status['url'] = "reporting/download_csv/".$date['delivery_date'];
 			array_push($res, $report_status);
 		}
 		return ($res);
@@ -79,23 +79,31 @@ class Dashboard extends Controller
 	{
 		$res = array();
 		$todos = $this->model->get_todos(30);
+		$temp = array();
 
 		foreach($todos as $todo){
-			$todo_status['title'] = $todo->content;
-			$todo_status['allDay'] = true;
 			$time = Time::createFromTimestamp($todo->ts/1000, 'Asia/Hong_Kong', 'en_US');
-			$todo_status['start'] = "{$time->getYear()}-{$time->getMonth()}-{$time->getDay()}";
-			$todo_status['className'] = $this->loglevel2todo_mapping[$todo->level];
+			$todo_date = "{$time->getYear()}-{$time->getMonth()}-{$time->getDay()}";
 
-			$todo_status['id'] = "todos{$todo->id}"; //todo
-			$todo_status['ts'] = $time;
-			$todo_status['src_type'] = $todo->src_type;
-			$todo_status['content'] = $todo->content;
-			$todo_status['level'] = $todo->level;
-			
-			// link to todos page
-			$todo_status['url'] = "maintenance/todos/".$todo_status['src_type']."/".$todo->id;
-			array_push($res, $todo_status);
+			if (in_array($todo_date, $temp)) {
+				continue;
+			}else{
+				$todo_status['title'] = 'TODOS';
+				$todo_status['allDay'] = true;
+				$todo_status['start'] = $todo_date;
+				$todo_status['className'] = $this->loglevel2todo_mapping[$todo->level];
+
+				$todo_status['id'] = "todos{$todo->id}"; //todo
+				$todo_status['ts'] = $time;
+				$todo_status['src_type'] = $todo->src_type;
+				$todo_status['content'] = $todo->content;
+				$todo_status['level'] = $todo->level;
+				
+				// link to todos page
+				$todo_status['url'] = "maintenance";
+				array_push($temp, $todo_date);
+				array_push($res, $todo_status);
+			}
 		}
 		return ($res);
 	}

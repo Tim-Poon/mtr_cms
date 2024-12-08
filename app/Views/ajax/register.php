@@ -34,6 +34,7 @@
 									<th class="text-align-center">Sensor BLE Mac</th>
 									<th class="text-align-center">Site</th>
                                     <th class="text-align-center">Label</th>
+									<th class="text-align-center">Valid</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -56,6 +57,12 @@
                                         </strong>
                                     </td>
                                     <td class="text-align-center"><?= $sensor_item['label']?> </td>
+									<td class="text-align-center"><?php if($sensor_item['valid'] == -1){
+										echo '-';}elseif($sensor_item['valid'] == 1){
+											echo '<i class="fa fa-check fa-fw">';}else{
+												echo '<strong>DISABLE</strong>';}
+										?>
+									</td>
 								</tr>
 								<?php }?>
 							</tbody>

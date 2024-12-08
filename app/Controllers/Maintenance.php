@@ -19,8 +19,7 @@ class Maintenance extends Controller
 	{
 		if ($method == 'todos')
 		{
-            $src_type = $params[0];
-            $todo_id = $params[1];
+            $todo_id = $params[0];
 			return $this->todos($src_type, $todo_id);
 		}elseif ($method == 'update_todos')
 		{
@@ -40,15 +39,15 @@ class Maintenance extends Controller
 
     public function index()
     {
-        $data = 
-        [
-            'icon' => 'fa-check-circle-o',
-            'title' => 'Maintenance',
-            'sub_title' => '',
-            'site_names' => $this->model_monitor->get_site_name_all(),
-
+        $site_info = 0;
+		$data = 
+		[
+			'icon' => 'fa-check-circle-o',
+			'title' => 'Maintenance',
+			'sub_title' => '',
+			'site_names' => $this->model_monitor->get_site_name_all(),
             'tabletodos' => $this->tabletodos(),
-        ];
+		];
 
         # echo todos page head
         echo view('head', $data);
@@ -59,12 +58,11 @@ class Maintenance extends Controller
 
     public function todos($src_type, $todo_id)
     {
-        // $seq = $this->retrieve_process_seq($log);
         $data = 
         [
             'icon' => 'fa-check-circle-o',
-            'title' => 'Todos',
-            'sub_title' => ' > '.$src_type.' #'.$todo_id,
+            'title' => 'Maintenance',
+            'sub_title' => ' > Todos '.$src_type.' #'.$todo_id,
             'site_names' => $this->model_monitor->get_site_name_all(),
 
             'todos_item' => $this->model->get_log($todo_id),
@@ -73,31 +71,6 @@ class Maintenance extends Controller
         echo view('js');
         echo view('ajax/todos_solve', $data);
         echo view('foot');
-    }
-
-    protected function related_logs($stype, $id)
-    {
-        // related logs are logs that may help you figure out how to solve current logs
-        if($stype == 'offline_reporting'){
-            return $this->model->get_related_offline_reporting_logs($id);
-        }
-        if($stype == 'api_server'){
-            return $this->model->get_related_api_server_logs($id);
-        }
-        if($stype == 'reporting_server'){
-            return $this->model->get_related_reporting_server_logs($id);
-        }
-        if($stype == 'sensor'){
-            return $this->model->get_related_sensor_logs($id);
-        }
-        return $this->model->get_related_offline_reporting_logs($id);
-    }
-
-    protected function retrieve_process_seq($log)
-    {
-        # todo
-        $content = $log->content;
-        return 1;
     }
 
     public function update_todos()
@@ -129,15 +102,20 @@ class Maintenance extends Controller
                 $id = $todo->id; //todo
                 $todo_status['ts'] = $time;
                 $src_type = $todo->src_type;
-                $content = '';
                 $level = $todo->level;
-                
-                foreach (json_decode($todo->content) as $key => $value) {
-                    $content = $content."<br>&nbsp&nbsp&nbsp&nbsp- <strong style=\"color:#F39C12\">$key : $value</strong>";
+                $todo_content = explode("#", $todo->content);
+                if (count($todo_content) == 2) {
+                    $content = $todo_content[1];
+                    // explode(" ",$str)
+                    foreach (json_decode($content) as $key => $value) {
+                        $content = $content."<br>&nbsp&nbsp&nbsp&nbsp- <strong style=\"color:#51B8FC\">$key : $value</strong>";
+                    }
+                }else{
+                    $content = $todo->content;
                 }
-
+                
 				// link to reporting page
-                $url = "maintenance/todos/$src_type"."/".$todo->id;
+                $url = "maintenance/todos/".$todo->id;
 
                 $view_content = "<li>
                                     <span class=\"handle\"></span>

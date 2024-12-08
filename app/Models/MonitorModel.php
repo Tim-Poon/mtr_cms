@@ -9,6 +9,14 @@ class MonitorModel extends Model
         parent::__construct();
     }
 
+    public function get_site_sources($site)
+    {
+        $builder = $this->db->table('source_release');
+        $builder->where('site', $site);
+        $query = $builder->get();
+        return $query->getResult('array');
+    }
+
     public function get_site_info_by_name($site_name)
     {
         // get all sensor

@@ -46,3 +46,9 @@ Options All -Indexes
 # Disable server signature start
     ServerSignature Off
 # Disable server signature end
+
+#AuthUserFile /var/www/html/.htpasswd
+#AuthType Basic
+#AuthName "Restricted Area"
+#Require valid-user
+

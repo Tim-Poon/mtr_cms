@@ -1363,7 +1363,7 @@ function checkURL() {
         $('nav li.active')
             .removeClass("active");
         // match the url and add the active class
-        $('nav li:has(a[href="' + 'http://143.89.144.200:1234/mtr_cms/' + url1 + '"])')
+        $('nav li:has(a[href="' + 'http://mtr-prod-internal-v2.smartsensing.biz/mtr_cms/' + url1 + '"])')
             .addClass("active");
         title = ($('nav a[href="' + url1 + '"]')
             .attr('title'));
@@ -1371,16 +1371,16 @@ function checkURL() {
         document.title = (title || document.title);
         if (url2){
         // match the url and add the active class
-        $('nav li:has(a[href="' + 'http://143.89.144.200:1234/mtr_cms/' + url1 + '/' + url2 + '"])')
+        $('nav li:has(a[href="' + 'http://mtr-prod-internal-v2.smartsensing.biz/mtr_cms/' + url1 + '/' + url2 + '"])')
             .addClass("active");
         }
     } else {
         $('nav li.active')
             .removeClass("active");
         // match the url and add the active class
-        $('nav li:has(a[href="http://143.89.144.200:1234/mtr_cms/"])')
+        $('nav li:has(a[href="http://mtr-prod-internal-v2.smartsensing.biz/mtr_cms/"])')
             .addClass("active");
-        title = ($('nav a[href="http://143.89.144.200:1234/mtr_cms/"]')
+        title = ($('nav a[href="http://mtr-prod-internal-v2.smartsensing.biz/mtr_cms/"]')
             .attr('title'));
         document.title = (title || document.title);
     }

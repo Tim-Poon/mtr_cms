@@ -70,46 +70,32 @@
                     <form class="smart-form">
                         <div class="row">
                             <section class="col col-6">
-                                <div class="note note-success">Beacon</div>
+                                <!-- <div class="note note-success">Beacon</div> -->
                                 <div class="col col-3">
                                     <label class="toggle state-info"><input type="checkbox" name="checkbox-toggle" id="Status" onclick="OncheckBox(this)" ><i data-swchon-text="ON" data-swchoff-text="OFF"></i>Dots</label>
                                 </div>
-                                <div class="col col-3">
+                                <!-- <div class="col col-3">
                                     <label class="toggle state-info"><input type="checkbox" name="checkbox-toggle" id="Name" onclick="OncheckBox(this)"><i data-swchon-text="ON" data-swchoff-text="OFF"></i>Name</label>
                                 </div>
                                 <div class="col col-3">
                                     <label class="toggle state-info"><input type="checkbox" name="checkbox-toggle" id="Rssi" onclick="OncheckBox(this)"><i data-swchon-text="ON" data-swchoff-text="OFF"></i>RSSI</label>
-                                </div>
+                                </div> -->
                             </section>
-                            <section class="col col-6">
+                            <!-- <section class="col col-6">
                                 <div class="note note-success">Switcher</div>
                                 <div class="col col-3">
                                     <label class="toggle state-info"><input type="checkbox" name="checkbox-toggle"><i data-swchon-text="ON" data-swchoff-text="OFF"></i>Polygon</label>
                                 </div>
-                            </section>
+                            </section> -->
                         </div>
                     </form>
                     <div class="show-stat-microcharts">
                         <?php foreach ($site_sensors as $site_sensor_item) {?>
                         <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
-                            <span class="sensor-status-title">
-                                <strong style="color:#707b7c"> <?= $site_info[0]['site_name'].' - '.$site_sensor_item->label?></strong>
-                            </span>
-                            
-                            <ul class="smaller-stat hidden-sm pull-right">
-                                <li>
-                                    <span class="label bg-color-greenLight"><i class="fa fa-caret-up"></i> #</span>
-                                </li>
-                                <li>
-                                    <span class="label bg-color-blueLight"><i class="fa fa-caret-down"></i> #</span>
-                                </li>
-                            </ul>
-                            
-                            <span id="sparkline_<?= $site_sensor_item->label?>" class="sparkline hidden-sm hidden-md pull-right" >
-                                0
-                            </span>
-                            <span class="sensor-status-velocity" > <i id="vel_<?= $site_sensor_item->label?>"></i>
-                            <i id="faster_flag_<?= $site_sensor_item->label?>"></i>
+                            <span class="sensor-status-velocity" >
+                                <strong id="label_<?= $site_sensor_item->label?>">  <?= '#'.$site_sensor_item->label?></strong> -
+                                <i id="vel_<?= $site_sensor_item->label?>"></i>
+                                <i id="faster_flag_<?= $site_sensor_item->label?>"></i> m/s
                             </span>
                         </div>
                         <?php }?>
@@ -146,9 +132,9 @@
     var map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/light-v10',
-        center: [<?= $site_info[0]['mapbox_center_lng']?>, <?= $site_info[0]['mapbox_center_lat']?>],   
+        center: [<?= $site_info[0]['mapbox_center_lng']?>, <?= $site_info[0]['mapbox_center_lat']?>],
         zoom: <?= $site_info[0]['mapbox_zoom']?>,
-        bearing: <?= $site_info[0]['mapbox_bearing']?> 
+        bearing: <?= $site_info[0]['mapbox_bearing']?>
     });
 
     // dots
@@ -157,7 +143,7 @@
         width: size,
         height: size,
         data: new Uint8Array(size * size * 4),
-        
+
         // get rendering context for the map canvas when layer is added to the map
         onAdd: function () {
             var canvas = document.createElement('canvas');
@@ -165,16 +151,16 @@
             canvas.height = this.height;
             this.context = canvas.getContext('2d');
         },
-        
+
         // called once before every frame where the icon will be used
         render: function () {
             var duration = 1000;
             var t = (performance.now() % duration) / duration;
-            
+
             var radius = (size / 2) * 0.2;
             var outerRadius = (size / 2) * 0.5 * t + radius;
             var context = this.context;
-            
+
             // draw outer circle
             context.clearRect(0, 0, this.width, this.height);
             context.beginPath();
@@ -193,7 +179,7 @@
                 context.fillStyle = 'rgba(171, 235, 198,' + (1 - t) + ')';
             }
             context.fill();
-            
+
             // draw inner circle
             context.beginPath();
             context.arc(
@@ -213,7 +199,7 @@
             context.lineWidth = 2 + 4 * (1 - t);
             context.fill();
             context.stroke();
-            
+
             // update this image's data with data from the canvas
             this.data = context.getImageData(
                 0,
@@ -221,31 +207,19 @@
                 this.width,
                 this.height
             ).data;
-            
+
             // continuously repaint the map, resulting in the smooth animation of the dot
             map.triggerRepaint();
-            
+
             // return `true` to let the map know that the image was updated
             return true;
         }
     };
-    
-    function xy2latlng(x, y){
-        var mA = {x: dot_mapping[0]['x'], y: dot_mapping[0]['y']};
-        var mB = {x: dot_mapping[1]['x'], y: dot_mapping[1]['y']};
-        var pA = map.project([dot_mapping[0]['lng'], dot_mapping[0]['lat']]);
-        var pB = map.project([dot_mapping[1]['lng'], dot_mapping[1]['lat']]);
-
-        var cx = (x - mA.x) * (pB.x - pA.x) / (mB.x - mA.x) + pA.x;
-        var cy = (y - mA.y) * (pB.y - pA.y) / (mB.y - mA.y) + pA.y;
-
-        return map.unproject([cx, cy]);
-    }
     // map.on('mousedown', function (e) {
     //     document.getElementById('info').innerHTML = JSON.stringify(e.point) + '<br />' + JSON.stringify(e.lngLat);
     //     console.log(JSON.stringify(e.lngLat));
     // });
-    
+
     function OncheckBox(index){
         if(index.id == 'Name'){
             if($('#' + index.id).is(':checked')) {
@@ -253,8 +227,8 @@
             }else{
                 map.setLayoutProperty('beacon_info_layer', 'visibility', 'none' );
             }
-        }else if(index.id == 'Rssi'){    
-                      
+        }else if(index.id == 'Rssi'){
+
             if($('#' + index.id).is(':checked')) {
                 map.setLayoutProperty('beacon_rssi_layer', 'visibility', 'visible' );
             }else{
@@ -263,12 +237,16 @@
         }else if(index.id == 'Status'){
             if($('#' + index.id).is(':checked')) {
                 map.setLayoutProperty('beacon_list_layer', 'visibility', 'visible' );
+                map.setLayoutProperty('beacon_rssi_layer', 'visibility', 'visible' );
+                map.setLayoutProperty('beacon_info_layer', 'visibility', 'visible' );
             }else{
                 map.setLayoutProperty('beacon_list_layer', 'visibility', 'none' );
+                map.setLayoutProperty('beacon_rssi_layer', 'visibility', 'none' );
+                map.setLayoutProperty('beacon_info_layer', 'visibility', 'none' );
             }
         }
     }
-      
+
     map.on('load', function() {
         map.addImage('pulsing-dot', pulsingDot, { pixelRatio: 2 });
 
@@ -343,7 +321,7 @@
                 'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
                 'text-size': 12,
                 'text-offset': [0, 0.3],
-                'text-anchor': 'top',  
+                'text-anchor': 'top',
                 'visibility': 'none'
             }
         });
@@ -354,6 +332,8 @@
             type: 'symbol',
             source: 'beacon_list',
             layout: {
+                'icon-allow-overlap': true,
+                'text-allow-overlap': true,
                 'text-field': ['get', 'rssi'],
                 'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
                 'text-size': 15,
@@ -365,13 +345,15 @@
                 'text-halo-width': 2
             },
         });
-        
+
         // Layer: dots (realtime coor)
         map.addLayer({
             'id': 'dots_layer',
             'source': 'dots',
             'type': 'symbol',
             'layout': {
+                'icon-allow-overlap': true,
+                'text-allow-overlap': true,
                 'icon-image': 'pulsing-dot',
                 'text-field': ['get', 'title'],
                 'text-font': [
@@ -392,14 +374,14 @@
 
         // floor switcher
         <?php foreach ($site_info as $idx => $site_floor_item) { ?>
-            
+
             var link = document.createElement('a');
             link.href = '#';
             if (!<?= $idx?>) {
                 link.className = 'active';
             }
             link.textContent = '<?= $site_floor_item['floor_name']?>';
-            
+
             link.onclick = function (e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -410,57 +392,79 @@
                 dot_mapping = <?= $site_info[$site_floor_item['floor'] - 1]['dot_mapping']?>;
                 // set data
                 map.getSource('site_map').setData(<?= $site_floor_item['geojson']?>);
+                map.flyTo({
+                    center: [<?= $site_floor_item['mapbox_center_lng']?>, <?= $site_floor_item['mapbox_center_lat']?>]
+                });
             };
             document.getElementById('menu').appendChild(link);
         <?php } ?>
 
         // flash beacon status
-        site_beacons();
-        function site_beacons(){
+        // var
+        show_site_beacons();
+        function show_site_beacons(){
             var rssi;
+            var timestamp = Date.parse(new Date()) / 1000;
             $.get("get_beacon_status_mapbox/" + <?= $site_info[0]['site'] ?>, '', function(result){
-                var lastest_beacon =  JSON.parse(result);
-                
-                var beacon_list = {};
-                beacon_list['type'] = 'FeatureCollection';
-                beacon_list['features'] = new Array;   
-                <?php foreach($site_beacons as $beacon_item){ ?>
-                    if (<?= $beacon_item->major % 10 ?> == floor_cur) {
-                        rssi = '';
-                        color = '#85C1E9';
-                        lnglat = xy2latlng(<?= $beacon_item->x?>, <?= $beacon_item->y?>);
+                if (result) {
+                    var lastest_beacon =  JSON.parse(result);
+                    var beacon_list = {};
+                    beacon_list['type'] = 'FeatureCollection';
+                    beacon_list['features'] = new Array;
+                    <?php foreach($site_sources as $source_item){ ?>
+                        if (<?= $source_item['floor'] ?> == floor_cur) {
 
-                        for(var beacon_name in lastest_beacon){
-                            if(<?= $beacon_item->major.$beacon_item->minor?> == beacon_name){
-                                rssi = lastest_beacon[beacon_name]['rssi'];
-                                color = '#2ECC71';
-                                break;
-                            }else{
-                                rssi = '';
-                            }  
-                        }
+                            rssi = '';
+                            color = '#85C1E9';
 
-                        var beacon_dot = {
-                                "type": "Feature",
-                                "properties": {    
-                                    'beacon_name': <?= $beacon_item->minor?>,
-                                    'beacon_coor': '[<?= number_format($beacon_item->x, 1).', '.number_format($beacon_item->y, 1)?>]',
-                                    'rssi': rssi,
-                                    'color': color,
-                                },
-                                "geometry": {
-                                    "type": "Point",
-                                    "coordinates": [lnglat['lng'], lnglat['lat']]
+                            if (result != 0) {
+                                for(var beacon_name in lastest_beacon){
+                                    if(<?= $source_item['name']?> == beacon_name){
+
+                                        if (lastest_beacon[beacon_name]['ts'] > 9000000000){
+                                            lastest_beacon[beacon_name]['ts'] = lastest_beacon[beacon_name]['ts']/1000;
+                                        }
+                                        if ((timestamp - lastest_beacon[beacon_name]['ts']) > 30) {
+
+                                            rssi = '';
+                                            color = '#85C1E9';
+                                        }else{
+                                            // console.log(lastest_beacon[beacon_name]);
+                                            if ((lastest_beacon[beacon_name]['rssi']) > -100) {
+                                                rssi = lastest_beacon[beacon_name]['rssi'];
+                                            }
+
+                                            color = '#2ECC71';
+                                        }
+                                        break;
+                                    }else{
+                                        rssi = '';
+                                    }
                                 }
-                        };
-                        beacon_list['features'].push(beacon_dot);
-                    }
-                <?php } ?>
-                map.getSource('beacon_list').setData(beacon_list);
+                            }
+
+                            var beacon_dot = {
+                                    "type": "Feature",
+                                    "properties": {
+                                        'beacon_name': <?= substr($source_item['name'], 5, 5)?>,
+                                        'beacon_coor': '',
+                                        'rssi': rssi,
+                                        'color': color,
+                                    },
+                                    "geometry": {
+                                        "type": "Point",
+                                        "coordinates": [<?= $source_item['lng'].', '.$source_item['lat']?>],
+                                    }
+                            };
+                            beacon_list['features'].push(beacon_dot);
+                        }
+                    <?php } ?>
+                    map.getSource('beacon_list').setData(beacon_list);
+                }
             });
-            setTimeout(site_beacons, 3000);
+            setTimeout(show_site_beacons, 3000);
         }
-        
+
         // flash dots status
         var data_pre;
         var stepper_info_temp = {};
@@ -469,9 +473,10 @@
             $.get("get_sensor_status_mapbox/" + <?= $site_info[0]['site'] ?>, '', function(result){
                 if (result != 0) {
                     data_cur = JSON.parse(result);
+                    // console.log(result);
                     if (data_pre == undefined) {
                         data_pre = data_cur;
-                        animateMarker();
+                        // animateMarker();
                     }else{
                         var count = 0;
                         stepper_info_temp = {};
@@ -480,39 +485,48 @@
                         for(var sensor in data_cur){
                             // 1. 对比data_pre, 找到需要移动的点 todo
                             // alarm.push(data_cur[sensor]['alarm_flag']);
-                            if (data_cur[sensor]['loc_z'] == floor_cur) {
-                                var coor_latlng_cur = xy2latlng(data_cur[sensor]['loc_x'], data_cur[sensor]['loc_y']);
-                                var coor_latlng_pre = xy2latlng(data_pre[sensor]['loc_x'], data_pre[sensor]['loc_y']);
+                            if (data_cur[sensor]['loc_z'] == floor_cur && data_cur[sensor]['loc_x']) {
 
                                 var stepper_info_temp_ = {
-                                    'step_lng': (coor_latlng_cur['lng'] - coor_latlng_pre['lng']) / 60,
-                                    'step_lat': (coor_latlng_cur['lat'] - coor_latlng_pre['lat']) / 60,
-                                    'start_lng': coor_latlng_pre['lng'],
-                                    'start_lat': coor_latlng_pre['lat'],
+                                    'step_lng': (data_cur[sensor]['loc_x'] - data_pre[sensor]['loc_x']) / 60,
+                                    'step_lat': (data_cur[sensor]['loc_y'] - data_pre[sensor]['loc_y']) / 60,
+                                    'start_lng': data_cur[sensor]['loc_x'],
+                                    'start_lat': data_cur[sensor]['loc_y'],
+                                    'ts': data_cur[sensor]['location_ts']
                                 };
                                 stepper_info_temp[data_cur[sensor]['label']] = stepper_info_temp_;
                             }
                         }
-                        
+
                         step_dot();
                         function step_dot() {
                             var stepper = {};
                             stepper['type'] = 'FeatureCollection';
                             stepper['features'] = new Array;
                             for(var label in stepper_info_temp){
-                                var stepper_dot = 
+                                // console.log(stepper_info_temp[label]['ts']);
+                                alarm_flag = data_cur[sensor]['alarm_flag']
+                                if (alarm_flag) {
+                                    color = 'red';
+                                }else{
+                                    color = 'green';
+                                }
+                                var date_ob = new Date(stepper_info_temp[label]['ts']);
+                                var stepper_dot =
                                 {
                                     'type': 'Feature',
                                     'geometry': {
                                         'type': 'Point',
                                         'coordinates': [
-                                            stepper_info_temp[label]['start_lng'] + count * stepper_info_temp[label]['step_lng'],
-                                            stepper_info_temp[label]['start_lat'] + count * stepper_info_temp[label]['step_lat']
+                                            // stepper_info_temp[label]['start_lng'] + count * stepper_info_temp[label]['step_lng'],
+                                            // stepper_info_temp[label]['start_lat'] + count * stepper_info_temp[label]['step_lat']
+                                            stepper_info_temp[label]['start_lng'],
+                                            stepper_info_temp[label]['start_lat']
                                             ],
                                         },
                                     'properties': {
-                                        'title': label,
-                                        'color': 'red'
+                                        'title': label +'_'+date_ob.getHours()+':'+date_ob.getMinutes()+':'+date_ob.getSeconds(),
+                                        'color': color
                                         },
                                 };
                                 stepper['features'].push(stepper_dot);
@@ -520,19 +534,22 @@
                             };
                             // console.log('--setData 1');
                             map.getSource('dots').setData(stepper);
+
                             // console.log(stepper);
-                            count = count + 1;
-                            AniID = requestAnimationFrame(step_dot);
-                            if (count > 60) {
-                                cancelAnimationFrame(AniID)
-                                data_pre = data_cur;
-                                animateMarker();
-                            }
+                            // count = count + 1;
+                            // AniID = requestAnimationFrame(step_dot);
+                            // if (count > 60) {
+                            //     cancelAnimationFrame(AniID)
+                            //     data_pre = data_cur;
+                            //     animateMarker();
+                            // }
                         }
                     }
                 }
+
             });
         }
+        setInterval(animateMarker, 3000);
     });
     // -- mapbox end
 
@@ -542,43 +559,92 @@
 		$.get("get_sensor_status_monitor/" + <?= $site_info[0]['site'] ?>, '', function(result){
             if (result != 0) {
                 data = JSON.parse(result);
-                <?php foreach ($site_sensors as $site_sensor_item) { ?>
-                if (data['<?= $site_sensor_item->sensor?>'] == undefined) {
-                    $('#vel_<?= $site_sensor_item->label?>').html('').css('color', '#D5D8DC');
-                    $("#faster_flag_<?= $site_sensor_item->label?>").removeClass();
-                    $('#sparkline_<?= $site_sensor_item->label?>').sparkline(<?= $default_sensor_status?>, { 
-                        type: "line",
-                        height: "45px",
-                        width: "85px",
-                        lineColor: '#D5D8DC',
-                        fillColor: '#EAFAF1',});
-                }else {
-                    $('#vel_<?= $site_sensor_item->label?>').html(data['<?= $site_sensor_item->sensor?>']['vel_x']).css('color', '#1D8348');
-                    var faster_flag = $("#faster_flag_<?= $site_sensor_item->label?>");
-                    if (!faster_flag.hasClass("data['<?= $site_sensor_item->sensor?>']['faster_flag']")) {
-                        faster_flag.removeClass();
-                        faster_flag.addClass(data['<?= $site_sensor_item->sensor?>']['faster_flag']);
+                if (parseInt(<?= $site_info[0]['site'] ?>) < 1012){
+                    <?php foreach ($site_sensors as $site_sensor_item) { ?>
+                        if (data['<?= $site_sensor_item->sensor?>'] == undefined) {
+                            $('#vel_<?= $site_sensor_item->label?>').html('').css('color', '#D5D8DC');
+                            $('#label_<?= $site_sensor_item->label?>').html('#<?= $site_sensor_item->label?>').css('color', '#D5D8DC');
+                            $("#faster_flag_<?= $site_sensor_item->label?>").removeClass();
+                            $('#sparkline_<?= $site_sensor_item->label?>').sparkline(<?= $default_sensor_status?>, {
+                                type: "line",
+                                height: "45px",
+                                width: "85px",
+                                lineColor: '#D5D8DC',
+                                fillColor: '#EAFAF1',});
+                        }else {
+                            $('#label_<?= $site_sensor_item->label?>').html('#<?= $site_sensor_item->label?> ('+data['<?=$site_sensor_item->sensor?>']['hci_ts_date']+')').css('color', '#FF6100');
+                            if (data['<?= $site_sensor_item->sensor?>']['location_ts'] != undefined){
+                                $('#vel_<?= $site_sensor_item->label?>').html(data['<?= $site_sensor_item->sensor?>']['vel_norm'].toFixed(2)).css('color', '#1D8348');
+                                var faster_flag = $("#faster_flag_<?= $site_sensor_item->label?>");
+                                if (!faster_flag.hasClass("data['<?= $site_sensor_item->sensor?>']['faster_flag']")) {
+                                    faster_flag.removeClass();
+                                    faster_flag.addClass(data['<?= $site_sensor_item->sensor?>']['faster_flag']);
+                                }
+                            }
+                            // data['<?= $site_sensor_item->sensor?>']['history_vel'].unshift(0);
+                            // $('#sparkline_<?= $site_sensor_item->label?>').sparkline(data['<?= $site_sensor_item->sensor?>']['history_vel'], {
+                                // type: "line",
+                                // height: "45px",
+                                // width: "85px",
+                                // lineColor: '#1D8348',
+                                // fillColor: '#EAFAF1',
+                                // data-fill-color="transparent"
+                                // width: data.length*5,
+                                // height: 400,
+                                // type: 'line',
+                                // lineWidth: 5,
+                                // spotColor: undefined,
+                                // minSpotColor: undefined,
+                                // maxSpotColor: undefined,
+                                // });
+                        }
+                    <?php } ?>
+                }else{
+                    <?php foreach ($site_sensors as $site_sensor_item) { ?>
+                    if (data['<?= $site_sensor_item->sensor?>'] == undefined) {
+                        $('#vel_<?= $site_sensor_item->label?>').html('').css('color', '#D5D8DC');
+                        $('#label_<?= $site_sensor_item->label?>').html('#<?= $site_sensor_item->label?>').css('color', '#D5D8DC');
+                        $("#faster_flag_<?= $site_sensor_item->label?>").removeClass();
+                        $('#sparkline_<?= $site_sensor_item->label?>').sparkline(<?= $default_sensor_status?>, { 
+                            type: "line",
+                            height: "45px",
+                            width: "85px",
+                            lineColor: '#D5D8DC',
+                            fillColor: '#EAFAF1',});
+                    }else {
+                        $('#vel_<?= $site_sensor_item->label?>').html(data['<?= $site_sensor_item->sensor?>']['vel_norm'].toFixed(2)).css('color', '#1D8348');
+
+                        $('#label_<?= $site_sensor_item->label?>').html('#<?= $site_sensor_item->label?>(on)').css('color', '#FF6100');
+
+                        var faster_flag = $("#faster_flag_<?= $site_sensor_item->label?>");
+
+                        if (!faster_flag.hasClass("data['<?= $site_sensor_item->sensor?>']['faster_flag']")) {
+                            faster_flag.removeClass();
+                            faster_flag.addClass(data['<?= $site_sensor_item->sensor?>']['faster_flag']);
+                        }
+                        // data['<?= $site_sensor_item->sensor?>']['history_vel'].unshift(0);
+                        // $('#sparkline_<?= $site_sensor_item->label?>').sparkline(data['<?= $site_sensor_item->sensor?>']['history_vel'], { 
+                            // type: "line",
+                            // height: "45px",
+                            // width: "85px",
+                            // lineColor: '#1D8348',
+                            // fillColor: '#EAFAF1',
+                            // data-fill-color="transparent"
+                            // width: data.length*5, 
+                            // height: 400, 
+                            // type: 'line',
+                            // lineWidth: 5,
+                            // spotColor: undefined,
+                            // minSpotColor: undefined,
+                            // maxSpotColor: undefined,
+                            // });
                     }
-                    $('#sparkline_<?= $site_sensor_item->label?>').sparkline(data['<?= $site_sensor_item->sensor?>']['history_vel'], { 
-                        type: "line",
-                        height: "45px",
-                        width: "85px",
-                        lineColor: '#1D8348',
-                        fillColor: '#EAFAF1',
-                        // data-fill-color="transparent"
-                        // width: data.length*5, 
-                        // height: 400, 
-                        // type: 'line',
-                        // lineWidth: 5,
-                        // spotColor: undefined,
-                        // minSpotColor: undefined,
-                        // maxSpotColor: undefined,
-                        });
+                    <?php } ?>
                 }
-                <?php } ?>
             }else {
                 <?php foreach ($site_sensors as $site_sensor_item) { ?>
                     $('#vel_<?= $site_sensor_item->label?>').html('').css('color', '#D5D8DC');
+                    $('#label_<?= $site_sensor_item->label?>').html('#<?= $site_sensor_item->label?>').css('color', '#D5D8DC');
                     $("#faster_flag_<?= $site_sensor_item->label?>").removeClass();
                     $('#sparkline_<?= $site_sensor_item->label?>').sparkline(<?= $default_sensor_status?>, { 
                         type: "line",

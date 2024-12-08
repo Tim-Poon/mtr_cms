@@ -4,7 +4,7 @@
 <section id="widget-grid" class="">
 	<!-- row -->
 	<div class="row">
-		<article class="col-sm-12 col-md-12 col-lg-6">
+		<article class="col-sm-12 col-md-12 col-lg-12">
 					<!-- new widget -->
 			<div class="jarviswidget jarviswidget-color-blue" id="wid-id-4" data-widget-editbutton="false" data-widget-colorbutton="false">
 

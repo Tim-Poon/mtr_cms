@@ -1,0 +1,1 @@
+sudo kill -9 `pidof sh /home/pi/start_tracking.sh`  `pidof sudo nohup python3 tracking.py`

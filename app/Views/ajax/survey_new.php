@@ -47,7 +47,7 @@
                                     </label>
                                 </section>
 								<section>
-									<label class="label">Remmark</label>
+									<label class="label">Remark</label>
 									<input type="hidden" name="id" value="<?= $id ?>">
 									<label class="textarea state-info" >
 										<textarea rows="4" name="remark" ></textarea>

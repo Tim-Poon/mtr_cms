@@ -91,7 +91,7 @@ class Register extends Controller
             $data = array(
                 'sensor' => $this->request->getPost()['sensor'],
                 'site' => intval($this->request->getPost()['site']),
-                'label' => intval($this->request->getPost()['label']),
+                'label' => $this->request->getPost()['label'],
             );
             $this->model->add_sensor($data);
             echo $data['sensor'];
@@ -107,10 +107,10 @@ class Register extends Controller
         {
             $data = array(
                 'site' => intval($this->request->getPost()['site']),
-                'label' => intval($this->request->getPost()['label']),
+                'label' => $this->request->getPost()['label'],
+                'valid' => intval($this->request->getPost()['valid']),
             );
             $this->model->update_sensor($sensor, $data);
-            echo $sensor;
         } else{
             echo '0';
         }

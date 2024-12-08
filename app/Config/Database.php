@@ -31,7 +31,7 @@ class Database extends \CodeIgniter\Database\Config
 	 */
 	public $default = [
 		'DSN'      => '',
-		'hostname' => '143.89.49.63',
+		'hostname' => '127.0.0.1',
 		'username' => 'postgres',
 		'password' => 'mtrec2020',
 		'database' => 'mtr_cms',
@@ -49,7 +49,7 @@ class Database extends \CodeIgniter\Database\Config
 		'compress' => false,
 		'strictOn' => false,
 		'failover' => [],
-		'port'     => 7023,
+		'port'     => 5432,
 	];
 
 	/**

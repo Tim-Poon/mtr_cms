@@ -8,7 +8,7 @@
 		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
 			<!-- Widget ID (each widget will need unique ID)-->
-			<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0"
+			<div class="jarviswidget jarviswidget-color-darken"
 				data-widget-editbutton="false"
 				data-widget-colorbutton="false"
 				data-widget-deletebutton="false"
@@ -43,8 +43,73 @@
 								<tr>
 									<td><strong><a href="<?=base_url('survey/event').'/'.$event_item->event?>" style="cursor:pointer"><?= $event_item->event?></a></strong></td>
 									<td><?= $event_item->date?></td>
-									<td><?= $event_item->site?> </td>
-								<td><?php if($event_item->remark){?><i class="fa fa-check fa-fw "><?php }?></td>
+									<td>
+										<?php foreach ($site_names as $site_name_item) {
+                                                $site_name = '';
+                                                if ($event_item->site == $site_name_item['site']) {
+                                                    $site_name = $site_name_item['site_name'];
+                                                    break;
+                                                }
+                                            } echo $site_name;?>
+									</td>
+								<td><?php if($event_item->remark){ echo $event_item->remark; }else{?>  <?php }?></td>
+								</tr>
+								<?php }?>
+							</tbody>
+						</table>
+                        
+					</div>
+					<!-- end widget content -->
+                    
+				</div>
+				<!-- end widget div -->
+
+			</div>
+			<!-- end widget -->
+        </artivle>
+        
+    </div>
+
+	<div class="row">
+
+		<!-- NEW WIDGET START -->
+		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+			<!-- Widget ID (each widget will need unique ID)-->
+			<div class="jarviswidget jarviswidget-color-darken"
+				data-widget-editbutton="false"
+				data-widget-colorbutton="false"
+				data-widget-deletebutton="false"
+				data-widget-togglebutton="false"
+				data-widget-sortable="false"
+				data-widget-fullscreenbutton="false">
+
+				<header>
+					<span class="widget-icon"> <i class="fa fa-table"></i> </span>
+					<h2>Offline Data</h2>
+
+				</header>
+
+				<!-- widget div-->
+				<div>
+					<!-- widget content -->
+					<div class="widget-body no-padding">
+						<table id="dt_basic" class="table table-striped table-bordered table-hover">
+							<thead>
+								<tr>
+									<th>File</th>
+									<th>Size</th>
+									<!-- <th>.</th>
+									<th>.</th> -->
+								</tr>
+							</thead>
+							<tbody>
+								<?php foreach($offline_data_files as $file) {?>
+								<tr>
+									<td><strong><a href="<?= $file['path']?>" style="cursor:pointer"><?= $file['name']?></a></strong></td>
+									<td><?= $file['size']?> MB</td>
+									<!-- <td></td>
+									<td></td> -->
 								</tr>
 								<?php }?>
 							</tbody>

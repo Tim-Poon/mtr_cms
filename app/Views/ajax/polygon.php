@@ -656,6 +656,11 @@
 			// set data
 			map.getSource('site_map').setData(<?= $site_floor_item['geojson']?>);
 			$('#ts_create_content').html(get_floor_ts_create());
+			map.flyTo({
+                center: [<?= $site_floor_item['mapbox_center_lng']?>, <?= $site_floor_item['mapbox_center_lat']?>],
+                bearing: <?= $site_floor_item['mapbox_bearing']?>,
+                zoom: <?= $site_floor_item['mapbox_zoom']?>,
+            });
 		};
 		document.getElementById('menu').appendChild(link);
 	<?php } ?>

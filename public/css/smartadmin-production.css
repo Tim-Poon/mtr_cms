@@ -10492,7 +10492,7 @@ div.wijmo-wijmenu .wijmo-wijmenu-child .wijmo-wijmenu-text {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     padding: 0;
-    margin-left: 65px;
+    margin-left: 35px;
     line-height: normal
 }
 
@@ -13471,7 +13471,7 @@ nav ul ul>li:hover b {
     border-right: 1px solid #DADADA !important;
     border-top: 1px solid #DADADA !important;
     margin-top: 10px !important;
-    height: 65px;
+    height: 35px;
     overflow: hidden;
     padding: 7px 9px
 }
@@ -14273,7 +14273,7 @@ img.away {
     font-size: 14px;
     font-weight: 800;
     color: #D5D8DC;
-    width: 100px;
+    /*width: 100px;*/
     height: 19px;
     text-overflow: ellipsis;
     white-space: nowrap;

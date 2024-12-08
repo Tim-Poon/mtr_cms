@@ -51,12 +51,29 @@
                                             } ?>
                                         </select> <i></i> </label>
                                 </section>
-                                <section class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
-                                    <label class="Label">Label</label>
-                                    <label class="input"> <i class="icon-prepend fa  fa-calendar"></i>
-                                        <input value="<?= $sensor_info['label'] ?>" name="label" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
-                                    </label>
-                                </section>
+								
+                                <section class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+									<div class="row">
+										<div class="col col-4">
+											<label class="Label">Label</label>
+											<label class="input"> <i class="icon-prepend fa  fa-calendar"></i>
+												<input value="<?= $sensor_info['label'] ?>" name="label">
+											</label>
+										</div>
+										<div class="col col-4">
+											<label class="Label">Valid</label>
+											<label class="select">
+												<select name="valid">
+													<option value=<?= $sensor_info['valid'] ?> selected="selected"><?= $sensor_info['valid']?></option>
+													<option value=-1>NULL</option>
+													<option value=1>ACTIVE</option>
+													<option value=0>BLACKLIST</option>
+												</select>
+											</label>
+										</div>
+									</div>
+								</section>
+								
 							</fieldset>
 
 							<footer>

@@ -21,7 +21,7 @@ class App extends BaseConfig
 	| environments.
 	|
 	*/
-	public $baseURL = 'http://143.89.144.200:1234/mtr_cms';
+	public $baseURL = 'http://mtr-prod-internal-v2.smartsensing.biz/mtr_cms';
 
 	/*
 	|--------------------------------------------------------------------------

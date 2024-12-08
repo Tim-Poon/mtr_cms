@@ -131,7 +131,10 @@ class Reporting extends Controller
 		$e_timestamp = $e_time->getTimestamp();
 		
 		// echo $report_item['delivery_date'].'-'.$time_period[0];
-		$sensor = $this->model->get_sensor_mac($report_item['site'], $report_item['sensor']);
+		$sensor = $report_item['imei'];
+		if ($sensor == NULL){
+			$sensor = $this->model->get_sensor_mac($report_item['site'], $report_item['sensor']);
+		}
 		// echo $s_timestamp.'-'.$e_timestamp;
 		$trajectory_data = $this->model->get_delivery_trajectory($sensor, $s_timestamp, $e_timestamp);
 

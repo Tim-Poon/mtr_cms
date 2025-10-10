@@ -146,7 +146,7 @@ class Reporting extends Controller
 			'report_by_id' => $report_by_id,
 			'trajectory_data' => $trajectory_data,
 		];
-		// echo(($report_by_id[0]['sensor']));
+		//echo(json_encode($trajectory_data));
 		echo view('ajax/reporting_map_data', $data);
 	}
 	

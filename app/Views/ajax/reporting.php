@@ -348,7 +348,7 @@
 				"sSearch" : "Search all columns:"
 			},
 			"bSortCellsTop" : true,
-			order: [[0, "desc"]],
+			order: [[4, "desc"]],
 		});
 		/* END TABLE TOOLS */
 	}
